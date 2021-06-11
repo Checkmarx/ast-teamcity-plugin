@@ -2,15 +2,15 @@
 <teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:schemas-jetbrains-com:teamcity-plugin-v1-xml">
   <info>
     <name>checkmarx-ast-teamcity-plugin</name>
-    <display-name>checkmarx-ast-teamcity-plugin</display-name>
+    <display-name>Checkmarx AST</display-name>
     <version>@Version@</version>
-    <description>Plugin description</description>
+    <description>Allows the scanning of source code with the new Checkmarx AST engine.</description>
     <download-url>Plugin download URL</download-url>
-    <email>Plugin author e-mail</email>
+    <email>Mithilesh.Pawar@checkmarx.com</email>
     <vendor>
-      <name>@VendorName@</name>
-      <url>@VendorURL@</url>
-      <logo>Plugin vendor logo URL</logo>
+      <name>Checkmarx</name>
+      <url>https://www.checkmarx.com</url>
+      <logo>https://www.checkmarx.com/wp-content/themes/checkmarx/images/assets/cx-logo-alpha.svg</logo>
     </vendor>
   </info>
   <deployment use-separate-classloader="true"/>
