@@ -54,7 +54,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>teamcity-checkmarx-ast-scanner-plugin-server</finalName>
+              <finalName>checkmarx-ast-teamcity-plugin-server</finalName>
               <appendAssemblyId>false</appendAssemblyId>
               <attach>false</attach>
               <descriptors>

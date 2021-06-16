@@ -46,7 +46,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>teamcity-checkmarx-ast-scanner-plugin-agent</finalName>
+              <finalName>checkmarx-ast-teamcity-plugin-agent</finalName>
               <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
                 <descriptor>src/assembly/agent.xml</descriptor>
@@ -60,7 +60,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>teamcity-checkmarx-ast-scanner-plugin-runner</finalName>
+              <finalName>checkmarx-ast-teamcity-plugin-runner</finalName>
               <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
                 <descriptor>src/assembly/runner.xml</descriptor>

@@ -17,12 +17,7 @@
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
   </properties>
-  <repositories>
-    <repository>
-        <id>JetBrains</id>
-        <url>https://download.jetbrains.com/teamcity-repository</url>
-    </repository>
-  </repositories>
+
   <pluginRepositories>
       <pluginRepository>
           <id>JetBrains</id>
@@ -31,6 +26,17 @@
   </pluginRepositories>
   <build>
       <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <compilerArgs>
+                      <arg>-Xlint:all,-options,-path</arg>
+                  </compilerArgs>
+                  <source>${project.sourceCompatibility}</source>
+                  <target>${project.targetCompatibility}</target>
+              </configuration>
+          </plugin>
           <plugin>
               <groupId>org.jetbrains.teamcity</groupId>
               <artifactId>teamcity-sdk-maven-plugin</artifactId>
@@ -59,4 +65,11 @@
     <module>checkmarx-ast-teamcity-plugin-common</module>
     <module>build</module>
   </modules>
+
+    <repositories>
+        <repository>
+            <id>jetbrains-all</id>
+            <url>https://download.jetbrains.com/teamcity-repository</url>
+        </repository>
+    </repositories>
 </project>
