@@ -9,6 +9,7 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 
 public class CheckmarxVersionCommand extends CheckmarxBuildServiceAdapter{
+
     @NotNull
     @Override
     public ProgramCommandLine makeProgramCommandLine() {

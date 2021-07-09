@@ -1,10 +1,12 @@
 package com.checkmarx.teamcity.server;
 
+import com.checkmarx.teamcity.common.CheckmarxParams;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import jetbrains.buildServer.serverSide.InvalidProperty;
 import jetbrains.buildServer.serverSide.PropertiesProcessor;
 import jetbrains.buildServer.serverSide.RunType;
 import jetbrains.buildServer.serverSide.RunTypeRegistry;
+import jetbrains.buildServer.util.PropertiesUtil;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,18 +50,15 @@ public class CheckmarxScanRunType extends RunType {
             if (properties == null) {
                 return Collections.emptyList();
             }
+            List<InvalidProperty> result =  new ArrayList<>(0);
+            if (!CheckmarxScanRunnerConstants.TRUE.equals(properties.get(CheckmarxParams.USE_DEFAULT_SERVER))) {
 
-            List<InvalidProperty> findings = new ArrayList<>(0);
-            if (isEmptyOrNull(properties.get(CheckmarxScanRunnerConstants.API_KEY))) {
-                findings.add(new InvalidProperty(CheckmarxScanRunnerConstants.API_KEY, "Checkmarx API key must be specified."));
+                if (isEmptyOrNull(properties.get(CheckmarxParams.SERVER_URL))) {
+                    result.add(new InvalidProperty(CheckmarxParams.SERVER_URL, "Server URL must not be empty"));
+                }
             }
-//            if (isEmptyOrNull(properties.get(VERSION))) {
-//                findings.add(new InvalidProperty(VERSION, "Please define a Checkmarx CLI version."));
-//            }
-//            if (getBoolean(properties.get(USE_CUSTOM_BUILD_TOOL_PATH)) && isEmptyOrNull(properties.get(CUSTOM_BUILD_TOOL_PATH))) {
-//                findings.add(new InvalidProperty(CUSTOM_BUILD_TOOL_PATH, "Please define a custom build tool path."));
-//            }
-            return findings;
+
+            return result;
         };
 
     }

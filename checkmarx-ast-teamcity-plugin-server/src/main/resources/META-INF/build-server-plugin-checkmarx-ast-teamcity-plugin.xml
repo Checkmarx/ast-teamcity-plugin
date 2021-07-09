@@ -4,5 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-autowire="constructor">
     <bean class="com.checkmarx.teamcity.server.CheckmarxScanRunType"/>
+    <bean class="com.checkmarx.teamcity.server.CheckmarxAdminConfig"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxAdminPage"/>
 </beans>

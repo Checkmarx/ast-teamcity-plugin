@@ -27,49 +27,18 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         LOG.info("-----------------------Checkmarx: Reached the BuildServiceAdapter------------------------");
         String checkmarxCliToolPath = getCheckmarxCliToolPath();
 
-        String checkmarxApiKey = getRunnerParameters().get(API_KEY);
-        if (nullIfEmpty(checkmarxApiKey) == null) {
+        String checkmarxAstSecret = getRunnerParameters().get(AST_SECRET);
+        if (nullIfEmpty(checkmarxAstSecret) == null) {
             throw new RunBuildException("Checkmarx API key was not defined. Please configure the build properly and retry.");
         }
         Map<String, String> envVars = new HashMap<>(getEnvironmentVariables());
-        envVars.put("CX_APIKEY", checkmarxApiKey);
+        envVars.put("CX_APIKEY", checkmarxAstSecret);
 
         //  boolean result = submitDetailsToWrapper(LOG, checkmarxApiKey, checkmarxCliToolPath, (getWorkingDirectory().getAbsolutePath()));
 
         String sourceDir = getWorkingDirectory().getAbsolutePath();
         return new SimpleProgramCommandLine(envVars, getWorkingDirectory().getAbsolutePath(), checkmarxCliToolPath, getArguments());
     }
-
-//    private boolean submitDetailsToWrapper(Logger log, String checkmarxApiKey, String checkmarxCliToolPath, String sourceDir) throws IOException, URISyntaxException, InterruptedException {
-//
-//        log.info("Submitting the scan details to the CLI wrapper.");
-//        final CxScanConfig scan = new CxScanConfig();
-//        scan.setBaseUri(getRunnerParameters().get(SERVER_URL));
-//
-//        scan.setAuthType(CxAuthType.TOKEN);
-//        scan.setApiKey(checkmarxApiKey);
-//        scan.setPathToExecutable(checkmarxCliToolPath);
-//        final CxAuth wrapper = new CxAuth(scan, (org.slf4j.Logger) log);
-//
-//        final Map<CxParamType, String> params = new HashMap<>();
-//        params.put(CxParamType.AGENT, "TeamCity");
-//        params.put(CxParamType.S, sourceDir);
-//
-//
-//        params.put(CxParamType.PROJECT_NAME,  getRunnerParameters().get(PROJECT_NAME));
-//        params.put(CxParamType.FILTER,  getRunnerParameters().get(ZIP_FILE_FILTERS));
-//        params.put(CxParamType.ADDITIONAL_PARAMETERS, getRunnerParameters().get(ADDITIONAL_PARAMETERS));
-//        params.put(CxParamType.SCAN_TYPES, "sast");
-//
-//        final CxScan cxScan = wrapper.cxScanCreate(params);
-//
-//        if (cxScan != null) {
-//            log.info(cxScan.toString());
-//            log.info("--------------- Checkmarx execution completed ---------------");
-//            return true;
-//        }
-//        return false;
-//    }
 
     @Override
     public void beforeProcessStarted() {
@@ -105,7 +74,7 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("--scan-types");
         arguments.add("sast");
 
-        String apiKey = getRunnerParameters().get(API_KEY);
+        String apiKey = getRunnerParameters().get(AST_SECRET);
         if (nullIfEmpty(apiKey) != null) {
             arguments.add("--apikey");
             arguments.add(apiKey);

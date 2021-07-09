@@ -3,19 +3,7 @@
 <%@ taglib prefix="l" tagdir="/WEB-INF/tags/layout" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="/include.jsp" %>
-
-<style>
-  .scanControlSectionTable {
-    margin-left: -10px;
-  }
-
-  .cxTitle {
-    text-align: center;
-    font-weight: bold;
-    font-size: medium;
-  }
-
-</style>
+<%@ page import="com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants" %>
 
 <script type="text/javascript">
     function sanitizeJS(str) {
@@ -31,22 +19,22 @@
     save: function () {
 
       BS.PasswordFormSaver.save(this, this.formElement().action, OO.extend(BS.ErrorsAwareListener, {
-        onInvalid_cxGlobalServerUrlError: function (elem) {
-          $("invalid_cxGlobalServerUrl").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
-          SettingsForm.highlightErrorField($("cxGlobalServerUrl"));
+        onInvalid_globalAstServerUrlError: function (elem) {
+          $("invalid_globalAstServerUrl").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
+          SettingsForm.highlightErrorField($("globalAstServerUrl"));
         },
-        onInvalid_cxGlobalUsernameError: function (elem) {
-          $("invalid_cxGlobalUsername").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
-          SettingsForm.highlightErrorField($("cxGlobalUsername"));
+        onInvalid_globalAstClientIdError: function (elem) {
+          $("invalid_globalAstClientId").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
+          SettingsForm.highlightErrorField($("globalAstClientId"));
         },
-        onInvalid_cxGlobalPasswordError: function (elem) {
-          $("invalid_cxGlobalPassword").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
-          SettingsForm.highlightErrorField($("cxGlobalPassword"));
+        onInvalid_globalAstSecretError: function (elem) {
+          $("invalid_globalAstSecret").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
+          SettingsForm.highlightErrorField($("globalAstSecret"));
         },
 
-        onInvalid_cxGlobalScanTimeoutInMinutesError: function (elem) {
-          $("invalid_cxGlobalScanTimeoutInMinutes").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
-          SettingsForm.highlightErrorField($("cxGlobalScanTimeoutInMinutes"));
+        onInvalid_globalAstAuthenticationUrlError: function (elem) {
+          $("invalid_globalAstAuthenticationUrl").innerHTML = sanitizeJS(elem.firstChild.nodeValue);
+          SettingsForm.highlightErrorField($("globalAstAuthenticationUrl"));
         },
 
         onSuccessfulSave: function () {
@@ -64,7 +52,7 @@
     }
   });
 </script>
-<script type="text/javascript" src="<c:url value='${teamcityPluginResourcesPath}testConnection.js'/>"></script>
+
 
 
 <div>
@@ -72,7 +60,7 @@
 
     <bs:messages key="settingsSaved"/>
 
-    <form id="globalSettingsForm" action="<c:url value='/admin/checkmarxSettings.html'/>" method="post"
+    <form id="globalSettingsForm" action="<c:url value='/admin/checkmarxAstSettings.html'/>" method="post"
           onsubmit="{return SettingsForm.save()}">
 
       <table class="runnerFormTable">
@@ -81,44 +69,43 @@
         </tr>
 
         <tr>
-          <th><label for="cxGlobalServerUrl">AST Server URL<l:star/></label></th>
+          <th><label for="globalAstServerUrl">AST Server URL<l:star/></label></th>
           <td>
-            <forms:textField name="cxGlobalServerUrl" value="${cxGlobalServerUrl}" className="longField"/>
-            <span class="error" id="invalid_cxGlobalServerUrl"></span>
+            <forms:textField name="globalAstServerUrl" value="${globalAstServerUrl}" className="longField"/>
+            <span class="error" id="invalid_globalAstServerUrl"></span>
           </td>
         </tr>
 
         <tr>
-          <th><label for="cxGlobalScanTimeoutInMinutes">AST Authentication Server URL
-            <bs:helpIcon iconTitle="Abort the scan if exceeds specified timeout in minutes"/></label></th>
+          <th><label for="globalAstAuthenticationUrl">AST Authentication Server URL
+            <bs:helpIcon iconTitle="External Authentication Url for AST"/></label></th>
           <td>
-            <forms:textField name="cxGlobalScanTimeoutInMinutes" value="${cxGlobalScanTimeoutInMinutes}" className="longField"/>
-            <span class="error" id="invalid_cxGlobalScanTimeoutInMinutes"></span>
+            <forms:textField name="globalAstAuthenticationUrl" value="${globalAstAuthenticationUrl}" className="longField"/>
+            <span class="error" id="invalid_globalAstAuthenticationUrl"></span>
           </td>
         </tr>
 
         <tr>
-          <th><label for="cxGlobalExcludeFolders">Tenant Name
-            <bs:helpIcon iconTitle="Comma separated list of folders to exclude from scan.</br>
-                                    Entries in this list are automatically converted to exclude wildcard patterns and appended to the full pattern list provided in the advanced section"/></label></th>
-          <td><forms:textField name="cxGlobalExcludeFolders" value="${cxGlobalExcludeFolders}" className="longField"/></td>
-        </tr>
-
-        <tr>
-          <th><label for="cxGlobalUsername">Client Id<l:star/></label></th>
+          <th><label for="globalAstTenantName">Tenant Name
+            <bs:helpIcon iconTitle="Tenant name for the account."/></label></th>
           <td>
-            <forms:textField name="cxGlobalUsername" value="${cxGlobalUsername}" className="longField"/>
-            <span class="error" id="invalid_cxGlobalUsername"></span>
-
+            <forms:textField name="globalAstTenantName" value="${globalAstTenantName}" className="longField"/>
           </td>
-
         </tr>
 
         <tr>
-          <th><label for="cxGlobalPassword">Secret<l:star/></label></th>
+          <th><label for="globalAstClientId">Client Id<l:star/></label></th>
           <td>
-            <input type="password" id="cxGlobalPassword" name="cxGlobalPassword" value="${cxGlobalPassword}" class="longField"/>
-            <span class="error" id="invalid_cxGlobalPassword"></span>
+            <forms:textField name="globalAstClientId" value="${globalAstClientId}" className="longField"/>
+            <span class="error" id="invalid_globalAstClientId"></span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="globalAstSecret">Secret<l:star/></label></th>
+          <td>
+            <input type="password" id="globalAstSecret" name="globalAstSecret" value="${globalAstSecret}" class="longField"/>
+            <span class="error" id="invalid_globalAstSecret"></span>
           </td>
         </tr>
 
@@ -127,9 +114,9 @@
         </tr>
 
         <tr>
-          <th><label for="cxGlobalFilterPatterns">Zip File Filters
+          <th><label for="globalZipFilters">Zip File Filters
             <bs:helpIcon iconTitle="Comma separated list of include or exclude wildcard patterns. Exclude patterns start with exclamation mark \"!\". Example: **/*.java, **/*.html, !**/test/**/XYZ*"/></label></th>
-          <td><textarea rows="5" cols="50" name="cxGlobalFilterPatterns" wrap="off">${cxGlobalFilterPatterns}</textarea>
+          <td><textarea rows="5" cols="50" name="globalZipFilters" wrap="off">${globalZipFilters}</textarea>
           </td>
         </tr>
       </table>
