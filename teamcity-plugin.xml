@@ -13,5 +13,5 @@
       <logo>https://www.checkmarx.com/wp-content/themes/checkmarx/images/assets/cx-logo-alpha.svg</logo>
     </vendor>
   </info>
-  <deployment use-separate-classloader="true"/>
+  <deployment use-separate-classloader="true" allow-runtime-reload="true"/>
 </teamcity-plugin>

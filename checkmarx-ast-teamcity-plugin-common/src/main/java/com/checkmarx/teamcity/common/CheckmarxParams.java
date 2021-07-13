@@ -2,6 +2,9 @@ package com.checkmarx.teamcity.common;
 
 public abstract class CheckmarxParams {
 
+    public static final String TRUE = "true";
+    public static final String FALSE = "false";
+
     public static final String USE_DEFAULT_SERVER = "cxUseDefaultServer";
 
 

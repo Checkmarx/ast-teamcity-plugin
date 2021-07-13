@@ -1,5 +1,6 @@
 package com.checkmarx.teamcity.server;
 
+import com.checkmarx.teamcity.common.CheckmarxParams;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import jetbrains.buildServer.controllers.admin.AdminPage;
 import jetbrains.buildServer.serverSide.auth.Permission;
@@ -39,7 +40,7 @@ public class CheckmarxAdminPage extends AdminPage {
     @Override
     public void fillModel(@NotNull Map<String, Object> model, @NotNull HttpServletRequest request) {
 
-        for (String conf : CheckmarxScanRunnerConstants.GLOBAL_CONFIGS) {
+        for (String conf : CheckmarxParams.GLOBAL_CONFIGS) {
             model.put(conf, checkmarxAdminConfig.getConfiguration(conf));
         }
 

@@ -1,5 +1,6 @@
 package com.checkmarx.teamcity.server;
 
+import com.checkmarx.teamcity.common.CheckmarxParams;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants.*;
 import jetbrains.buildServer.serverSide.ServerPaths;
@@ -32,16 +33,16 @@ public class CheckmarxAdminConfig {
 
     private void initConfigFile(@NotNull final File configFile) throws IOException {
 
-        for (String conf : CheckmarxScanRunnerConstants.GLOBAL_CONFIGS) {
+        for (String conf : CheckmarxParams.GLOBAL_CONFIGS) {
             this.properties.put(conf, "");
         }
 
-        this.properties.put(CheckmarxScanRunnerConstants.GLOBAL_AST_SERVER_URL, "");
-        this.properties.put(CheckmarxScanRunnerConstants.GLOBAL_AST_AUTHENTICATION_URL, "");
-        this.properties.put(CheckmarxScanRunnerConstants.GLOBAL_AST_TENANT_NAME, "");
-        this.properties.put(CheckmarxScanRunnerConstants.GLOBAL_AST_CLIENT_ID, "");
-        this.properties.put(CheckmarxScanRunnerConstants.GLOBAL_AST_SECRET, "");
-        this.properties.put(CheckmarxScanRunnerConstants.GLOBAL_ZIP_FILTERS, CheckmarxScanRunnerConstants.DEFAULT_ZIP_FILE_FILTER_PATTERN);
+        this.properties.put(CheckmarxParams.GLOBAL_AST_SERVER_URL, "");
+        this.properties.put(CheckmarxParams.GLOBAL_AST_AUTHENTICATION_URL, "");
+        this.properties.put(CheckmarxParams.GLOBAL_AST_TENANT_NAME, "");
+        this.properties.put(CheckmarxParams.GLOBAL_AST_CLIENT_ID, "");
+        this.properties.put(CheckmarxParams.GLOBAL_AST_SECRET, "");
+        this.properties.put(CheckmarxParams.GLOBAL_ZIP_FILTERS, CheckmarxScanRunnerConstants.DEFAULT_ZIP_FILE_FILTER_PATTERN);
 
         configFile.getParentFile().mkdirs();
         PropertiesUtil.storeProperties(this.properties, configFile, "");
@@ -50,7 +51,7 @@ public class CheckmarxAdminConfig {
     private void loadConfiguration(@NotNull final File configFile) throws IOException {
         try(FileReader fileReader = new FileReader(configFile)) {
             this.properties.load(fileReader);
-            for (String conf : CheckmarxScanRunnerConstants.GLOBAL_CONFIGS) {
+            for (String conf : CheckmarxParams.GLOBAL_CONFIGS) {
                 if (this.properties.get(conf) == null){
                     this.properties.put(conf, "");
                 }

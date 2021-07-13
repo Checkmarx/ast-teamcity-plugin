@@ -6,4 +6,5 @@
     <bean class="com.checkmarx.teamcity.server.CheckmarxScanRunType"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxAdminConfig"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxAdminPage"/>
+    <bean class="com.checkmarx.teamcity.server.CheckmarxEditRunTypeControllerExtension"/>
 </beans>

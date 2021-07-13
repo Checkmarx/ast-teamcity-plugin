@@ -1,5 +1,6 @@
 package com.checkmarx.teamcity.server;
 
+import com.checkmarx.teamcity.common.CheckmarxParams;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.controllers.ActionErrors;
@@ -51,12 +52,12 @@ public class CheckmarxAdminPageController extends BaseFormXmlController {
             return;
         }
 
-        for (String config : CheckmarxScanRunnerConstants.GLOBAL_CONFIGS) {
+        for (String config : CheckmarxParams.GLOBAL_CONFIGS) {
             checkmarxAdminConfig.setConfiguration(config, StringUtil.emptyIfNull(httpServletRequest.getParameter(config)));
         }
 
         String encryptedSecret = ensurePasswordEncryption(httpServletRequest, "encryptedGlobalAstSecret");
-        checkmarxAdminConfig.setConfiguration(CheckmarxScanRunnerConstants.GLOBAL_AST_SECRET, encryptedSecret);
+        checkmarxAdminConfig.setConfiguration(CheckmarxParams.GLOBAL_AST_SECRET, encryptedSecret);
 
         try {
             checkmarxAdminConfig.persistConfiguration();
@@ -77,14 +78,14 @@ public class CheckmarxAdminPageController extends BaseFormXmlController {
 
         ActionErrors errors = new ActionErrors();
 
-        String globalAstServerUrl = request.getParameter(CheckmarxScanRunnerConstants.GLOBAL_AST_SERVER_URL);
-        if (com.intellij.openapi.util.text.StringUtil.isEmptyOrSpaces(CheckmarxScanRunnerConstants.GLOBAL_AST_SERVER_URL)) {
-            errors.addError(INVALID + CheckmarxScanRunnerConstants.GLOBAL_AST_SERVER_URL, "AST Server URL must not be empty");
+        String globalAstServerUrl = request.getParameter(CheckmarxParams.GLOBAL_AST_SERVER_URL);
+        if (com.intellij.openapi.util.text.StringUtil.isEmptyOrSpaces(CheckmarxParams.GLOBAL_AST_SERVER_URL)) {
+            errors.addError(INVALID + CheckmarxParams.GLOBAL_AST_SERVER_URL, "AST Server URL must not be empty");
         } else {
             try {
                 new URL(globalAstServerUrl);
             } catch (MalformedURLException e) {
-                errors.addError(INVALID + CheckmarxScanRunnerConstants.GLOBAL_AST_SERVER_URL, "AST Server Url is not valid.");
+                errors.addError(INVALID + CheckmarxParams.GLOBAL_AST_SERVER_URL, "AST Server Url is not valid.");
             }
         }
 
