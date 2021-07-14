@@ -5,6 +5,8 @@ import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import jetbrains.buildServer.BuildProblemData;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
+import jetbrains.buildServer.agent.AgentBuildRunner;
+import jetbrains.buildServer.agent.AgentRunningBuild;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.runner.CommandExecution;
 import jetbrains.buildServer.agent.runner.ProcessListener;
@@ -36,8 +38,12 @@ public class CommandExecutionAdapter implements CommandExecution {
     private final Path commandOutputPath;
     private List<ProcessListener> listeners;
     private BuildFinishedStatus result;
+    private AgentRunningBuild agentRunningBuild;
 
-    public CommandExecutionAdapter(@NotNull CheckmarxBuildServiceAdapter buildService, @NotNull Path commandOutputPath) {
+    public CommandExecutionAdapter(
+            @NotNull AgentRunningBuild agentRunningBuild,
+            @NotNull CheckmarxBuildServiceAdapter buildService, @NotNull Path commandOutputPath) {
+        this.agentRunningBuild = agentRunningBuild;
         this.buildService = buildService;
         this.commandOutputPath = commandOutputPath;
         listeners = buildService.getListeners();

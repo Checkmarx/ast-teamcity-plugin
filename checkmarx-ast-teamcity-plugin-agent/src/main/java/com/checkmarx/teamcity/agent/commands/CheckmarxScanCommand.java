@@ -9,6 +9,7 @@ import jetbrains.buildServer.agent.BuildProgressLogger;
 import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
+import jetbrains.buildServer.util.PropertiesUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +39,8 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
 
         BuildProgressLogger logger = agentRunningBuild.getBuildLogger();
         // something logic with logger instance (output information)
+
+        LOG.info(agentRunningBuild.getSharedConfigParameters());
 
         File workingDirectory = getWorkingDirectory(); // get working directory
         Map<String, String> runnerParameters = getRunnerParameters(); // get runner parameters
