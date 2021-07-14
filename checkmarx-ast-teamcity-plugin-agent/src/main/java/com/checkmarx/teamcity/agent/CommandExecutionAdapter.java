@@ -47,6 +47,7 @@ public class CommandExecutionAdapter implements CommandExecution {
         this.buildService = buildService;
         this.commandOutputPath = commandOutputPath;
         listeners = buildService.getListeners();
+        buildService.setAgentRunningBuild(agentRunningBuild);
     }
 
     @NotNull

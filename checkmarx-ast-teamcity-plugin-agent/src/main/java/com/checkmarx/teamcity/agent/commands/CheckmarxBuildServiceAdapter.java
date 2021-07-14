@@ -5,6 +5,7 @@ import com.checkmarx.teamcity.common.runner.Platform;
 import com.checkmarx.teamcity.common.runner.RunnerVersion;
 import com.checkmarx.teamcity.common.runner.Runners;
 import jetbrains.buildServer.TeamCityRuntimeException;
+import jetbrains.buildServer.agent.AgentRunningBuild;
 import jetbrains.buildServer.agent.BuildAgentSystemInfo;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.BuildRunnerContext;
@@ -21,9 +22,17 @@ import static java.lang.String.format;
 public abstract class CheckmarxBuildServiceAdapter extends BuildServiceAdapter {
 
     private static final Logger LOG = Logger.getLogger(CheckmarxBuildServiceAdapter.class);
+    private AgentRunningBuild agentRunningBuild;
 
     abstract List<String> getArguments();
 
+    public AgentRunningBuild getAgentRunningBuild() {
+        return agentRunningBuild;
+    }
+
+    public void setAgentRunningBuild(AgentRunningBuild agentRunningBuild) {
+        this.agentRunningBuild = agentRunningBuild;
+    }
     @NotNull
     public final BuildRunnerContext getBuildRunnerContext() {
         return getRunnerContext();

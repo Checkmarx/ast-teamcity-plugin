@@ -9,7 +9,6 @@ import jetbrains.buildServer.agent.BuildProgressLogger;
 import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
-import jetbrains.buildServer.util.PropertiesUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,9 +18,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.checkmarx.teamcity.common.CheckmarxParams.*;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
 public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
@@ -34,17 +35,23 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
     public ProgramCommandLine makeProgramCommandLine() throws RunBuildException {
 
         //reference https://codingsight.com/implementing-a-teamcity-plugin/
-        AgentRunningBuild agentRunningBuild = getRunnerContext().getBuild();
+        AgentRunningBuild agentRunningBuild = getAgentRunningBuild();
         // something logic with build instance
 
         BuildProgressLogger logger = agentRunningBuild.getBuildLogger();
         // something logic with logger instance (output information)
+        Map<String, String> sharedConfigParameters = agentRunningBuild.getSharedConfigParameters();
+
+        String readable = sharedConfigParameters.keySet().stream()
+                .map(key -> key + "=" + sharedConfigParameters.get(key))
+                .collect(Collectors.joining(", ", "{", "}"));
+        getBuild().getBuildLogger().message(readable);
 
         LOG.info(agentRunningBuild.getSharedConfigParameters());
 
         File workingDirectory = getWorkingDirectory(); // get working directory
         Map<String, String> runnerParameters = getRunnerParameters(); // get runner parameters
-        Map<String, String> sharedConfigParameters = agentRunningBuild.getSharedConfigParameters();
+
 
         BuildRunnerContext buildRunnerContext = getBuildRunnerContext();
 
