@@ -7,4 +7,5 @@
     <bean class="com.checkmarx.teamcity.server.CheckmarxAdminConfig"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxAdminPage"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxEditRunTypeControllerExtension"/>
+    <bean class="com.checkmarx.teamcity.server.CheckmarxBuildStartContextProcessor"/>
 </beans>

@@ -21,6 +21,7 @@ import java.util.List;
 import static java.io.File.separator;
 import static java.util.Objects.requireNonNull;
 import static jetbrains.buildServer.ArtifactsConstants.TEAMCITY_ARTIFACTS_DIR;
+import static jetbrains.buildServer.util.PropertiesUtil.getBoolean;
 
 public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
 
@@ -76,6 +77,6 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
         } catch (RunBuildException ex) {
             throw new TeamCityRuntimeException(ex);
         }
-        return new CommandExecutionAdapter(buildRunnerContext.getBuild(), buildService, commandOutputPath);
+        return new CommandExecutionAdapter(buildService, commandOutputPath);
     }
 }
