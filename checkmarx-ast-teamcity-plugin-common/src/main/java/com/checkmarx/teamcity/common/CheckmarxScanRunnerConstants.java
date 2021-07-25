@@ -5,6 +5,7 @@ public class CheckmarxScanRunnerConstants {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
+    public final static String REPORT_HTML_NAME = "checkmarx_ast_report.html";
 
     public static final String RUNNER_TYPE = "checkmarxScan";
     public static final String RUNNER_DISPLAY_NAME = "Checkmarx AST Scan";
@@ -17,13 +18,6 @@ public class CheckmarxScanRunnerConstants {
     public static final String ZIP_FILE_FILTERS = "zipFileFilters";
     public static final String AST_CLIENT_ID = "astClientId";
     public static final String AST_SECRET = "secure:astSecret";
-    public static final String VERSION = "version";
-
-
-    public static final String SAST_SCAN_ENABLED = "sastScanEnabled";
-    public static final String SCA_SCAN_ENABLED = "scaScanEnabled";
-    public static final String KICS_ENABLED = "kicsEnabled";
-    public static final String CONTAINER_SCAN_ENABLED = "containerScanEnabled";
 
     public static final String DEFAULT_ZIP_FILE_FILTER_PATTERN =
             "!**/_cvs/**/*, !**/.svn/**/*,   !**/.hg/**/*,   !**/.git/**/*,  !**/.bzr/**/*, !**/bin/**/*,\n" +
@@ -59,15 +53,6 @@ public class CheckmarxScanRunnerConstants {
 
     public String getAstSecret() { return AST_SECRET; }
 
-    public String getSastScanEnabled() { return SAST_SCAN_ENABLED; }
-
-    public String getScaScanEnabled() { return SCA_SCAN_ENABLED; }
-
-    public String getKicsEnabled() { return KICS_ENABLED; }
-
-    public String getContainerScanEnabled() { return CONTAINER_SCAN_ENABLED; }
-
     public String getZipFileFilters() { return ZIP_FILE_FILTERS; }
 
-    public String getVersion() { return VERSION; }
 }

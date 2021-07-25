@@ -2,6 +2,7 @@ package com.checkmarx.teamcity.agent;
 
 import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
 import com.checkmarx.teamcity.agent.commands.CheckmarxScanCommand;
+import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
@@ -56,8 +57,8 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
     public BuildFinishedStatus sessionFinished() {
 
         String buildTempDirectory = buildRunnerContext.getBuild().getBuildTempDirectory().getAbsolutePath();
-        Path checkmarxScanReport = Paths.get(buildTempDirectory, "Test_Checkmarx.txt");
-        artifactsWatcher.addNewArtifactsPath(checkmarxScanReport.toAbsolutePath().toString() + " => " + TEAMCITY_ARTIFACTS_DIR + separator + "Checkmarx");
+        Path checkmarxScanReport = Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.REPORT_HTML_NAME);
+        artifactsWatcher.addNewArtifactsPath(checkmarxScanReport.toAbsolutePath().toString() + " => " + TEAMCITY_ARTIFACTS_DIR + separator + CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME);
 
         return lastCommand.getResult();
     }

@@ -39,7 +39,7 @@ public class CheckmarxAdminConfig {
 
         this.properties.put(CheckmarxParams.GLOBAL_AST_SERVER_URL, "");
         this.properties.put(CheckmarxParams.GLOBAL_AST_AUTHENTICATION_URL, "");
-        this.properties.put(CheckmarxParams.GLOBAL_AST_TENANT_NAME, "");
+        this.properties.put(CheckmarxParams.GLOBAL_AST_TENANT, "");
         this.properties.put(CheckmarxParams.GLOBAL_AST_CLIENT_ID, "");
         this.properties.put(CheckmarxParams.GLOBAL_AST_SECRET, "");
         this.properties.put(CheckmarxParams.GLOBAL_ZIP_FILTERS, CheckmarxScanRunnerConstants.DEFAULT_ZIP_FILE_FILTER_PATTERN);

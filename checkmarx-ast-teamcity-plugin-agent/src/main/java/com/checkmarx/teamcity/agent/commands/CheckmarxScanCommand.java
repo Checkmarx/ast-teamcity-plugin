@@ -2,6 +2,7 @@ package com.checkmarx.teamcity.agent.commands;
 
 
 import com.checkmarx.teamcity.common.CheckmarxScanConfig;
+import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.agent.AgentRunningBuild;
@@ -9,11 +10,14 @@ import jetbrains.buildServer.agent.BuildProgressLogger;
 import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,27 +56,37 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
             scanConfig.setServerUrl(validateNotEmpty(sharedConfigParameters.get(GLOBAL_AST_SERVER_URL), GLOBAL_AST_SERVER_URL));
             scanConfig.setClientId(validateNotEmpty(sharedConfigParameters.get(GLOBAL_AST_CLIENT_ID), GLOBAL_AST_CLIENT_ID));
             scanConfig.setAstSecret(PluginUtils.decrypt(validateNotEmpty(sharedConfigParameters.get(GLOBAL_AST_SECRET),GLOBAL_AST_SECRET)));
-            scanConfig.setZipFileFilters(validateNotEmpty(sharedConfigParameters.get(GLOBAL_ZIP_FILTERS), GLOBAL_ZIP_FILTERS));
         }
         else {
             scanConfig.setServerUrl(validateNotEmpty(runnerParameters.get(SERVER_URL), SERVER_URL));
             scanConfig.setClientId(validateNotEmpty(runnerParameters.get(AST_CLIENT_ID), AST_CLIENT_ID));
             scanConfig.setAstSecret(PluginUtils.decrypt(validateNotEmpty(runnerParameters.get(AST_SECRET), AST_SECRET)));
-            scanConfig.setZipFileFilters(validateNotEmpty(runnerParameters.get(ZIP_FILE_FILTERS), ZIP_FILE_FILTERS));
         }
 
 
-        LOG.info("-----------------------Checkmarx: Reached the BuildServiceAdapter------------------------");
+        LOG.info("-----------------------Checkmarx: Initiating the Scan Command------------------------");
         String checkmarxCliToolPath = getCheckmarxCliToolPath();
 
-        String checkmarxAstSecret = getRunnerParameters().get(AST_SECRET);
-//        if (nullIfEmpty(checkmarxAstSecret) == null) {
-//            throw new RunBuildException("Checkmarx API key was not defined. Please configure the build properly and retry.");
-//        }
+        String checkmarxAstSecret = scanConfig.getAstSecret();
+        if (nullIfEmpty(checkmarxAstSecret) == null) {
+            throw new RunBuildException("Checkmarx API secret was not defined. Please configure the build properly and retry.");
+        }
         Map<String, String> envVars = new HashMap<>(getEnvironmentVariables());
-       // envVars.put("CX_APIKEY", checkmarxAstSecret);
+        envVars.put("CX_CLIENT_SECRET", checkmarxAstSecret);
 
-        //  boolean result = submitDetailsToWrapper(LOG, checkmarxApiKey, checkmarxCliToolPath, (getWorkingDirectory().getAbsolutePath()));
+        ///////saving a file for mock results
+        String buildTempDirectory = getBuild().getBuildTempDirectory().getAbsolutePath();
+   //    String checkmarxMockReportHtml = Paths.get(buildTempDirectory, "checkmarx-mock-report.html").toFile().getAbsolutePath();
+
+        File htmlFile = new File(buildTempDirectory, CheckmarxScanRunnerConstants.REPORT_HTML_NAME);
+        try {
+            FileUtils.writeStringToFile(htmlFile, PluginUtils.getHtmlText());
+        } catch (IOException e) {
+            logger.error("Failed to generate full html report: " + e.getMessage());
+        }
+
+        //// mock results end here
+
 
         String sourceDir = getWorkingDirectory().getAbsolutePath();
         return new SimpleProgramCommandLine(envVars, getWorkingDirectory().getAbsolutePath(), checkmarxCliToolPath, getArguments());
@@ -109,24 +123,19 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("--sources");
         arguments.add(".");
 
-        arguments.add("--scan-types");
-        arguments.add("sast");
-
-//        String apiKey = getRunnerParameters().get(AST_SECRET);
-//        if (nullIfEmpty(apiKey) != null) {
-//            arguments.add("--apikey");
-//            arguments.add(apiKey);
-//        }
-
         arguments.add("--base-uri");
         arguments.add(scanConfig.getServerUrl());
 
         arguments.add("--client-id");
         arguments.add(scanConfig.getClientId());
 
-        arguments.add("--client-secret");
-        arguments.add(scanConfig.getAstSecret());
-
+        if (TRUE.equals(getRunnerParameters().get(USE_GLOBAL_FILE_FILTERS))) {
+            AgentRunningBuild agentRunningBuild = getRunnerContext().getBuild();
+            scanConfig.setZipFileFilters(validateNotEmpty(agentRunningBuild.getSharedConfigParameters().get(GLOBAL_ZIP_FILTERS), GLOBAL_ZIP_FILTERS));
+        }
+        else {
+            scanConfig.setZipFileFilters(validateNotEmpty(getRunnerParameters().get(ZIP_FILE_FILTERS), ZIP_FILE_FILTERS));
+        }
         arguments.add("--filter");
         arguments.add(scanConfig.getZipFileFilters());
 

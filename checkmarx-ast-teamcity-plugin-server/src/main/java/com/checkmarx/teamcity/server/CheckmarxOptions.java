@@ -20,6 +20,11 @@ public class CheckmarxOptions {
     }
 
     @NotNull
+    public String getUseGlobalFileFilters() {
+        return USE_GLOBAL_FILE_FILTERS;
+    }
+
+    @NotNull
     public String getGlobalAstServerUrl() {
         return GLOBAL_AST_SERVER_URL;
     }
@@ -45,9 +50,7 @@ public class CheckmarxOptions {
     }
 
     @NotNull
-    public String getTenant() {
-        return TENANT_NAME;
-    }
+    public String getTenant() { return TENANT; }
 
     @NotNull
     public String getAstClientId() {
@@ -73,13 +76,6 @@ public class CheckmarxOptions {
     public String getAdditionalParameters() {
         return ADDITIONAL_PARAMETERS;
     }
-
-    @NotNull
-    public String getVersion() {
-        return VERSION;
-    }
-
-
 
 
 }

@@ -11,7 +11,7 @@
   Project name: <strong><props:displayValue name="${constants.projectName}" emptyValue="not specified"/></strong>
 </div>
 <div class="parameter">
-  Additional parameters: <strong><props:displayValue name="${constants.zipFileFilters}" emptyValue="none specified"/></strong>
+  Zip File Filters <strong><props:displayValue name="${constants.zipFileFilters}" emptyValue="none specified"/></strong>
 </div>
 <div class="parameter">
   Additional parameters: <strong><props:displayValue name="${constants.additionalParameters}" emptyValue="none specified"/></strong>

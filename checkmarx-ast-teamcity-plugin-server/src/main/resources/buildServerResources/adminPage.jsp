@@ -86,10 +86,10 @@
         </tr>
 
         <tr>
-          <th><label for="globalAstTenantName">Tenant Name
+          <th><label for="globalAstTenant">Tenant
             <bs:helpIcon iconTitle="Tenant name for the account."/></label></th>
           <td>
-            <forms:textField name="globalAstTenantName" value="${globalAstTenantName}" className="longField"/>
+            <forms:textField name="globalAstTenant" value="${globalAstTenant}" className="longField"/>
           </td>
         </tr>
 

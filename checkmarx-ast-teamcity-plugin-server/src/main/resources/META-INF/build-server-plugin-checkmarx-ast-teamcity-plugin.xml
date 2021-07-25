@@ -8,4 +8,5 @@
     <bean class="com.checkmarx.teamcity.server.CheckmarxAdminPage"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxEditRunTypeControllerExtension"/>
     <bean class="com.checkmarx.teamcity.server.CheckmarxBuildStartContextProcessor"/>
+    <bean class="com.checkmarx.teamcity.server.CheckmarxScanReportTab"/>
 </beans>

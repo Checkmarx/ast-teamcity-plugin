@@ -31,13 +31,8 @@ public abstract class CheckmarxBuildServiceAdapter extends BuildServiceAdapter {
 
     String getCheckmarxCliToolPath() {
         LOG.info("Getting the CLI Tool path ................");
-        String version = getRunnerParameters().get(CheckmarxScanRunnerConstants.VERSION);
-        RunnerVersion runner = Runners.getRunner(version);
-        if (runner == null) {
-            LOG.warn(format("Checkmarx CLI runner with version '%s' was not found. Default runner will be used.", version));
-            version = Runners.getDefaultRunnerVersion();
-            runner = Runners.getDefaultRunner();
-        }
+            String version = Runners.getDefaultRunnerVersion();
+            RunnerVersion runner = Runners.getDefaultRunner();
 
         String agentToolsDirectory = getAgentConfiguration().getAgentToolsDirectory().getAbsolutePath();
         Platform platform = detectAgentPlatform();

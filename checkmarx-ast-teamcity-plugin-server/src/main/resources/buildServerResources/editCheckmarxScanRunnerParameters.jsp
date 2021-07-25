@@ -8,11 +8,11 @@
 <jsp:useBean id="optionsBean" class="com.checkmarx.teamcity.server.CheckmarxOptions"/>
 
 
- <script type="text/javascript">
-  </script>
-
 <c:if test="${propertiesBean.properties[optionsBean.useDefaultServer] == 'true'}">
     <c:set var="hideServerOverrideSection" value="${optionsBean.noDisplay}"/>
+</c:if>
+<c:if test="${propertiesBean.properties[optionsBean.useGlobalFileFilters] == 'true'}">
+    <c:set var="hideFileFiltersServerOverrideSection" value="${optionsBean.noDisplay}"/>
 </c:if>
 
 <l:settingsGroup title="Checkmarx Scan Settings">
@@ -48,6 +48,14 @@
     </tr>
 
     <tr>
+      <th><label for="${optionsBean.tenant}.text">Tenant:</label></th>
+      <td>
+         <props:textProperty name="${optionsBean.tenant}" className="longField" id="${optionsBean.tenant}.text"/>
+         <span class="smallNote">Tenant</span>
+      </td>
+    </tr>
+
+    <tr>
       <th><label for="${optionsBean.astClientId}.text">AST Client Id:</label></th>
       <td>
         <props:textProperty name="${optionsBean.astClientId}" className="longField" id="${optionsBean.astClientId}.text"/>
@@ -73,6 +81,19 @@
     </td>
   </tr>
 
+    <tr>
+        <th><label for="${optionsBean.useGlobalFileFilters}">Use Global file filters.<br></th>
+        <td>
+            <c:set var="onclick">
+                $('fileFiltersOverrideSection').toggle();
+            </c:set>
+            <props:checkboxProperty name="${optionsBean.useGlobalFileFilters}" onclick="${onclick}"/>
+        </td>
+    </tr>
+
+
+
+<tbody id="fileFiltersOverrideSection" ${hideFileFiltersServerOverrideSection}>
   <tr>
     <th><label for="${optionsBean.zipFileFilters}.text">Zip File Filters:</label></th>
     <td>
@@ -80,7 +101,7 @@
       <span class="smallNote">File filters to be used while zipping the source code.</span>
     </td>
   </tr>
-
+</tbody>
 
   <tr>
     <th><label for="${optionsBean.additionalParameters}.text">Additional parameters:</label></th>
@@ -89,18 +110,6 @@
       <span class="smallNote">Refer to the <a href="https://github.com/CheckmarxDev/ast-cli">Checkmarx AST CLI help page</a> for information on additional arguments.</span>
     </td>
   </tr>
-
-   <tr>
-      <th><label for="${optionsBean.version}.select">Checkmarx CLI version:</label><l:star/></th>
-      <td>
-        <props:selectProperty name="${optionsBean.version}" className="mediumField" enableFilter="false" id="${optionsBean.version}.select">
-          <c:forEach items="${runners.versions}" var="checkmarxCliVersion">
-            <props:option value="${checkmarxCliVersion}">${checkmarxCliVersion}</props:option>
-          </c:forEach>
-        </props:selectProperty>
-        <span class="error" id="error_${optionsBean.version}"></span>
-      </td>
-    </tr>
 
 </l:settingsGroup>
 
