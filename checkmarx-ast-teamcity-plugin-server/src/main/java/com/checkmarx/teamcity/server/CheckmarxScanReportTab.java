@@ -29,28 +29,23 @@ public class CheckmarxScanReportTab extends ViewLogTab {
 
     public CheckmarxScanReportTab(@NotNull PagePlaces pagePlaces, @NotNull SBuildServer server, @NotNull final PluginDescriptor pluginDescriptor) {
         super(TAB_TITLE, TAB_CODE, pagePlaces, server);
-
         setIncludeUrl(pluginDescriptor.getPluginResourcesPath("checkmarxScanReport.jsp"));
-   //     setIncludeUrl("/artifactsViewer.jsp");
         setPosition(PositionConstraint.after("artifacts"));
-
+        register();
     }
 
     @Override
     protected void fillModel(@NotNull Map<String, Object> map, @NotNull HttpServletRequest httpServletRequest, @NotNull SBuild sBuild) {
-      //  map.put("startPage", getHtmlReport(sBuild));
-    //   map.put("content", getHtmlReport(sBuild));
-
         String checkmarxScanHtmlReportPath = TEAMCITY_ARTIFACTS_DIR + separator + CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME + separator + CheckmarxScanRunnerConstants.REPORT_HTML_NAME;
         BuildArtifact artifact = sBuild.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY).getArtifact(checkmarxScanHtmlReportPath);
+
         if(artifact != null) {
             try {
                 String s = IOUtils.toString(artifact.getInputStream());
-                map.put("content", "Hello world!");
+                map.put("content", s);
 
             } catch (IOException e) {
                 map.put("content", "Failed to get the report: " + e.getMessage());
-
             }
         } else {
             map.put("content", "Failed to get the report");
@@ -64,15 +59,7 @@ public class CheckmarxScanReportTab extends ViewLogTab {
         if (buildType == null || !build.isFinished()) {
             return false;
         }
+
         return buildType.getRunnerTypes().contains(CheckmarxScanRunnerConstants.RUNNER_TYPE);
     }
-
-    private String getHtmlReport(SBuild sBuild) {
-        String checkmarxScanHtmlReportPath = TEAMCITY_ARTIFACTS_DIR + separator + CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME + separator + CheckmarxScanRunnerConstants.REPORT_HTML_NAME;
-        BuildArtifact artifact = sBuild.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY).getArtifact(checkmarxScanHtmlReportPath);
-        return artifact != null ? artifact.getRelativePath() : CheckmarxScanRunnerConstants.REPORT_HTML_NAME;
-    }
-
-
-
 }

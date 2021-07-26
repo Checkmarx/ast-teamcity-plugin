@@ -3,9 +3,5 @@
 <%@ taglib prefix="props" tagdir="/WEB-INF/tags/props" %>
 <%@ taglib prefix="bs" tagdir="/WEB-INF/tags" %>
 <div>
-  <h2>Apica Load Test Summary</h2>
-  <p>No results to show</p>
-</div>
-<div>
-  <%@include file="checkmarx_ast_report.html" %>
+  ${content}
 </div>
