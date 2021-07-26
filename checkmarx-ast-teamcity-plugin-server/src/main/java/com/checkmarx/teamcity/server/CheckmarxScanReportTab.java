@@ -10,7 +10,6 @@ import jetbrains.buildServer.web.openapi.PagePlaces;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.PositionConstraint;
 import jetbrains.buildServer.web.openapi.ViewLogTab;
-import jetbrains.buildServer.web.reportTabs.ReportTabUtil;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +26,7 @@ public class CheckmarxScanReportTab extends ViewLogTab {
     private static final String TAB_TITLE = CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME;
     private static final String TAB_CODE = "checkmarxScanReport";
 
-    public CheckmarxScanReportTab(@NotNull PagePlaces pagePlaces, @NotNull SBuildServer server, @NotNull final PluginDescriptor pluginDescriptor) {
+    public CheckmarxScanReportTab(@NotNull final PagePlaces pagePlaces, @NotNull final SBuildServer server, @NotNull PluginDescriptor pluginDescriptor) {
         super(TAB_TITLE, TAB_CODE, pagePlaces, server);
         setIncludeUrl(pluginDescriptor.getPluginResourcesPath("checkmarxScanReport.jsp"));
         setPosition(PositionConstraint.after("artifacts"));
@@ -35,16 +34,16 @@ public class CheckmarxScanReportTab extends ViewLogTab {
     }
 
     @Override
-    protected void fillModel(@NotNull Map<String, Object> map, @NotNull HttpServletRequest httpServletRequest, @NotNull SBuild sBuild) {
-        String checkmarxScanHtmlReportPath = TEAMCITY_ARTIFACTS_DIR + separator + CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME + separator + CheckmarxScanRunnerConstants.REPORT_HTML_NAME;
-        BuildArtifact artifact = sBuild.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY).getArtifact(checkmarxScanHtmlReportPath);
+    protected void fillModel(@NotNull final Map<String, Object> map, @NotNull final HttpServletRequest httpServletRequest, @NotNull final SBuild sBuild) {
+        final String checkmarxScanHtmlReportPath = TEAMCITY_ARTIFACTS_DIR + separator + CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME + separator + CheckmarxScanRunnerConstants.REPORT_HTML_NAME;
+        final BuildArtifact artifact = sBuild.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY).getArtifact(checkmarxScanHtmlReportPath);
 
-        if(artifact != null) {
+        if (artifact != null) {
             try {
-                String s = IOUtils.toString(artifact.getInputStream());
-                map.put("content", s);
+                final String s = IOUtils.toString(artifact.getInputStream());
+                map.put(CONTENT, s);
 
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 map.put("content", "Failed to get the report: " + e.getMessage());
             }
         } else {
@@ -54,12 +53,11 @@ public class CheckmarxScanReportTab extends ViewLogTab {
     }
 
     @Override
-    protected boolean isAvailable(@NotNull HttpServletRequest request, @NotNull SBuild build) {
-        SBuildType buildType = build.getBuildType();
+    protected boolean isAvailable(@NotNull final HttpServletRequest request, @NotNull final SBuild build) {
+        final SBuildType buildType = build.getBuildType();
         if (buildType == null || !build.isFinished()) {
             return false;
         }
-
         return buildType.getRunnerTypes().contains(CheckmarxScanRunnerConstants.RUNNER_TYPE);
     }
 }

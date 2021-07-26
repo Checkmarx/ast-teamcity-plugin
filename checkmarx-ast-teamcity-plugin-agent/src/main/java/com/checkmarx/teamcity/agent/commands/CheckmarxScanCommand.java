@@ -84,7 +84,6 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         } catch (IOException e) {
             logger.error("Failed to generate full html report: " + e.getMessage());
         }
-
         //// mock results end here
 
 
@@ -107,12 +106,6 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         //Set Origin
         arguments.add("--agent");
         arguments.add("TeamCity");
-
-//        String serverUrl = getRunnerParameters().get(SERVER_URL);
-//        if (nullIfEmpty(serverUrl) != null) {
-//            arguments.add("--base-uri");
-//            arguments.add(serverUrl);
-//        }
 
         String projectName = getRunnerParameters().get(PROJECT_NAME);
         if (nullIfEmpty(projectName) != null) {
@@ -143,17 +136,6 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         if (nullIfEmpty(additionalParameters) != null) {
             arguments.addAll(asList(additionalParameters.split("\\s+")));
         }
-
-//
-//        String severityThreshold = getRunnerParameters().get(ZIP_FILE_FILTERS);
-//        arguments.add("--filters " + "\""+ severityThreshold + "\"");
-//
-
-//
-//        String additionalParameters = getRunnerParameters().get(ADDITIONAL_PARAMETERS);
-//        if (nullIfEmpty(additionalParameters) != null) {
-//            arguments.addAll(asList(additionalParameters.split("\\s+")));
-//        }
 
         return arguments;
     }
