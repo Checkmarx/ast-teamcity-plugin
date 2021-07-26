@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.checkmarx.teamcity</groupId>
+  <artifactId>checkmarx-ast-teamcity-plugin</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <properties>
+      <teamcity-version>2020.1</teamcity-version>
+
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <project.sourceCompatibility>1.8</project.sourceCompatibility>
+      <project.targetCompatibility>1.8</project.targetCompatibility>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+  </properties>
+
+  <pluginRepositories>
+      <pluginRepository>
+          <id>JetBrains</id>
+          <url>https://download.jetbrains.com/teamcity-repository</url>
+      </pluginRepository>
+  </pluginRepositories>
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <compilerArgs>
+                      <arg>-Xlint:all,-options,-path</arg>
+                  </compilerArgs>
+                  <source>${project.sourceCompatibility}</source>
+                  <target>${project.targetCompatibility}</target>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.jetbrains.teamcity</groupId>
+              <artifactId>teamcity-sdk-maven-plugin</artifactId>
+              <version>0.4.1</version>
+              <configuration>
+                  <!-- <teamcityDir>/path/to/tc/distro</teamcityDir> -->
+              </configuration>
+          </plugin>
+      </plugins>
+      <pluginManagement>
+          <plugins>
+              <plugin>
+                  <groupId>org.jetbrains.teamcity</groupId>
+                  <artifactId>teamcity-sdk-maven-plugin</artifactId>
+                  <version>0.4.1</version>
+                  <configuration>
+                      <!-- <teamcityDir>/path/to/tc/distro</teamcityDir> -->
+                  </configuration>
+              </plugin>
+          </plugins>
+      </pluginManagement>
+  </build>
+  <modules>
+    <module>checkmarx-ast-teamcity-plugin-server</module>
+    <module>checkmarx-ast-teamcity-plugin-agent</module>
+    <module>checkmarx-ast-teamcity-plugin-common</module>
+    <module>build</module>
+  </modules>
+
+    <repositories>
+        <repository>
+            <id>jetbrains-all</id>
+            <url>https://download.jetbrains.com/teamcity-repository</url>
+        </repository>
+    </repositories>
+</project>
