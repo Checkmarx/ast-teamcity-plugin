@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token}}
 
       - name: Create Release
-        id: draf_release
+        id: draft_release
         uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -40,8 +40,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           github_token: ${{ secrets.PAT }}
-          upload_url: ${{ steps.draf_release.outputs.upload_url }}
-          asset_path: ./target/checkmarx-ast-scanner.hpi
-          asset_name: checkmarx-ast-scanner.hpi
+          upload_url: ${{ steps.draft_release.outputs.upload_url }}
+          asset_path: ./build/target/checkmarx-ast-teamcity-plugin.zip
+          asset_name: checkmarx-ast-teamcity-plugin.zip
           asset_content_type: application/multipart-core
           overwrite: true
