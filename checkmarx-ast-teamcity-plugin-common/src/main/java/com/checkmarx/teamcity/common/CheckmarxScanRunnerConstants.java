@@ -3,10 +3,10 @@ package com.checkmarx.teamcity.common;
 public class CheckmarxScanRunnerConstants {
 
     public static final String TRUE = "true";
-    public static final String FALSE = "false";
 
-    public final static String REPORT_HTML_NAME = "checkmarx_ast_report.html";
+    public final static String REPORT_HTML_NAME = "Checkmarx_ast_report.html";
 
+    public static final String AST_CLI_VERSION = "2.0.0-rc.14";
     public static final String RUNNER_TYPE = "checkmarxScan";
     public static final String RUNNER_DISPLAY_NAME = "Checkmarx AST Scan";
     public static final String RUNNER_DESCRIPTION = "Build Runner to scan the source code with Checkmarx AST engine.";

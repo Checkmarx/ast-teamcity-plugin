@@ -50,19 +50,7 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
 
         BuildRunnerContext buildRunnerContext = getBuildRunnerContext();
 
-        //Getting all the parameters
-        scanConfig = new CheckmarxScanConfig();
-        if (TRUE.equals(runnerParameters.get(USE_DEFAULT_SERVER))) {
-            scanConfig.setServerUrl(validateNotEmpty(sharedConfigParameters.get(GLOBAL_AST_SERVER_URL), GLOBAL_AST_SERVER_URL));
-            scanConfig.setClientId(validateNotEmpty(sharedConfigParameters.get(GLOBAL_AST_CLIENT_ID), GLOBAL_AST_CLIENT_ID));
-            scanConfig.setAstSecret(PluginUtils.decrypt(validateNotEmpty(sharedConfigParameters.get(GLOBAL_AST_SECRET),GLOBAL_AST_SECRET)));
-        }
-        else {
-            scanConfig.setServerUrl(validateNotEmpty(runnerParameters.get(SERVER_URL), SERVER_URL));
-            scanConfig.setClientId(validateNotEmpty(runnerParameters.get(AST_CLIENT_ID), AST_CLIENT_ID));
-            scanConfig.setAstSecret(PluginUtils.decrypt(validateNotEmpty(runnerParameters.get(AST_SECRET), AST_SECRET)));
-        }
-
+        scanConfig = PluginUtils.resolveConfiguration(runnerParameters, sharedConfigParameters);
 
         LOG.info("-----------------------Checkmarx: Initiating the Scan Command------------------------");
         String checkmarxCliToolPath = getCheckmarxCliToolPath();
@@ -86,14 +74,13 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         }
         //// mock results end here
 
-
         String sourceDir = getWorkingDirectory().getAbsolutePath();
         return new SimpleProgramCommandLine(envVars, getWorkingDirectory().getAbsolutePath(), checkmarxCliToolPath, getArguments());
     }
 
     @Override
     public void beforeProcessStarted() {
-        getBuild().getBuildLogger().message("Scanning with Checkmarx...");
+        getBuild().getBuildLogger().message("Scanning with Checkmarx AST CLI " + CheckmarxScanRunnerConstants.AST_CLI_VERSION);
     }
 
     @Override
@@ -103,38 +90,39 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("scan");
         arguments.add("create");
 
-        //Set Origin
-        arguments.add("--agent");
-        arguments.add("TeamCity");
-
-        String projectName = getRunnerParameters().get(PROJECT_NAME);
-        if (nullIfEmpty(projectName) != null) {
-            arguments.add("--project-name");
-            arguments.add(projectName);
-        }
-
-        arguments.add("--sources");
-        arguments.add(".");
-
         arguments.add("--base-uri");
         arguments.add(scanConfig.getServerUrl());
+
+        if (nullIfEmpty(scanConfig.getAuthenticationUrl()) != null) {
+            arguments.add("--base-auth-uri");
+            arguments.add(scanConfig.getAuthenticationUrl());
+        }
+
+        if (nullIfEmpty(scanConfig.getTenant()) != null) {
+            arguments.add("--tenant");
+            arguments.add(scanConfig.getTenant());
+        }
 
         arguments.add("--client-id");
         arguments.add(scanConfig.getClientId());
 
-        if (TRUE.equals(getRunnerParameters().get(USE_GLOBAL_FILE_FILTERS))) {
-            AgentRunningBuild agentRunningBuild = getRunnerContext().getBuild();
-            scanConfig.setZipFileFilters(validateNotEmpty(agentRunningBuild.getSharedConfigParameters().get(GLOBAL_ZIP_FILTERS), GLOBAL_ZIP_FILTERS));
-        }
-        else {
-            scanConfig.setZipFileFilters(validateNotEmpty(getRunnerParameters().get(ZIP_FILE_FILTERS), ZIP_FILE_FILTERS));
-        }
-        arguments.add("--filter");
-        arguments.add(scanConfig.getZipFileFilters());
+        //Set Origin
+        arguments.add("--agent");
+        arguments.add("TeamCity");
 
-        String additionalParameters = getRunnerParameters().get(ADDITIONAL_PARAMETERS);
-        if (nullIfEmpty(additionalParameters) != null) {
-            arguments.addAll(asList(additionalParameters.split("\\s+")));
+        arguments.add("--project-name");
+        arguments.add(scanConfig.getProjectName());
+
+        arguments.add("--sources");
+        arguments.add(".");
+
+        if (nullIfEmpty(scanConfig.getZipFileFilters()) != null) {
+            arguments.add("--filter");
+            arguments.add(scanConfig.getZipFileFilters());
+        }
+
+        if (nullIfEmpty(scanConfig.getAdditionalParameters()) != null) {
+            arguments.addAll(asList(scanConfig.getAdditionalParameters().split("\\s+")));
         }
 
         return arguments;

@@ -6,7 +6,7 @@ public class CheckmarxScanConfig implements Serializable {
 
     private String serverUrl;
     private String authenticationUrl;
-    private String teamName;
+    private String tenant;
     private String projectName;
     private String clientId;
     private String astSecret;
@@ -25,20 +25,18 @@ public class CheckmarxScanConfig implements Serializable {
         this.serverUrl = serverUrl;
     }
 
-    public String getAuthenticationUrl() {
-        return this.authenticationUrl;
-    }
+    public String getAuthenticationUrl() { return this.authenticationUrl; }
 
     public void setAuthenticationUrl(final String authenticationUrl) {
         this.authenticationUrl = authenticationUrl;
     }
 
-    public String getTeamName() {
-        return this.teamName;
+    public String getTenant() {
+        return this.tenant;
     }
 
-    public void setTeamName(final String teamName) {
-        this.teamName = teamName;
+    public void setTenant(final String tenant) {
+        this.tenant = tenant;
     }
 
     public String getProjectName() {
