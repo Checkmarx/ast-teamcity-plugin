@@ -1,13 +1,10 @@
 package com.checkmarx.teamcity.server;
 
 import com.checkmarx.teamcity.common.CheckmarxParams;
-import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
-import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants.*;
 import jetbrains.buildServer.serverSide.ServerPaths;
 import jetbrains.buildServer.util.PropertiesUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +15,7 @@ import java.util.Properties;
 public class CheckmarxAdminConfig {
     private final ServerPaths serverPaths;
     private final Properties properties = new Properties();
-    private static final Logger log =  Logger.getLogger(CheckmarxAdminConfig.class);
+    private static final Logger log = Logger.getLogger(CheckmarxAdminConfig.class);
 
 
     public CheckmarxAdminConfig(@NotNull final ServerPaths serverPaths) throws IOException {
@@ -42,23 +39,21 @@ public class CheckmarxAdminConfig {
         this.properties.put(CheckmarxParams.GLOBAL_AST_TENANT, "");
         this.properties.put(CheckmarxParams.GLOBAL_AST_CLIENT_ID, "");
         this.properties.put(CheckmarxParams.GLOBAL_AST_SECRET, "");
-        this.properties.put(CheckmarxParams.GLOBAL_ZIP_FILTERS, CheckmarxScanRunnerConstants.DEFAULT_ZIP_FILE_FILTER_PATTERN);
+        this.properties.put(CheckmarxParams.GLOBAL_ADDITIONAL_PARAMETERS, "");
 
         configFile.getParentFile().mkdirs();
         PropertiesUtil.storeProperties(this.properties, configFile, "");
     }
 
     private void loadConfiguration(@NotNull final File configFile) throws IOException {
-        try(FileReader fileReader = new FileReader(configFile)) {
+        try (FileReader fileReader = new FileReader(configFile)) {
             this.properties.load(fileReader);
             for (String conf : CheckmarxParams.GLOBAL_CONFIGS) {
-                if (this.properties.get(conf) == null){
+                if (this.properties.get(conf) == null) {
                     this.properties.put(conf, "");
                 }
             }
-        }
-        catch(FileNotFoundException fileNotFoundException)
-        {
+        } catch (FileNotFoundException fileNotFoundException) {
             log.error(fileNotFoundException.getMessage());
         }
     }

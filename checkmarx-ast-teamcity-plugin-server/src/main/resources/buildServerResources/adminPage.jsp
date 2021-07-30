@@ -2,15 +2,13 @@
 <%@ taglib prefix="bs" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="l" tagdir="/WEB-INF/tags/layout" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@include file="/include.jsp" %>
-<%@ page import="com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants" %>
 
 <script type="text/javascript">
-    function sanitizeJS(str) {
-        var temp = document.createElement('div');
-        temp.textContent = str;
-        return temp.innerHTML;
-    }
+  function sanitizeJS(str) {
+    var temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+  }
 
   var SettingsForm = OO.extend(BS.AbstractPasswordForm, {
     formElement: function () {
@@ -52,7 +50,6 @@
     }
   });
 </script>
-
 
 
 <div>
@@ -114,9 +111,11 @@
         </tr>
 
         <tr>
-          <th><label for="globalZipFilters">Zip File Filters
-            <bs:helpIcon iconTitle="Comma separated list of include or exclude wildcard patterns. Exclude patterns start with exclamation mark \"!\". Example: **/*.java, **/*.html, !**/test/**/XYZ*"/></label></th>
-          <td><textarea rows="5" cols="50" name="globalZipFilters" wrap="off">${globalZipFilters}</textarea>
+          <th><label for="globalAdditionalParameters">Additional Parameters
+            <bs:helpIcon iconTitle="Refer to the <a href=\"https://github.com/CheckmarxDev/ast-cli\">Checkmarx AST CLI help page</a> for information on additional arguments."/></label></th>
+          </th>
+          <td>
+            <textarea name="globalAdditionalParameters" wrap="off" class="longField" style="height: 10em">${globalAdditionalParameters}</textarea>
           </td>
         </tr>
       </table>

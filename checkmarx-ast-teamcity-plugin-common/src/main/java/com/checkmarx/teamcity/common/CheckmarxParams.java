@@ -6,7 +6,7 @@ public abstract class CheckmarxParams {
     public static final String FALSE = "false";
 
     public static final String USE_DEFAULT_SERVER = "cxUseDefaultServer";
-    public static final String USE_GLOBAL_FILE_FILTERS = "useGlobalFileFilters";
+    public static final String USE_GLOBAL_ADDITIONAL_PARAMETERS = "useGlobalAdditionalParameters";
 
 
     public static final String SERVER_URL = "serverUrl";
@@ -15,7 +15,6 @@ public abstract class CheckmarxParams {
     public static final String AST_SECRET = "secure:astSecret";
     public static final String TENANT = "tenant";
     public static final String ADDITIONAL_PARAMETERS = "additionalParameters";
-    public static final String ZIP_FILE_FILTERS = "zipFileFilters";
     public static final String PROJECT_NAME = "projectName";
 
 
@@ -25,11 +24,11 @@ public abstract class CheckmarxParams {
     public static final String GLOBAL_AST_CLIENT_ID = "globalAstClientId";
     public static final String GLOBAL_AST_SECRET = "globalAstSecret";
     public static final String GLOBAL_AST_TENANT = "globalAstTenant";
-    public static final String GLOBAL_ZIP_FILTERS = "globalZipFilters";
+    public static final String GLOBAL_ADDITIONAL_PARAMETERS = "globalAdditionalParameters";
 
     public static final String[] GLOBAL_CONFIGS = {
             GLOBAL_AST_SERVER_URL, GLOBAL_AST_AUTHENTICATION_URL, GLOBAL_AST_CLIENT_ID, GLOBAL_AST_SECRET, GLOBAL_AST_TENANT,
-            GLOBAL_ZIP_FILTERS
+            GLOBAL_ADDITIONAL_PARAMETERS
     };
 
 }

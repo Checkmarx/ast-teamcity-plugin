@@ -11,11 +11,18 @@
 <c:if test="${propertiesBean.properties[optionsBean.useDefaultServer] == 'true'}">
     <c:set var="hideServerOverrideSection" value="${optionsBean.noDisplay}"/>
 </c:if>
-<c:if test="${propertiesBean.properties[optionsBean.useGlobalFileFilters] == 'true'}">
-    <c:set var="hideFileFiltersServerOverrideSection" value="${optionsBean.noDisplay}"/>
+<c:if test="${propertiesBean.properties[optionsBean.useGlobalAdditionalParameters] == 'true'}">
+    <c:set var="hideAdditionalParametersOverrideSection" value="${optionsBean.noDisplay}"/>
 </c:if>
 
 <l:settingsGroup title="Checkmarx Scan Settings">
+
+    <style>
+        .cx-textarea {
+            height: 10em;
+            width: 31em;
+        }
+    </style>
 
     <tr>
         <th>
@@ -82,34 +89,28 @@
   </tr>
 
     <tr>
-        <th><label for="${optionsBean.useGlobalFileFilters}">Use Global file filters.<br></th>
+        <th><label for="${optionsBean.useGlobalAdditionalParameters}">Use global additional parameters.<br></label></th>
         <td>
             <c:set var="onclick">
-                $('fileFiltersOverrideSection').toggle();
+                $('additionalParametersOverrideSection').toggle();
             </c:set>
-            <props:checkboxProperty name="${optionsBean.useGlobalFileFilters}" onclick="${onclick}"/>
+            <props:checkboxProperty name="${optionsBean.useGlobalAdditionalParameters}" onclick="${onclick}"/>
         </td>
     </tr>
 
-
-
-<tbody id="fileFiltersOverrideSection" ${hideFileFiltersServerOverrideSection}>
-  <tr>
-    <th><label for="${optionsBean.zipFileFilters}.text">Zip File Filters:</label></th>
-    <td>
-      <props:textProperty name="${optionsBean.zipFileFilters}" className="longField" expandable="true" id="${optionsBean.zipFileFilters}.text"/>
-      <span class="smallNote">File filters to be used while zipping the source code.</span>
-    </td>
-  </tr>
-</tbody>
-
-  <tr>
-    <th><label for="${optionsBean.additionalParameters}.text">Additional parameters:</label></th>
-    <td>
-      <props:textProperty name="${optionsBean.additionalParameters}" className="longField" expandable="true" id="${optionsBean.additionalParameters}.text"/>
-      <span class="smallNote">Refer to the <a href="https://github.com/CheckmarxDev/ast-cli">Checkmarx AST CLI help page</a> for information on additional arguments.</span>
-    </td>
-  </tr>
+    <tbody id="additionalParametersOverrideSection" ${hideAdditionalParametersOverrideSection}>
+    <tr>
+        <th><label for="${optionsBean.additionalParameters}.text">Additional parameters:</label></th>
+        <td>
+            <props:multilineProperty name="${optionsBean.additionalParameters}" linkTitle=""
+                                     cols="50" rows="5" expanded="true"
+                                     className="cx-textarea" />
+            <span class="smallNote">Refer to the
+                <a href="https://github.com/CheckmarxDev/ast-cli">Checkmarx AST CLI help page</a>
+                for information on additional arguments.</span>
+        </td>
+    </tr>
+    </tbody>
 
 </l:settingsGroup>
 

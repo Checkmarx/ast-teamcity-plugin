@@ -6,7 +6,6 @@ import jetbrains.buildServer.serverSide.InvalidProperty;
 import jetbrains.buildServer.serverSide.PropertiesProcessor;
 import jetbrains.buildServer.serverSide.RunType;
 import jetbrains.buildServer.serverSide.RunTypeRegistry;
-import jetbrains.buildServer.util.PropertiesUtil;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,9 +77,7 @@ public class CheckmarxScanRunType extends RunType {
     @Nullable
     @Override
     public Map<String, String> getDefaultRunnerProperties() {
-        Map<String, String> defaultProperties = new HashMap<>();
-        defaultProperties.put(CheckmarxScanRunnerConstants.ZIP_FILE_FILTERS, CheckmarxScanRunnerConstants.DEFAULT_ZIP_FILE_FILTER_PATTERN);
-        return defaultProperties;
+        return new HashMap<>();
     }
 
 }
