@@ -2,6 +2,7 @@
 <%@ taglib prefix="bs" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="l" tagdir="/WEB-INF/tags/layout" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@include file="/include.jsp" %>
 
 <script type="text/javascript">
   function sanitizeJS(str) {
