@@ -1,12 +1,10 @@
 package com.checkmarx.teamcity.server;
 
 import com.checkmarx.teamcity.common.CheckmarxParams;
-import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.controllers.ActionErrors;
 import jetbrains.buildServer.controllers.BaseFormXmlController;
 import jetbrains.buildServer.log.Loggers;
-import jetbrains.buildServer.serverSide.ServerPaths;
 import jetbrains.buildServer.serverSide.crypt.RSACipher;
 import jetbrains.buildServer.util.StringUtil;
 import org.apache.log4j.Logger;
@@ -21,18 +19,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-
 public class CheckmarxAdminPageController extends BaseFormXmlController {
 
-    private final static Logger LOG = Logger.getLogger(CheckmarxAdminPageController.class);
-
-   // private final ServerPaths myServerPaths;
-    private final CheckmarxAdminConfig checkmarxAdminConfig;
     public static final String INVALID = "invalid_";
-
-//    public CheckmarxAdminPageController(final ServerPaths myServerPaths) {
-//        this.myServerPaths = myServerPaths;
-//    }
+    private final static Logger LOG = Logger.getLogger(CheckmarxAdminPageController.class);
+    private final CheckmarxAdminConfig checkmarxAdminConfig;
 
     public CheckmarxAdminPageController(final CheckmarxAdminConfig checkmarxAdminConfig) {
         this.checkmarxAdminConfig = checkmarxAdminConfig;
@@ -47,7 +38,7 @@ public class CheckmarxAdminPageController extends BaseFormXmlController {
     protected void doPost(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull Element xmlResponse) {
 
         final ActionErrors actionErrors = validateForm(httpServletRequest);
-        if(actionErrors.hasErrors()) {
+        if (actionErrors.hasErrors()) {
             actionErrors.serialize(xmlResponse);
             return;
         }
