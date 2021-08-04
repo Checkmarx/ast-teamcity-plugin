@@ -25,7 +25,13 @@ public class CheckmarxAdminConfigTest {
         String actualAstTenant = "testTenant";
         String actualZipFilters = "testFilter";
 
-        CheckmarxAdminConfig adminConfig = new CheckmarxAdminConfig(new ServerPaths(tempFolder.toString(), tempFolder.toString(), tempFolder.toString(), tempFolder.toString()));
+        String systemDir = (tempFolder.newFolder("systemDir")).toString();
+        String configDir = (tempFolder.newFolder("configDir")).toString();
+        String backupDir = (tempFolder.newFolder("backupDir")).toString();
+        String importDir = (tempFolder.newFolder("importDir")).toString();
+
+
+        CheckmarxAdminConfig adminConfig = new CheckmarxAdminConfig(new ServerPaths(systemDir, configDir, backupDir, importDir));
 
 
         adminConfig.setConfiguration(CheckmarxParams.GLOBAL_AST_SERVER_URL, actualAstServerUrl);
