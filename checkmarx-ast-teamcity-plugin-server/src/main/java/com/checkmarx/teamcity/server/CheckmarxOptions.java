@@ -22,6 +22,11 @@ public class CheckmarxOptions {
     }
 
     @NotNull
+    public String getGlobalAdditionalParameters() {
+        return GLOBAL_ADDITIONAL_PARAMETERS;
+    }
+
+    @NotNull
     public String getGlobalClientId() {
         return GLOBAL_AST_CLIENT_ID;
     }

@@ -24,6 +24,17 @@
         }
     </style>
 
+    <script>
+        function toggleGlobalArguments() {
+            let link = $('globalArgumentsLink'),
+                textArea = $('globalArgumentsTextArea'),
+                hidden = textArea.style.display === "none"
+
+            textArea.style.display = hidden ? "" : "none"
+            link.innerText = (hidden ? "Hide" : "Show") + " global arguments"
+        }
+    </script>
+
     <tr>
         <th>
             <label for="${optionsBean.useDefaultServer}">Use Global Settings for AST Server.<br>
@@ -111,6 +122,17 @@
         </td>
     </tr>
     </tbody>
+
+    <tr>
+        <td style="vertical-align: top">
+            <a id="globalArgumentsLink" href="#" onclick="toggleGlobalArguments(); return false;">Show global arguments</a>
+        </td>
+        <td>
+            <textarea style="background-color: lightgrey; display: none" disabled class="cx-textarea" rows="5"
+                      id="globalArgumentsTextArea">${propertiesBean.properties[optionsBean.globalAdditionalParameters]}
+            </textarea>
+        </td>
+    </tr>
 
 </l:settingsGroup>
 

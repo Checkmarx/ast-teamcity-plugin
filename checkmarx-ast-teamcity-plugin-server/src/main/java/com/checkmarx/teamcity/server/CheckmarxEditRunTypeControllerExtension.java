@@ -59,6 +59,7 @@ public class CheckmarxEditRunTypeControllerExtension implements EditRunTypeContr
         model.put(CheckmarxParams.GLOBAL_AST_SERVER_URL, adminConfig.getConfiguration(CheckmarxParams.GLOBAL_AST_SERVER_URL));
         model.put(CheckmarxParams.GLOBAL_AST_CLIENT_ID, adminConfig.getConfiguration(CheckmarxParams.GLOBAL_AST_CLIENT_ID));
         model.put(CheckmarxParams.GLOBAL_AST_SECRET, adminConfig.getConfiguration(CheckmarxParams.GLOBAL_AST_SECRET));
+        model.put(CheckmarxParams.GLOBAL_ADDITIONAL_PARAMETERS, adminConfig.getConfiguration(CheckmarxParams.GLOBAL_ADDITIONAL_PARAMETERS));
 
 
     }
