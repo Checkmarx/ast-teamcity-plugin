@@ -108,7 +108,7 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("--project-name");
         arguments.add(scanConfig.getProjectName());
 
-        arguments.add("--sources");
+        arguments.add("-s");
         arguments.add(".");
 
         if (nullIfEmpty(scanConfig.getAdditionalParameters()) != null) {
