@@ -113,7 +113,7 @@
 
         <tr>
           <th><label for="globalAdditionalParameters">Additional Parameters
-            <bs:helpIcon iconTitle="Refer to the <a href=\"https://github.com/CheckmarxDev/ast-cli\">Checkmarx AST CLI help page</a> for information on additional arguments."/></label></th>
+            <bs:helpIcon iconTitle="Refer to the <a href=\"https://github.com/CheckmarxDev/ast-cli\">Checkmarx AST CLI help page</a> for information on additional parameters."/></label></th>
           </th>
           <td>
             <textarea name="globalAdditionalParameters" wrap="off" class="longField" style="height: 10em">${globalAdditionalParameters}</textarea>

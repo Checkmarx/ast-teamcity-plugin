@@ -31,7 +31,7 @@
                 hidden = textArea.style.display === "none"
 
             textArea.style.display = hidden ? "" : "none"
-            link.innerText = (hidden ? "Hide" : "Show") + " global arguments"
+            link.innerText = (hidden ? "Hide" : "Show") + " global parameters"
         }
     </script>
 
@@ -118,14 +118,14 @@
                                      className="cx-textarea" />
             <span class="smallNote">Refer to the
                 <a href="https://github.com/CheckmarxDev/ast-cli">Checkmarx AST CLI help page</a>
-                for information on additional arguments.</span>
+                for information on additional parameters.</span>
         </td>
     </tr>
     </tbody>
 
     <tr>
         <td style="vertical-align: top">
-            <a id="globalArgumentsLink" href="#" onclick="toggleGlobalArguments(); return false;">Show global arguments</a>
+            <a id="globalArgumentsLink" href="#" onclick="toggleGlobalArguments(); return false;">Show global parameters</a>
         </td>
         <td>
             <textarea style="background-color: lightgrey; display: none" disabled class="cx-textarea" rows="5"
