@@ -1,8 +1,6 @@
 package com.checkmarx.teamcity.agent;
 
 import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
-import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
-import jetbrains.buildServer.BuildProblemData;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
@@ -20,12 +18,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
-import static jetbrains.buildServer.BuildProblemTypes.TC_ERROR_MESSAGE_TYPE;
-import static jetbrains.buildServer.util.PropertiesUtil.getBoolean;
 import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
 public class CommandExecutionAdapter implements CommandExecution {
@@ -72,6 +67,9 @@ public class CommandExecutionAdapter implements CommandExecution {
 
     @Override
     public void onStandardOutput(@NotNull String text) {
+
+        buildService.getBuildRunnerContext().getBuild().getBuildLogger().message(text);
+
         if (nullIfEmpty(text) == null) {
             return;
         }
@@ -102,7 +100,7 @@ public class CommandExecutionAdapter implements CommandExecution {
             if (result == BuildFinishedStatus.FINISHED_SUCCESS) {
                 buildService.afterProcessSuccessfullyFinished();
             }
-
+            
         } catch (RunBuildException ex) {
             buildService.getLogger().warning(ex.getMessage());
             LOG.error(ex);
