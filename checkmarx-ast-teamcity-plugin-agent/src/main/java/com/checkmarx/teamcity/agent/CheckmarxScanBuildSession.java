@@ -1,7 +1,9 @@
 package com.checkmarx.teamcity.agent;
 
 import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
+import com.checkmarx.teamcity.agent.commands.CheckmarxResultsCommand;
 import com.checkmarx.teamcity.agent.commands.CheckmarxScanCommand;
+import com.checkmarx.teamcity.agent.commands.CheckmarxVersionCommand;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
@@ -22,7 +24,6 @@ import java.util.List;
 import static java.io.File.separator;
 import static java.util.Objects.requireNonNull;
 import static jetbrains.buildServer.ArtifactsConstants.TEAMCITY_ARTIFACTS_DIR;
-import static jetbrains.buildServer.util.PropertiesUtil.getBoolean;
 
 public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
 
@@ -67,8 +68,15 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
         List<CommandExecutionAdapter> steps = new ArrayList<>(3);
         String buildTempDirectory = buildRunnerContext.getBuild().getBuildTempDirectory().getAbsolutePath();
 
+        CheckmarxVersionCommand checkmarxVersionCommand = new CheckmarxVersionCommand();
+        steps.add(addCommand(checkmarxVersionCommand, Paths.get(buildTempDirectory, "checkmarxASTScan.txt")));
+
         CheckmarxScanCommand checkmarxScanCommand = new CheckmarxScanCommand();
-        steps.add(addCommand(checkmarxScanCommand, Paths.get(buildTempDirectory, "Test_Checkmarx.txt")));
+        steps.add(addCommand(checkmarxScanCommand, Paths.get(buildTempDirectory, "checkmarxASTScan.txt")));
+
+        CheckmarxResultsCommand checkmarxResultsCommand = new CheckmarxResultsCommand();
+        steps.add(addCommand(checkmarxResultsCommand, Paths.get(buildTempDirectory, "checkmarxASTResults.txt")));
+
         return steps.iterator();
     }
 
