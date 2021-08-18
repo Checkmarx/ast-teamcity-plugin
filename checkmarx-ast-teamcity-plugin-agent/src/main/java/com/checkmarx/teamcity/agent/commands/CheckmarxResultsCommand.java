@@ -51,7 +51,7 @@ public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
 
         /////saving a file for  results
         String buildTempDirectory = getBuild().getBuildTempDirectory().getAbsolutePath();
-        File astScanOutput = Paths.get(buildTempDirectory, "checkmarxASTScan.txt").toFile();
+        File astScanOutput = Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT).toFile();
 
         if (!astScanOutput.exists()) {
             throw new TeamCityRuntimeException(format("Cannot find the file '%s'", astScanOutput.toPath().toString()));
