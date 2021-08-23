@@ -2,7 +2,6 @@ package com.checkmarx.teamcity.agent.commands;
 
 
 import com.checkmarx.teamcity.common.CheckmarxScanConfig;
-import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.agent.AgentRunningBuild;
@@ -15,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +28,13 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
 
     private static final Logger LOG = Logger.getLogger(CheckmarxScanCommand.class);
     private static CheckmarxScanConfig scanConfig;
+
+    private static String validateNotEmpty(String param, String paramName) throws InvalidParameterException {
+        if (param == null || param.length() == 0) {
+            throw new InvalidParameterException("Parameter [" + paramName + "] must not be empty");
+        }
+        return param;
+    }
 
     @NotNull
     @Override
@@ -51,31 +57,23 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
 
         setExecutePermission(checkmarxCliToolPath);
 
-        String checkmarxAstSecret = scanConfig.getAstSecret();
-        if (nullIfEmpty(checkmarxAstSecret) == null) {
-            throw new RunBuildException("Checkmarx API secret was not defined. Please configure the build properly and retry.");
-        }
         Map<String, String> envVars = new HashMap<>(getEnvironmentVariables());
-        envVars.put("CX_CLIENT_SECRET", checkmarxAstSecret);
+        envVars.put("CX_CLIENT_SECRET", scanConfig.getAstSecret());
 
-        // saving a file for mock results
-        String buildTempDirectory = getBuild().getBuildTempDirectory().getAbsolutePath();
-        // String checkmarxMockReportHtml = Paths.get(buildTempDirectory, "checkmarx-mock-report.html").toFile().getAbsolutePath();
-
-        File htmlFile = new File(buildTempDirectory, CheckmarxScanRunnerConstants.REPORT_HTML_NAME);
-        try {
-            FileUtils.writeStringToFile(htmlFile, PluginUtils.getHtmlText());
-        } catch (IOException e) {
-            logger.error("Failed to generate full html report: " + e.getMessage());
-        }
-        // mock results end here
-
-        return new SimpleProgramCommandLine(envVars, getWorkingDirectory().getAbsolutePath(), checkmarxCliToolPath, getArguments());
+        return new SimpleProgramCommandLine(envVars,
+                                            getWorkingDirectory().getAbsolutePath(),
+                                            checkmarxCliToolPath,
+                                            getArguments());
     }
 
     @Override
     public void beforeProcessStarted() {
-        getBuild().getBuildLogger().message("Scanning with Checkmarx AST CLI " + CheckmarxScanRunnerConstants.AST_CLI_VERSION);
+        getBuild().getBuildLogger().message("Scanning with Checkmarx AST CLI ... ");
+    }
+
+    @Override
+    public void afterProcessFinished() {
+        getBuild().getBuildLogger().message("Scanning completed with Checkmarx AST CLI.");
     }
 
     @Override
@@ -101,7 +99,6 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("--client-id");
         arguments.add(scanConfig.getClientId());
 
-        //Set Origin
         arguments.add("--agent");
         arguments.add("TeamCity");
 
@@ -124,7 +121,8 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
             boolean result = cxExecutable.setExecutable(true, false);
 
             if (!result) {
-                throw new RunBuildException(format("Could not set executable flag for the file: %s", cxExecutable.getName()));
+                throw new RunBuildException(format("Could not set executable flag for the file: %s",
+                                                   cxExecutable.getName()));
             }
         }
     }
