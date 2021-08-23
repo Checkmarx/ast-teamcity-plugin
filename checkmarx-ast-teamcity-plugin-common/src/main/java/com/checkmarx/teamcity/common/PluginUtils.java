@@ -49,14 +49,13 @@ public class PluginUtils {
             scanConfig.setTenant((runnerParameters.get(TENANT)));
         }
 
-        if (TRUE.equals(runnerParameters.get(USE_GLOBAL_FILE_FILTERS))) {
-            scanConfig.setZipFileFilters((sharedConfigParameters.get(GLOBAL_ZIP_FILTERS)));
+        if (TRUE.equals(runnerParameters.get(USE_GLOBAL_ADDITIONAL_PARAMETERS))) {
+            scanConfig.setAdditionalParameters((sharedConfigParameters.get(GLOBAL_ADDITIONAL_PARAMETERS)));
         } else {
-            scanConfig.setZipFileFilters((runnerParameters.get(ZIP_FILE_FILTERS)));
+            scanConfig.setAdditionalParameters(runnerParameters.get(ADDITIONAL_PARAMETERS));
         }
 
         scanConfig.setProjectName(validateNotEmpty(runnerParameters.get(PROJECT_NAME), PROJECT_NAME));
-        scanConfig.setAdditionalParameters(runnerParameters.get(ADDITIONAL_PARAMETERS));
 
         return scanConfig;
 

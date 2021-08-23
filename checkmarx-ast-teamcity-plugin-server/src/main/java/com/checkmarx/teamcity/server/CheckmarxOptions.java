@@ -1,11 +1,8 @@
 package com.checkmarx.teamcity.server;
 
 import org.jetbrains.annotations.NotNull;
-import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 import static com.checkmarx.teamcity.common.CheckmarxParams.*;
 
@@ -20,13 +17,13 @@ public class CheckmarxOptions {
     }
 
     @NotNull
-    public String getUseGlobalFileFilters() {
-        return USE_GLOBAL_FILE_FILTERS;
+    public String getGlobalAstServerUrl() {
+        return GLOBAL_AST_SERVER_URL;
     }
 
     @NotNull
-    public String getGlobalAstServerUrl() {
-        return GLOBAL_AST_SERVER_URL;
+    public String getGlobalAdditionalParameters() {
+        return GLOBAL_ADDITIONAL_PARAMETERS;
     }
 
     @NotNull
@@ -68,8 +65,8 @@ public class CheckmarxOptions {
     }
 
     @NotNull
-    public String getZipFileFilters() {
-        return ZIP_FILE_FILTERS;
+    public String getUseGlobalAdditionalParameters() {
+        return USE_GLOBAL_ADDITIONAL_PARAMETERS;
     }
 
     @NotNull

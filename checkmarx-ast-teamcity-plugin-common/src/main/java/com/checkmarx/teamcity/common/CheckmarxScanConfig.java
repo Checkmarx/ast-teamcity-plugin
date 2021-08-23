@@ -11,7 +11,6 @@ public class CheckmarxScanConfig implements Serializable {
     private String clientId;
     private String astSecret;
     private String additionalParameters;
-    private String zipFileFilters;
 
 
     public CheckmarxScanConfig() {
@@ -69,14 +68,6 @@ public class CheckmarxScanConfig implements Serializable {
 
     public void setAdditionalParameters(final String additionalParameters) {
         this.additionalParameters = additionalParameters;
-    }
-
-    public String getZipFileFilters() {
-        return this.zipFileFilters;
-    }
-
-    public void setZipFileFilters(final String zipFileFilters) {
-        this.zipFileFilters = zipFileFilters;
     }
 
 }
