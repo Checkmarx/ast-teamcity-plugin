@@ -101,9 +101,7 @@ public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
     @Override
     List<String> getArguments() {
         List<String> arguments = new ArrayList<>();
-
         arguments.add("result");
-        arguments.add("summary");
 
         arguments.add("--base-uri");
         arguments.add(scanConfig.getServerUrl());
@@ -114,13 +112,15 @@ public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("--scan-id");
         arguments.add(scanId);
 
+        arguments.add("--report-format");
+        arguments.add("summaryHTML");
+
+        arguments.add("--output-name");
+        arguments.add(CheckmarxScanRunnerConstants.REPORT_NAME);
 
         String buildTempDirectory = getBuild().getBuildTempDirectory().getAbsolutePath();
-        File htmlFile = new File(buildTempDirectory, CheckmarxScanRunnerConstants.REPORT_HTML_NAME);
-        String reportFilePath = htmlFile.toPath().toAbsolutePath().toString();
-
-        arguments.add("--target");
-        arguments.add(reportFilePath);
+        arguments.add("--output-path");
+        arguments.add(buildTempDirectory);
 
         return arguments;
     }
