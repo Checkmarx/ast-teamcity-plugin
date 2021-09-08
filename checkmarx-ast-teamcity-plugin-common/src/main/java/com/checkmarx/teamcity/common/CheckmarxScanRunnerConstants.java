@@ -4,6 +4,7 @@ public class CheckmarxScanRunnerConstants {
 
     public static final String TRUE = "true";
 
+    public final static String REPORT_NAME = "Checkmarx_ast_report";
     public final static String REPORT_HTML_NAME = "Checkmarx_ast_report.html";
     public final static String SCAN_OUTPUT_LOG_TEXT = "checkmarxASTScan.txt";
 
