@@ -38,14 +38,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
-          id: create_release
-          uses: thomaseizinger/create-release@1.0.0
-          env:
-            GITHUB_TOKEN: ${{ github.token}}
-          with:
-            tag_name: dev
-            name: dev
-            draft: true
+        id: create_release
+        uses: thomaseizinger/create-release@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ github.token}}
+        with:
+         tag_name: dev
+         name: dev
+         draft: true
 
       - name: Upload Release Asset
         id: upload-release-asset
