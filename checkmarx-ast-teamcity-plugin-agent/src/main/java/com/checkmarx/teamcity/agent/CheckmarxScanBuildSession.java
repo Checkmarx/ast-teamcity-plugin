@@ -79,7 +79,7 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
         steps.add(addCommand(checkmarxScanCommand, Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT)));
 
         String additionalParameters = buildRunnerContext.getRunnerParameters().get(CheckmarxParams.ADDITIONAL_PARAMETERS);
-        if (additionalParameters.contains("--nowait")) {
+        if (additionalParameters != null && additionalParameters.contains("--nowait")) {
             buildRunnerContext.getBuild().getBuildLogger().message(" =====WARNING=====");
             buildRunnerContext.getBuild().getBuildLogger().message(" Since \"--nowait\" is used, result summary wont be available.");
             buildRunnerContext.getBuild().getBuildLogger().message(" =================");
