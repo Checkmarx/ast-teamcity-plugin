@@ -31,9 +31,9 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
 
       - uses: hugo19941994/delete-draft-releases@v0.1.0
         env:
@@ -42,20 +42,21 @@ jobs:
       - name:  Create Release
         uses: actions/create-release@v1
         id: create_release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           draft: true
           release_name: dev
           tag_name: dev
           body: ${{steps.github_release.outputs.changelog}}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+
 
       - name: Upload artifact
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ github.token }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./build/target/checkmarx-ast-teamcity-plugin.zip
-            asset_name: checkmarx-ast-teamcity-plugin.zip
-            asset_content_type: application/zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/target/checkmarx-ast-teamcity-plugin.zip
+          asset_name: checkmarx-ast-teamcity-plugin.zip
+          asset_content_type: application/zip
