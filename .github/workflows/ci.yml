@@ -30,9 +30,9 @@ jobs:
       - name: Checkmarx AST CLI Action
         uses: checkmarxDev/ast-github-action@master
         with:
-          project_name: ast-scanner-plugin
+          project_name: ast-teamcity-plugin
           branch: master
-          base_uri: https://ast-master.dev.cxast.net/
+          base_uri: ${{ secrets.CX_BASEURI }}
           cx_tenant: ${{ secrets.CX_TENANT }}
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
