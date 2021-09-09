@@ -18,13 +18,6 @@ jobs:
           echo ${{ github.event.inputs.tag }}
           echo "NEXT_VERSION=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
       - name: Create tag
-        uses: actions/github-script@v3
+        uses: actions-ecosystem/action-push-tag@v1
         with:
-          github-token: ${{ github.token }}
-          script: |
-            github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${process.env.NEXT_VERSION}`,
-              sha: context.sha
-            })
+          tag: ${{ env.RELEASE_VERSION }}
