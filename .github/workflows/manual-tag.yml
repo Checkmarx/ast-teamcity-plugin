@@ -20,4 +20,4 @@ jobs:
       - name: Create tag
         uses: actions-ecosystem/action-push-tag@v1
         with:
-          tag: ${{ env.RELEASE_VERSION }}
+          tag: ${{ env.NEXT_VERSION }}
