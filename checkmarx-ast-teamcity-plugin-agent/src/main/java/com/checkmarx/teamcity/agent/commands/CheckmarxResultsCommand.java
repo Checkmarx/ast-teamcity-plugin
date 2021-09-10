@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static java.lang.String.format;
+import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
 public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
 
@@ -105,6 +106,16 @@ public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
 
         arguments.add("--base-uri");
         arguments.add(scanConfig.getServerUrl());
+
+        if (nullIfEmpty(scanConfig.getAuthenticationUrl()) != null) {
+            arguments.add("--base-auth-uri");
+            arguments.add(scanConfig.getAuthenticationUrl());
+        }
+
+        if (nullIfEmpty(scanConfig.getTenant()) != null) {
+            arguments.add("--tenant");
+            arguments.add(scanConfig.getTenant());
+        }
 
         arguments.add("--client-id");
         arguments.add(scanConfig.getClientId());
