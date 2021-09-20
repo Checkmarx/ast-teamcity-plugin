@@ -64,3 +64,7 @@ jobs:
           asset_name: checkmarx-ast-teamcity-plugin.zip
           asset_content_type: application/zip
           overwrite: true
+
+      - name: Releaes to marketplace
+        run: |
+          curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
