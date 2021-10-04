@@ -84,12 +84,7 @@ To see how you can use our tool, please refer to the [Documentation](https://che
 
 ## Contribution
 
-We appreciate feedback and contribution to the Teamcity Plugin! Before you get started, please see the following:
-
-- Review the default [CONTRIBUTING](https://github.com/jenkinsci/.github/blob/master/CONTRIBUTING.md) file and make sure it is appropriate for your plugin, if not then add your own one adapted from the base file
-
-- Refer to our [contribution guidelines](https://github.com/jenkinsci/.github/blob/master/CONTRIBUTING.md)
-
+We appreciate feedback and contribution to the Teamcity Plugin!
 
 ** **
 
