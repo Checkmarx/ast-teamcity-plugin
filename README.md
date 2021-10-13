@@ -81,16 +81,20 @@ All the procedures to set the teamcity plugin up can be found [here](https://che
 
 To see how you can use our tool, please refer to the [Documentation](https://checkmarx.atlassian.net/wiki/spaces/AST/pages/6023875112/TeamCity+Plugin)
 
-
 ## Contribution
 
-We appreciate feedback and contribution to the Teamcity Plugin!
+We appreciate feedback and contribution to the TEAMCITY PLUGIN! Before you get started, please see the following:
+
+- [Checkmarx contribution guidelines](docs/contributing.md)
+- [Checkmarx Code of Conduct](docs/code_of_conduct.md)
 
 ** **
 
 <!-- LICENSE -->
 ## License
-See `LICENSE` for more information.
+Distributed under the [Apache 2.0](LICENSE). See `LICENSE` for more information.
+
+
 
 <!-- CONTACT -->
 ## Contact
