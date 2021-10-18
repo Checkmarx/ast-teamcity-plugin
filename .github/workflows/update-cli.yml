@@ -8,7 +8,7 @@ jobs:
   update-checkmarx-cli:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
       - name: Get Latest Checkmarx API version
         id: checkmarx-ast-cli
         run: |
