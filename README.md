@@ -113,7 +113,7 @@ Project Link: [https://github.com/checkmarx/ast-teamcity-plugin](https://github.
 [forks-shield]: https://img.shields.io/github/forks/checkmarx/ast-teamcity-plugin.svg?style=flat-square
 [forks-url]: https://github.com/checkmarx/ast-teamcity-plugin/network/members
 [stars-shield]: https://img.shields.io/github/stars/checkmarx/ast-teamcity-plugin.svg?style=flat-square
-[stars-url]: https://github.com/checkmarxDev/ast-teamcity-plugin/stargazers
+[stars-url]: https://github.com/checkmarx/ast-teamcity-plugin/stargazers
 [issues-shield]: https://img.shields.io/github/issues/checkmarx/ast-teamcity-plugin.svg?style=flat-square
 [issues-url]: https://github.com/checkmarx/ast-teamcity-plugin/issues
 [license-shield]: https://img.shields.io/github/license/checkmarx/ast-teamcity-plugin.svg?style=flat-square
