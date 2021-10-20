@@ -21,9 +21,9 @@
     <a href="https://checkmarx.atlassian.net/wiki/spaces/AST/pages/6023875112/TeamCity+Plugin"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/issues/new">Report Bug</a>
+    <a href="https://github.com/checkmarx/ast-teamcity-plugin/issues/new">Report Bug</a>
     ·
-    <a href="https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/issues/new">Request Feature</a>
+    <a href="https://github.com/checkmarx/ast-teamcity-plugin/issues/new">Request Feature</a>
   </p>
 </p>
 
@@ -101,21 +101,21 @@ Distributed under the [Apache 2.0](LICENSE). See `LICENSE` for more information.
 
 Checkmarx - AST Integrations Team
 
-Project Link: [https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin](https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin)
+Project Link: [https://github.com/checkmarx/ast-teamcity-plugin](https://github.com/checkmarx/ast-teamcity-plugin)
 
 
 © 2021 Checkmarx Ltd. All Rights Reserved.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/CheckmarxDev/checkmarx-ast-teamcity-plugin.svg?style=flat-square
-[contributors-url]: https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/CheckmarxDev/checkmarx-ast-teamcity-plugin.svg?style=flat-square
-[forks-url]: https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/network/members
-[stars-shield]: https://img.shields.io/github/stars/CheckmarxDev/checkmarx-ast-teamcity-plugin.svg?style=flat-square
-[stars-url]: https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/stargazers
-[issues-shield]: https://img.shields.io/github/issues/CheckmarxDev/checkmarx-ast-teamcity-plugin.svg?style=flat-square
-[issues-url]: https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/issues
-[license-shield]: https://img.shields.io/github/license/CheckmarxDev/checkmarx-ast-teamcity-plugin.svg?style=flat-square
-[license-url]: https://github.com/CheckmarxDev/checkmarx-ast-teamcity-plugin/blob/master/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[contributors-url]: https://github.com/checkmarx/ast-teamcity-plugin/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[forks-url]: https://github.com/checkmarx/ast-teamcity-plugin/network/members
+[stars-shield]: https://img.shields.io/github/stars/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[stars-url]: https://github.com/checkmarx/ast-teamcity-plugin/stargazers
+[issues-shield]: https://img.shields.io/github/issues/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[issues-url]: https://github.com/checkmarx/ast-teamcity-plugin/issues
+[license-shield]: https://img.shields.io/github/license/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[license-url]: https://github.com/checkmarx/ast-teamcity-plugin/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
