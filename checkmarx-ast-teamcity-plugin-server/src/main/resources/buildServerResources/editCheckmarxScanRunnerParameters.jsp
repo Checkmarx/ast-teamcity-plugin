@@ -15,12 +15,27 @@
     <c:set var="hideAdditionalParametersOverrideSection" value="${optionsBean.noDisplay}"/>
 </c:if>
 
+<!-- Set a variable to define when the server url error element must be shown or not -->
+<c:choose>
+    <c:when test="${empty propertiesBean.properties[optionsBean.serverUrl]}">
+        <c:set var="displayServerUrlError" value="block"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="displayServerUrlError" value="none"/>
+    </c:otherwise>
+</c:choose>
+
 <l:settingsGroup title="Checkmarx Scan Settings">
 
     <style>
         .cx-textarea {
             height: 10em;
             width: 31em;
+        }
+
+        /* Created custom error because when using generic error class, error text is cleared from the form when save button is pressed */
+        .cx-error {
+            color: #c22731
         }
     </style>
 
@@ -32,6 +47,16 @@
 
             textArea.style.display = hidden ? "" : "none"
             link.innerText = (hidden ? "Hide" : "Show") + " global parameters"
+        }
+
+        /**
+         * Function used to highlight an error message when a mandatory field is not filled
+         *
+         * @param element
+         * @param errorElement
+         */
+        function validateRequiredField(element, errorElement) {
+            errorElement.style.display = element.value ? 'none' : 'block';
         }
     </script>
 
@@ -52,8 +77,14 @@
   <tr>
     <th><label for="${optionsBean.serverUrl}.text">AST Server Url:<l:star/></label></th>
     <td>
-      <props:textProperty name="${optionsBean.serverUrl}" className="longField" id="${optionsBean.serverUrl}.text"/>
-      <span class="smallNote">AST Server Url</span>
+      <props:textProperty
+              name="${optionsBean.serverUrl}"
+              className="longField"
+              id="${optionsBean.serverUrl}.text"
+              onkeyup="validateRequiredField(this, serverUrlError)" />
+
+        <span class="cx-error" id="serverUrlError" style="display: ${displayServerUrlError}">The server Url must be specified</span>
+        <span class="smallNote">AST Server Url</span>
     </td>
   </tr>
 
@@ -98,6 +129,18 @@
       <span class="smallNote">Project Name for AST</span>
     </td>
   </tr>
+
+    <tr>
+        <th><label for="${optionsBean.branchName}.text">Branch name:</label></th>
+        <td>
+            <props:textProperty name="${optionsBean.branchName}"
+                                className="longField" id="${optionsBean.branchName}.text"
+                                onkeyup="validateRequiredField(this, branchError)"/>
+
+            <span class="cx-error" id="branchError" style="display: none">The branch name must be specified</span>
+            <span class="smallNote">Branch Name for AST</span>
+        </td>
+    </tr>
 
     <tr>
         <th><label for="${optionsBean.useGlobalAdditionalParameters}">Use global additional parameters.<br></label></th>

@@ -16,6 +16,7 @@ public abstract class CheckmarxParams {
     public static final String TENANT = "tenant";
     public static final String ADDITIONAL_PARAMETERS = "additionalParameters";
     public static final String PROJECT_NAME = "projectName";
+    public static final String BRANCH_NAME = "branchName";
 
 
     //Global Config

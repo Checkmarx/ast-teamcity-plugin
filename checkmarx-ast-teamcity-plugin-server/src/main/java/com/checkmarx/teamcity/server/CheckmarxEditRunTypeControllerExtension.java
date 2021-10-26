@@ -22,6 +22,8 @@ import java.util.Map;
 
 public class CheckmarxEditRunTypeControllerExtension implements EditRunTypeControllerExtension
 {
+    private static final String TC_BUILD_BRANCH = "%teamcity.build.branch%";
+
     private final CheckmarxAdminConfig adminConfig;
 
     public CheckmarxEditRunTypeControllerExtension(@NotNull final SBuildServer server,
@@ -45,6 +47,11 @@ public class CheckmarxEditRunTypeControllerExtension implements EditRunTypeContr
         //put default project name as the build name
         if(StringUtils.isEmpty(properties.get(CheckmarxParams.PROJECT_NAME))) {
             properties.put(CheckmarxParams.PROJECT_NAME, buildTypeForm.getName());
+        }
+
+        // points branch name to the default team city's branch environment variable
+        if(StringUtils.isEmpty(properties.get(CheckmarxParams.BRANCH_NAME))) {
+            properties.put(CheckmarxParams.BRANCH_NAME, TC_BUILD_BRANCH);
         }
 
         //put all global properties to the config page
