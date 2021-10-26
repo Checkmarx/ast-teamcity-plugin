@@ -56,6 +56,7 @@ public class PluginUtils {
         }
 
         scanConfig.setProjectName(validateNotEmpty(runnerParameters.get(PROJECT_NAME), PROJECT_NAME));
+        scanConfig.setBranchName(validateNotEmpty(runnerParameters.get(BRANCH_NAME), BRANCH_NAME));
 
         return scanConfig;
 

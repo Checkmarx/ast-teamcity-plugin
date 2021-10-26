@@ -16,6 +16,9 @@ import static jetbrains.buildServer.util.PropertiesUtil.isEmptyOrNull;
 
 public class CheckmarxScanRunType extends RunType {
 
+    private static final String ERROR_SERVER_URL_EMPTY = "Server URL must not be empty";
+    private static final String ERROR_BRANCH_NAME_EMPTY = "Branch name must not be empty";
+
     @NotNull
     private final PluginDescriptor pluginDescriptor;
 
@@ -53,8 +56,12 @@ public class CheckmarxScanRunType extends RunType {
             if (!CheckmarxScanRunnerConstants.TRUE.equals(properties.get(CheckmarxParams.USE_DEFAULT_SERVER))) {
 
                 if (isEmptyOrNull(properties.get(CheckmarxParams.SERVER_URL))) {
-                    result.add(new InvalidProperty(CheckmarxParams.SERVER_URL, "Server URL must not be empty"));
+                    result.add(new InvalidProperty(CheckmarxParams.SERVER_URL, ERROR_SERVER_URL_EMPTY));
                 }
+            }
+
+            if (isEmptyOrNull(properties.get(CheckmarxParams.BRANCH_NAME))) {
+                result.add(new InvalidProperty(CheckmarxParams.BRANCH_NAME, ERROR_BRANCH_NAME_EMPTY));
             }
 
             return result;

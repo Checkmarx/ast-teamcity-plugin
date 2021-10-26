@@ -13,6 +13,7 @@ public class CheckmarxScanRunnerConstants {
     public static final String RUNNER_DESCRIPTION = "Build Runner to scan the source code with Checkmarx AST engine.";
 
     public static final String PROJECT_NAME = "projectName";
+    public static final String BRANCH_NAME = "branchName";
     public static final String SERVER_URL = "serverUrl";
     public static final String AUTHENTICATION_URL = "authenticationUrl";
     public static final String ADDITIONAL_PARAMETERS = "additionalParameters";
@@ -22,6 +23,10 @@ public class CheckmarxScanRunnerConstants {
 
     public String getProjectName() {
         return PROJECT_NAME;
+    }
+
+    public String getBranchName() {
+        return BRANCH_NAME;
     }
 
     public String getServerUrl() {

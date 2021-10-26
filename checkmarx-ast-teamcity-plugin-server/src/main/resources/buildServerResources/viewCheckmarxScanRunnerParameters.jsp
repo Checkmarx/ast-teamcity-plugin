@@ -11,6 +11,9 @@
   Project name: <strong><props:displayValue name="${constants.projectName}" emptyValue="not specified"/></strong>
 </div>
 <div class="parameter">
+  Branch name: <strong><props:displayValue name="${constants.branchName}" emptyValue="not specified"/></strong>
+</div>
+<div class="parameter">
   Additional parameters: <strong><props:displayValue name="${constants.additionalParameters}" emptyValue="none specified"/></strong>
 </div>
 

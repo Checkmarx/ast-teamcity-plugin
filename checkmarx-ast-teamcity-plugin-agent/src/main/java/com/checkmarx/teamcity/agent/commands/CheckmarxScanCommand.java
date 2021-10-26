@@ -105,6 +105,9 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("--project-name");
         arguments.add(scanConfig.getProjectName());
 
+        arguments.add("--branch");
+        arguments.add(scanConfig.getBranchName());
+
         arguments.add("-s");
         arguments.add(".");
 

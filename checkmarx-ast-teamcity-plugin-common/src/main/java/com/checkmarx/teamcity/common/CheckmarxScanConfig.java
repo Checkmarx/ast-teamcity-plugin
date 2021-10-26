@@ -8,6 +8,7 @@ public class CheckmarxScanConfig implements Serializable {
     private String authenticationUrl;
     private String tenant;
     private String projectName;
+    private String branchName;
     private String clientId;
     private String astSecret;
     private String additionalParameters;
@@ -44,6 +45,14 @@ public class CheckmarxScanConfig implements Serializable {
 
     public void setProjectName(final String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getBranchName() {
+        return this.branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     public String getClientId() {

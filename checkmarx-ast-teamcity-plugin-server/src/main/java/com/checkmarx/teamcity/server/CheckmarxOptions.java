@@ -65,6 +65,11 @@ public class CheckmarxOptions {
     }
 
     @NotNull
+    public String getBranchName() {
+        return BRANCH_NAME;
+    }
+
+    @NotNull
     public String getUseGlobalAdditionalParameters() {
         return USE_GLOBAL_ADDITIONAL_PARAMETERS;
     }
