@@ -50,7 +50,6 @@
             link.innerText = (hidden ? "Hide" : "Show") + " global parameters"
             return false
         }
-        document.getElementById("globalArgumentsLink").addEventListener("click", toggleGlobalArguments);
 
         /**
          * Function used to highlight an error message when a mandatory field is not filled
@@ -62,7 +61,13 @@
             const errorElement = element.parentNode.parentNode.querySelector('span.cx-error')
             errorElement.style.display = element.value ? 'none' : 'block';
         }
-        document.querySelectorAll('.required').forEach((el) => el.addEventListener("keyup", validateRequiredField));
+
+        // Bind events when document is ready
+        $j(document).ready(function() {
+            document.getElementById("globalArgumentsLink").addEventListener("click", toggleGlobalArguments);
+            document.querySelectorAll('.required').forEach((el) => el.addEventListener("keyup", validateRequiredField));
+        })
+
     </script>
 
     <tr>
@@ -84,7 +89,7 @@
     <td>
       <props:textProperty
               name="${optionsBean.serverUrl}"
-              className="longField"
+              className="longField required"
               id="${optionsBean.serverUrl}.text" />
 
         <span class="cx-error" id="serverUrlError" style="display: ${displayServerUrlError}">The server Url must be specified</span>
@@ -138,8 +143,7 @@
         <th><label for="${optionsBean.branchName}.text">Branch name:</label></th>
         <td>
             <props:textProperty name="${optionsBean.branchName}"
-                                className="longField required" id="${optionsBean.branchName}.text"
-                                onkeyup="validateRequiredField(this, branchError)"/>
+                                className="longField required" id="${optionsBean.branchName}.text" />
 
             <span class="cx-error" id="branchError" style="display: none">The branch name must be specified</span>
             <span class="smallNote">Branch Name for AST</span>
