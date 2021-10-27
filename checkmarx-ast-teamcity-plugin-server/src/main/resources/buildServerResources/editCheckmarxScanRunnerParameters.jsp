@@ -40,24 +40,34 @@
     </style>
 
     <script>
-        function toggleGlobalArguments() {
+        function toggleGlobalArguments(e) {
+            e.preventDefault();
             let link = $('globalArgumentsLink'),
                 textArea = $('globalArgumentsTextArea'),
                 hidden = textArea.style.display === "none"
 
             textArea.style.display = hidden ? "" : "none"
             link.innerText = (hidden ? "Hide" : "Show") + " global parameters"
+            return false
         }
 
         /**
          * Function used to highlight an error message when a mandatory field is not filled
          *
-         * @param element
-         * @param errorElement
+         * @param event
          */
-        function validateRequiredField(element, errorElement) {
+        function validateRequiredField(event) {
+            const element = event.target;
+            const errorElement = element.parentNode.parentNode.querySelector('span.cx-error')
             errorElement.style.display = element.value ? 'none' : 'block';
         }
+
+        // Bind events when document is ready
+        $j(document).ready(function() {
+            document.getElementById("globalArgumentsLink").addEventListener("click", toggleGlobalArguments);
+            document.querySelectorAll('.required').forEach((el) => el.addEventListener("keyup", validateRequiredField));
+        })
+
     </script>
 
     <tr>
@@ -79,9 +89,8 @@
     <td>
       <props:textProperty
               name="${optionsBean.serverUrl}"
-              className="longField"
-              id="${optionsBean.serverUrl}.text"
-              onkeyup="validateRequiredField(this, serverUrlError)" />
+              className="longField required"
+              id="${optionsBean.serverUrl}.text" />
 
         <span class="cx-error" id="serverUrlError" style="display: ${displayServerUrlError}">The server Url must be specified</span>
         <span class="smallNote">AST Server Url</span>
@@ -134,8 +143,7 @@
         <th><label for="${optionsBean.branchName}.text">Branch name:</label></th>
         <td>
             <props:textProperty name="${optionsBean.branchName}"
-                                className="longField" id="${optionsBean.branchName}.text"
-                                onkeyup="validateRequiredField(this, branchError)"/>
+                                className="longField required" id="${optionsBean.branchName}.text" />
 
             <span class="cx-error" id="branchError" style="display: none">The branch name must be specified</span>
             <span class="smallNote">Branch Name for AST</span>
@@ -168,7 +176,7 @@
 
     <tr>
         <td style="vertical-align: top">
-            <a id="globalArgumentsLink" href="#" onclick="toggleGlobalArguments(); return false;">Show global parameters</a>
+            <a id="globalArgumentsLink" href="#">Show global parameters</a>
         </td>
         <td>
             <textarea style="background-color: lightgrey; display: none" disabled class="cx-textarea" rows="5"
