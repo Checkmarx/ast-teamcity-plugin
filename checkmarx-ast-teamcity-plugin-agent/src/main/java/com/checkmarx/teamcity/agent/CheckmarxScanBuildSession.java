@@ -47,7 +47,7 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
     @Nullable
     @Override
     public CommandExecution getNextCommand() {
-        if (buildSteps.hasNext()) {
+        if (buildSteps.hasNext() && (lastCommand == null || !lastCommand.getResult().isFailed())) {
             lastCommand = buildSteps.next();
             return lastCommand;
         }
@@ -57,7 +57,6 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
     @Nullable
     @Override
     public BuildFinishedStatus sessionFinished() {
-
         String buildTempDirectory = buildRunnerContext.getBuild().getBuildTempDirectory().getAbsolutePath();
         Path checkmarxScanReport = Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.REPORT_HTML_NAME);
 
