@@ -10,7 +10,7 @@
     <vendor>
       <name>Checkmarx</name>
       <url>https://www.checkmarx.com</url>
-      <logo>https://www.checkmarx.com/wp-content/themes/checkmarx/images/assets/cx-logo-alpha.svg</logo>
+      <logo>https://checkmarx.com/wp-content/uploads/2021/04/cx_logo-header.png</logo>
     </vendor>
   </info>
   <deployment use-separate-classloader="true" allow-runtime-reload="true"/>
