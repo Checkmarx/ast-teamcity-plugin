@@ -102,7 +102,8 @@ public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
     @Override
     List<String> getArguments() {
         List<String> arguments = new ArrayList<>();
-        arguments.add("result");
+        arguments.add("results");
+        arguments.add("show");
 
         arguments.add("--base-uri");
         arguments.add(scanConfig.getServerUrl());
