@@ -19,8 +19,10 @@
 
 <p align="center">
     The CxAST TeamCity plugin enables you to trigger SAST, SCA, and KICS scans directly from a TeamCity project.
-<br />
+    <br />
     <a href="https://checkmarx.atlassian.net/wiki/spaces/AST/pages/6023875112/TeamCity+Plugin"><strong>Explore the docs »</strong></a>
+    <br />
+    <a href="https://plugins.jetbrains.com/plugin/17610-checkmarx-ast"><strong>Marketplace »</strong></a>
     <br />
     <br />
     <a href="https://github.com/checkmarx/ast-teamcity-plugin/issues/new">Report Bug</a>
