@@ -1,19 +1,21 @@
+<img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/banner.png">
+<br />
+<div align="center">
+  
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![Apache License][license-shield]][license-url]
 
-
-
-<!-- PROJECT LOGO -->
+</div>
 <br />
 <p align="center">
-  <a href="">
-    <img src="./logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/Checkmarx/ast-teamcity-plugin">
+    <img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/logo.png" alt="Logo" width="80" height="80" />
   </a>
 
-<h3 align="center">AST-TEAMCITY-PLUGIN</h3>
+<h3 align="center">AST TEAMCITY PLUGIN</h3>
 
 <p align="center">
     The CxAST TeamCity plugin enables you to trigger SAST, SCA, and KICS scans directly from a TeamCity project.
@@ -30,7 +32,7 @@
 
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
+<details>
   <summary>Table of Contents</summary>
   <ol>
     <li>
@@ -88,12 +90,10 @@ We appreciate feedback and contribution to the TEAMCITY PLUGIN! Before you get s
 - [Checkmarx contribution guidelines](docs/contributing.md)
 - [Checkmarx Code of Conduct](docs/code_of_conduct.md)
 
-** **
 
 <!-- LICENSE -->
 ## License
 Distributed under the [Apache 2.0](LICENSE). See `LICENSE` for more information.
-
 
 
 <!-- CONTACT -->
@@ -103,19 +103,20 @@ Checkmarx - AST Integrations Team
 
 Project Link: [https://github.com/checkmarx/ast-teamcity-plugin](https://github.com/checkmarx/ast-teamcity-plugin)
 
+Find more integrations from our team [here](https://github.com/Checkmarx/ci-cd-integrations#checkmarx-ast-integrations)
 
-© 2021 Checkmarx Ltd. All Rights Reserved.
+
+© 2022 Checkmarx Ltd. All Rights Reserved.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[contributors-shield]: https://img.shields.io/github/contributors/checkmarx/ast-teamcity-plugin.svg
 [contributors-url]: https://github.com/checkmarx/ast-teamcity-plugin/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[forks-shield]: https://img.shields.io/github/forks/checkmarx/ast-teamcity-plugin.svg
 [forks-url]: https://github.com/checkmarx/ast-teamcity-plugin/network/members
-[stars-shield]: https://img.shields.io/github/stars/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[stars-shield]: https://img.shields.io/github/stars/checkmarx/ast-teamcity-plugin.svg
 [stars-url]: https://github.com/checkmarx/ast-teamcity-plugin/stargazers
-[issues-shield]: https://img.shields.io/github/issues/checkmarx/ast-teamcity-plugin.svg?style=flat-square
+[issues-shield]: https://img.shields.io/github/issues/checkmarx/ast-teamcity-plugin.svg
 [issues-url]: https://github.com/checkmarx/ast-teamcity-plugin/issues
-[license-shield]: https://img.shields.io/github/license/checkmarx/ast-teamcity-plugin.svg?style=flat-square
-[license-url]: https://github.com/checkmarx/ast-teamcity-plugin/blob/master/LICENSE
-[product-screenshot]: images/screenshot.png
+[license-shield]: https://img.shields.io/github/license/checkmarx/ast-teamcity-plugin.svg
+[license-url]: https://github.com/checkmarx/ast-teamcity-plugin/blob/main/LICENSE
