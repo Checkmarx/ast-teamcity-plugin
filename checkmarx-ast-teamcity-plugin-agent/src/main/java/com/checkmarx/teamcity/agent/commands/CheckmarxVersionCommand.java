@@ -1,5 +1,6 @@
 package com.checkmarx.teamcity.agent.commands;
 
+import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,7 @@ public class CheckmarxVersionCommand extends CheckmarxBuildServiceAdapter {
 
     @NotNull
     @Override
-    public ProgramCommandLine makeProgramCommandLine() {
+    public ProgramCommandLine makeProgramCommandLine() throws RunBuildException {
         String checkmarxCliToolPath = getCheckmarxCliToolPath();
 
         return new SimpleProgramCommandLine(getBuildParameters().getEnvironmentVariables(),

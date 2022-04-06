@@ -2,13 +2,9 @@ package com.checkmarx.teamcity.agent.commands;
 
 
 import com.checkmarx.teamcity.common.CheckmarxScanConfig;
-import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.RunBuildException;
-import jetbrains.buildServer.agent.AgentRunningBuild;
-import jetbrains.buildServer.agent.BuildProgressLogger;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -24,9 +20,9 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
-public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
+public class CheckmarxScanCreateCommand extends CheckmarxBuildServiceAdapter {
 
-    private static final Logger LOG = Logger.getLogger(CheckmarxScanCommand.class);
+    private static final Logger LOG = Logger.getLogger(CheckmarxScanCreateCommand.class);
     private static CheckmarxScanConfig scanConfig;
 
     private static String validateNotEmpty(String param, String paramName) throws InvalidParameterException {
@@ -40,22 +36,9 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
     @Override
     public ProgramCommandLine makeProgramCommandLine() throws RunBuildException {
 
-        // reference https://codingsight.com/implementing-a-teamcity-plugin/
-        AgentRunningBuild agentRunningBuild = getRunnerContext().getBuild();
-        // something logic with build instance
-
-        BuildProgressLogger logger = agentRunningBuild.getBuildLogger();
-        // something logic with logger instance (output information)
-        Map<String, String> sharedConfigParameters = agentRunningBuild.getSharedConfigParameters();
-
-        Map<String, String> runnerParameters = getRunnerParameters(); // get runner parameters
-
-        scanConfig = PluginUtils.resolveConfiguration(runnerParameters, sharedConfigParameters);
-
+        scanConfig = initExecutionCall();
         LOG.info("-----------------------Checkmarx: Initiating the Scan Command------------------------");
         String checkmarxCliToolPath = getCheckmarxCliToolPath();
-
-        setExecutePermission(checkmarxCliToolPath);
 
         Map<String, String> envVars = new HashMap<>(getEnvironmentVariables());
         envVars.put("CX_CLIENT_SECRET", scanConfig.getAstSecret());
@@ -116,17 +99,5 @@ public class CheckmarxScanCommand extends CheckmarxBuildServiceAdapter {
         }
 
         return arguments;
-    }
-
-    private static void setExecutePermission(String checkmarxCliToolPath) throws RunBuildException {
-        final File cxExecutable = new File(checkmarxCliToolPath);
-        if (!SystemUtils.IS_OS_WINDOWS && cxExecutable.isFile()) {
-            boolean result = cxExecutable.setExecutable(true, false);
-
-            if (!result) {
-                throw new RunBuildException(format("Could not set executable flag for the file: %s",
-                                                   cxExecutable.getName()));
-            }
-        }
     }
 }

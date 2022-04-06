@@ -1,6 +1,8 @@
 package com.checkmarx.teamcity.agent;
 
 import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
+import com.checkmarx.teamcity.common.CheckmarxScanCancelCommandExecutor;
+import com.checkmarx.teamcity.common.CheckmarxScanParamRetriever;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
@@ -11,8 +13,7 @@ import jetbrains.buildServer.agent.runner.TerminationAction;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -31,6 +32,8 @@ public class CommandExecutionAdapter implements CommandExecution {
     private final Path commandOutputPath;
     private List<ProcessListener> listeners;
     private BuildFinishedStatus result;
+    private static final  String SCAN_ID_SEARCH_TEXT = "Scan ID";
+    private static final String SCAN_CANCEL_ARGUMENT = "scan cancel --scan-id";
 
     public CommandExecutionAdapter(@NotNull CheckmarxBuildServiceAdapter buildService, @NotNull Path commandOutputPath) {
         this.buildService = buildService;
@@ -57,8 +60,19 @@ public class CommandExecutionAdapter implements CommandExecution {
     @NotNull
     @Override
     public TerminationAction interruptRequested() {
+        buildService.getLogger().warning("Terminating the scan, sending the cancel request");
+        terminateScan();
         return buildService.interrupt();
     }
+
+    private void terminateScan() {
+        String scanId = CheckmarxScanParamRetriever.scanIDRetriever(commandOutputPath.toString(),SCAN_ID_SEARCH_TEXT);
+        String commandPath;
+        commandPath = buildService.getCheckmarxCliToolPath();
+        CheckmarxScanCancelCommandExecutor cancelCommand = new CheckmarxScanCancelCommandExecutor();
+        cancelCommand.cancelExecution(scanId, commandPath, SCAN_CANCEL_ARGUMENT, buildService.getLogger());     
+    }
+
 
     @Override
     public boolean isCommandLineLoggingEnabled() {
