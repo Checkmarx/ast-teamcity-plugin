@@ -6,10 +6,12 @@ import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildProgressLogger;
 
 public class CheckmarxScanCancelCommandExecutor {
+
+  private static final String CLI_ARGUMENTS = "scan cancel --scan-id";
   
-  public void cancelExecution(String scanID, String cliPath, String cliArgs, BuildProgressLogger buildProgressLogger) {
+  public void cancelExecution(String scanID, String cliPath, BuildProgressLogger buildProgressLogger) {
     try {
-      String command = cliPath + " " + cliArgs + " " + scanID;
+      String command = cliPath + " " + CLI_ARGUMENTS + " " + scanID;
       buildProgressLogger.message("Cancelling Checkmarx scan with command: " + command);
       Process process = Runtime.getRuntime().exec(command);
       process.waitFor();

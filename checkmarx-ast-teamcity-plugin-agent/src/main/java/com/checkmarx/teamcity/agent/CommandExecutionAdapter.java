@@ -33,7 +33,6 @@ public class CommandExecutionAdapter implements CommandExecution {
     private List<ProcessListener> listeners;
     private BuildFinishedStatus result;
     private static final  String SCAN_ID_SEARCH_TEXT = "Scan ID";
-    private static final String SCAN_CANCEL_ARGUMENT = "scan cancel --scan-id";
 
     public CommandExecutionAdapter(@NotNull CheckmarxBuildServiceAdapter buildService, @NotNull Path commandOutputPath) {
         this.buildService = buildService;
@@ -70,7 +69,7 @@ public class CommandExecutionAdapter implements CommandExecution {
         String commandPath;
         commandPath = buildService.getCheckmarxCliToolPath();
         CheckmarxScanCancelCommandExecutor cancelCommand = new CheckmarxScanCancelCommandExecutor();
-        cancelCommand.cancelExecution(scanId, commandPath, SCAN_CANCEL_ARGUMENT, buildService.getLogger());     
+        cancelCommand.cancelExecution(scanId, commandPath, buildService.getLogger());
     }
 
 
