@@ -66,10 +66,8 @@ public class CommandExecutionAdapter implements CommandExecution {
 
     private void terminateScan() {
         String scanId = CheckmarxScanParamRetriever.scanIDRetriever(commandOutputPath.toString(),SCAN_ID_SEARCH_TEXT);
-        String commandPath;
-        commandPath = buildService.getCheckmarxCliToolPath();
         CheckmarxScanCancelCommandExecutor cancelCommand = new CheckmarxScanCancelCommandExecutor();
-        cancelCommand.cancelExecution(scanId, commandPath, buildService.getLogger());
+        cancelCommand.cancelExecution(scanId, buildService.getCheckmarxCliToolPath(), buildService.getLogger());
     }
 
 
