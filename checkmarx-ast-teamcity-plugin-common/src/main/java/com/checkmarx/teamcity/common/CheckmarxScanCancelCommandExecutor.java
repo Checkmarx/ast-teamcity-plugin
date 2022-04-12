@@ -3,18 +3,20 @@ package com.checkmarx.teamcity.common;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildProgressLogger;
 
 public class CheckmarxScanCancelCommandExecutor {
 
-  private static final String CLI_ARGUMENTS = "scan cancel --scan-id";
   
-  public void cancelExecution(String scanID, String cliPath, BuildProgressLogger buildProgressLogger) {
+  public void cancelExecution(String scanID, String cliPath, BuildProgressLogger buildProgressLogger, CheckmarxScanConfig scanConfig) {
     try {
-      String command = cliPath + " " + CLI_ARGUMENTS + " " + scanID;
-      buildProgressLogger.message("Cancelling Checkmarx scan with command: " + command);
+      List<String> arguments = populateScanCancelArguments(scanConfig, scanID);
+      String command = cliPath + " " + String.join(" ", arguments);
+      buildProgressLogger.message("Cancelling Checkmarx scan for scanID " + scanID);
       Process process = Runtime.getRuntime().exec(command);
       BufferedReader in = new BufferedReader(new
               InputStreamReader(process.getInputStream()));
@@ -36,4 +38,17 @@ public class CheckmarxScanCancelCommandExecutor {
       throw new TeamCityRuntimeException("Unable to cancel the scan for scanID: " + scanID + ":" + e.getMessage());
     }
    }
+
+  private List<String> populateScanCancelArguments(CheckmarxScanConfig scanConfig, String scanID) {
+    List<String> scanArguments = new ArrayList<>();
+    scanArguments.add("scan");
+    scanArguments.add("cancel");
+    scanArguments.add("--scan-id");
+    scanArguments.add(scanID);
+    scanArguments.add("--client-id");
+    scanArguments.add(scanConfig.getClientId());
+    scanArguments.add("--client-secret");
+    scanArguments.add(scanConfig.getAstSecret());
+    return scanArguments;
+  }
 }

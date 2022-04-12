@@ -2,7 +2,10 @@ package com.checkmarx.teamcity.agent;
 
 import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
 import com.checkmarx.teamcity.common.CheckmarxScanCancelCommandExecutor;
+import com.checkmarx.teamcity.common.CheckmarxScanConfig;
 import com.checkmarx.teamcity.common.CheckmarxScanParamRetriever;
+import com.checkmarx.teamcity.common.PluginUtils;
+
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
@@ -17,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -65,9 +69,12 @@ public class CommandExecutionAdapter implements CommandExecution {
     }
 
     private void terminateScan() {
+        Map<String,String> runnerParameters = buildService.getBuildRunnerContext().getRunnerParameters();
+        Map<String,String> sharedConfigParameters = buildService.getBuildRunnerContext().getBuild().getSharedConfigParameters();
+        CheckmarxScanConfig scanConfig = PluginUtils.resolveConfiguration(runnerParameters, sharedConfigParameters);
         String scanId = CheckmarxScanParamRetriever.scanIDRetriever(commandOutputPath.toString(),SCAN_ID_SEARCH_TEXT);
         CheckmarxScanCancelCommandExecutor cancelCommand = new CheckmarxScanCancelCommandExecutor();
-        cancelCommand.cancelExecution(scanId, buildService.getCheckmarxCliToolPath(), buildService.getLogger());
+        cancelCommand.cancelExecution(scanId, buildService.getCheckmarxCliToolPath(), buildService.getLogger(),scanConfig);
     }
 
 
