@@ -1,9 +1,6 @@
 package com.checkmarx.teamcity.agent;
 
-import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
-import com.checkmarx.teamcity.agent.commands.CheckmarxResultsCommand;
-import com.checkmarx.teamcity.agent.commands.CheckmarxScanCommand;
-import com.checkmarx.teamcity.agent.commands.CheckmarxVersionCommand;
+import com.checkmarx.teamcity.agent.commands.*;
 import com.checkmarx.teamcity.common.CheckmarxParams;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
 import jetbrains.buildServer.RunBuildException;
@@ -74,8 +71,8 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
         steps.add(addCommand(checkmarxVersionCommand, Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT)));
 
 
-        CheckmarxScanCommand checkmarxScanCommand = new CheckmarxScanCommand();
-        steps.add(addCommand(checkmarxScanCommand, Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT)));
+        CheckmarxScanCreateCommand checkmarxScanCreateCommand = new CheckmarxScanCreateCommand();
+        steps.add(addCommand(checkmarxScanCreateCommand, Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT)));
 
         String additionalParameters = buildRunnerContext.getRunnerParameters().get(CheckmarxParams.ADDITIONAL_PARAMETERS);
         if (additionalParameters != null && additionalParameters.contains("--nowait")) {
@@ -87,8 +84,6 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
             CheckmarxResultsCommand checkmarxResultsCommand = new CheckmarxResultsCommand();
             steps.add(addCommand(checkmarxResultsCommand, Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT)));
         }
-
-
         return steps.iterator();
     }
 

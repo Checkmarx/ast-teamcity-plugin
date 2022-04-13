@@ -42,7 +42,7 @@
               <artifactId>teamcity-sdk-maven-plugin</artifactId>
               <version>0.4.2</version>
               <configuration>
-                  <!-- <teamcityDir>/path/to/tc/distro</teamcityDir> -->
+                    <!-- Path to local environment agent setup for debugging agent and server -->
               </configuration>
           </plugin>
       </plugins>
@@ -53,7 +53,7 @@
                   <artifactId>teamcity-sdk-maven-plugin</artifactId>
                   <version>0.4.2</version>
                   <configuration>
-                      <!-- <teamcityDir>/path/to/tc/distro</teamcityDir> -->
+                    <!-- Path to local environment agent setup for debugging agent and server -->
                   </configuration>
               </plugin>
           </plugins>

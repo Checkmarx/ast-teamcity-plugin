@@ -1,6 +1,11 @@
 package com.checkmarx.teamcity.agent;
 
 import com.checkmarx.teamcity.agent.commands.CheckmarxBuildServiceAdapter;
+import com.checkmarx.teamcity.common.CheckmarxScanCancelCommandExecutor;
+import com.checkmarx.teamcity.common.CheckmarxScanConfig;
+import com.checkmarx.teamcity.common.CheckmarxScanParamRetriever;
+import com.checkmarx.teamcity.common.PluginUtils;
+
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
@@ -11,11 +16,11 @@ import jetbrains.buildServer.agent.runner.TerminationAction;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -31,6 +36,7 @@ public class CommandExecutionAdapter implements CommandExecution {
     private final Path commandOutputPath;
     private List<ProcessListener> listeners;
     private BuildFinishedStatus result;
+    private static final  String SCAN_ID_SEARCH_TEXT = "Scan ID";
 
     public CommandExecutionAdapter(@NotNull CheckmarxBuildServiceAdapter buildService, @NotNull Path commandOutputPath) {
         this.buildService = buildService;
@@ -57,8 +63,22 @@ public class CommandExecutionAdapter implements CommandExecution {
     @NotNull
     @Override
     public TerminationAction interruptRequested() {
+        buildService.getLogger().warning("Terminating the scan, sending the cancel request");
+        terminateScan();
         return buildService.interrupt();
     }
+
+    private void terminateScan() {
+        Map<String,String> runnerParameters = buildService.getBuildRunnerContext().getRunnerParameters();
+        Map<String,String> sharedConfigParameters = buildService.getBuildRunnerContext().getBuild().getSharedConfigParameters();
+        Map<String,String> environmentVariables = buildService.getAgentConfiguration().getBuildParameters().getEnvironmentVariables();
+        CheckmarxScanConfig scanConfig = PluginUtils.resolveConfiguration(runnerParameters, sharedConfigParameters);
+        String scanId = CheckmarxScanParamRetriever.scanIDRetriever(commandOutputPath.toString(),SCAN_ID_SEARCH_TEXT);
+
+        CheckmarxScanCancelCommandExecutor cancelCommand = new CheckmarxScanCancelCommandExecutor();
+        cancelCommand.cancelExecution(scanId, buildService.getCheckmarxCliToolPath(), buildService.getLogger(), scanConfig, environmentVariables);
+    }
+
 
     @Override
     public boolean isCommandLineLoggingEnabled() {
