@@ -2,21 +2,19 @@ package com.checkmarx.teamcity.agent.commands;
 
 
 import com.checkmarx.teamcity.common.CheckmarxScanConfig;
+import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
@@ -24,13 +22,6 @@ public class CheckmarxScanCreateCommand extends CheckmarxBuildServiceAdapter {
 
     private static final Logger LOG = Logger.getLogger(CheckmarxScanCreateCommand.class);
     private static CheckmarxScanConfig scanConfig;
-
-    private static String validateNotEmpty(String param, String paramName) throws InvalidParameterException {
-        if (param == null || param.length() == 0) {
-            throw new InvalidParameterException("Parameter [" + paramName + "] must not be empty");
-        }
-        return param;
-    }
 
     @NotNull
     @Override
@@ -66,21 +57,7 @@ public class CheckmarxScanCreateCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("scan");
         arguments.add("create");
 
-        arguments.add("--base-uri");
-        arguments.add(scanConfig.getServerUrl());
-
-        if (nullIfEmpty(scanConfig.getAuthenticationUrl()) != null) {
-            arguments.add("--base-auth-uri");
-            arguments.add(scanConfig.getAuthenticationUrl());
-        }
-
-        if (nullIfEmpty(scanConfig.getTenant()) != null) {
-            arguments.add("--tenant");
-            arguments.add(scanConfig.getTenant());
-        }
-
-        arguments.add("--client-id");
-        arguments.add(scanConfig.getClientId());
+        arguments.addAll(PluginUtils.getAuthenticationFlags(scanConfig));
 
         arguments.add("--agent");
         arguments.add("TeamCity");

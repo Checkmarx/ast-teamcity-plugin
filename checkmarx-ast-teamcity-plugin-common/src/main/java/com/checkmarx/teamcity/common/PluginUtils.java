@@ -4,9 +4,12 @@ import jetbrains.buildServer.serverSide.crypt.EncryptUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.checkmarx.teamcity.common.CheckmarxParams.*;
+import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
 public class PluginUtils {
 
@@ -60,6 +63,28 @@ public class PluginUtils {
 
         return scanConfig;
 
+    }
+
+    public static List<String> getAuthenticationFlags(CheckmarxScanConfig scanConfig) {
+        List<String> arguments = new ArrayList<>();
+
+        arguments.add("--base-uri");
+        arguments.add(scanConfig.getServerUrl());
+
+        if (nullIfEmpty(scanConfig.getAuthenticationUrl()) != null) {
+            arguments.add("--base-auth-uri");
+            arguments.add(scanConfig.getAuthenticationUrl());
+        }
+
+        if (nullIfEmpty(scanConfig.getTenant()) != null) {
+            arguments.add("--tenant");
+            arguments.add(scanConfig.getTenant());
+        }
+
+        arguments.add("--client-id");
+        arguments.add(scanConfig.getClientId());
+
+        return arguments;
     }
 
     private static String validateNotEmpty(String param, String paramName) throws InvalidParameterException {

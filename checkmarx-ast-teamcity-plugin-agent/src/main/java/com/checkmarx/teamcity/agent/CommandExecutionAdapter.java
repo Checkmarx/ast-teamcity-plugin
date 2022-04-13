@@ -74,8 +74,9 @@ public class CommandExecutionAdapter implements CommandExecution {
         Map<String,String> environmentVariables = buildService.getAgentConfiguration().getBuildParameters().getEnvironmentVariables();
         CheckmarxScanConfig scanConfig = PluginUtils.resolveConfiguration(runnerParameters, sharedConfigParameters);
         String scanId = CheckmarxScanParamRetriever.scanIDRetriever(commandOutputPath.toString(),SCAN_ID_SEARCH_TEXT);
+
         CheckmarxScanCancelCommandExecutor cancelCommand = new CheckmarxScanCancelCommandExecutor();
-        cancelCommand.cancelExecution(scanId, buildService.getCheckmarxCliToolPath(), buildService.getLogger(),scanConfig,environmentVariables);
+        cancelCommand.cancelExecution(scanId, buildService.getCheckmarxCliToolPath(), buildService.getLogger(), scanConfig, environmentVariables);
     }
 
 

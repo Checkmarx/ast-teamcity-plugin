@@ -1,8 +1,9 @@
 package com.checkmarx.teamcity.agent.commands;
 
-import com.checkmarx.teamcity.common.CheckmarxScanParamRetriever;
 import com.checkmarx.teamcity.common.CheckmarxScanConfig;
+import com.checkmarx.teamcity.common.CheckmarxScanParamRetriever;
 import com.checkmarx.teamcity.common.CheckmarxScanRunnerConstants;
+import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.TeamCityRuntimeException;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
@@ -12,10 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
-import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 
 public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
     private static final Logger LOG = Logger.getLogger(CheckmarxResultsCommand.class);
@@ -61,21 +64,7 @@ public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("results");
         arguments.add("show");
 
-        arguments.add("--base-uri");
-        arguments.add(scanConfig.getServerUrl());
-
-        if (nullIfEmpty(scanConfig.getAuthenticationUrl()) != null) {
-            arguments.add("--base-auth-uri");
-            arguments.add(scanConfig.getAuthenticationUrl());
-        }
-
-        if (nullIfEmpty(scanConfig.getTenant()) != null) {
-            arguments.add("--tenant");
-            arguments.add(scanConfig.getTenant());
-        }
-
-        arguments.add("--client-id");
-        arguments.add(scanConfig.getClientId());
+        arguments.addAll(PluginUtils.getAuthenticationFlags(scanConfig));
 
         arguments.add("--scan-id");
         arguments.add(scanId);
