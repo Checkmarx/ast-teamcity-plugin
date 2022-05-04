@@ -75,9 +75,9 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
         steps.add(addCommand(checkmarxScanCreateCommand, Paths.get(buildTempDirectory, CheckmarxScanRunnerConstants.SCAN_OUTPUT_LOG_TEXT)));
 
         String additionalParameters = buildRunnerContext.getRunnerParameters().get(CheckmarxParams.ADDITIONAL_PARAMETERS);
-        if (additionalParameters != null && additionalParameters.contains("--nowait")) {
+        if (additionalParameters != null && additionalParameters.contains("--async")) {
             buildRunnerContext.getBuild().getBuildLogger().message(" =====WARNING=====");
-            buildRunnerContext.getBuild().getBuildLogger().message(" Since \"--nowait\" is used, result summary wont be available.");
+            buildRunnerContext.getBuild().getBuildLogger().message(" Since \"--async\" is used, result summary wont be available.");
             buildRunnerContext.getBuild().getBuildLogger().message(" =================");
 
         } else {
