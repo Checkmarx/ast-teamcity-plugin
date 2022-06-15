@@ -9,6 +9,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    reviewers:
+      - "Checkmarx/ast-galactica-team"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the
@@ -16,3 +18,5 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    reviewers:
+      - "Checkmarx/ast-galactica-team"
