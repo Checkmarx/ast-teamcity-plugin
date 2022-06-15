@@ -21,14 +21,14 @@ import static jetbrains.buildServer.util.StringUtil.nullIfEmpty;
 public class CheckmarxScanCreateCommand extends CheckmarxBuildServiceAdapter {
 
     private static final Logger LOG = Logger.getLogger(CheckmarxScanCreateCommand.class);
-    private static CheckmarxScanConfig scanConfig;
+    private CheckmarxScanConfig scanConfig;
 
     @NotNull
     @Override
     public ProgramCommandLine makeProgramCommandLine() throws RunBuildException {
 
         scanConfig = initExecutionCall();
-        LOG.info("-----------------------Checkmarx: Initiating the Scan Command------------------------");
+        LOG.info("----------------------- Checkmarx: Initiating the Scan Command ------------------------");
         String checkmarxCliToolPath = getCheckmarxCliToolPath();
 
         Map<String, String> envVars = new HashMap<>(getEnvironmentVariables());
