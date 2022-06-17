@@ -23,8 +23,8 @@ import static java.lang.String.format;
 public class CheckmarxResultsCommand extends CheckmarxBuildServiceAdapter {
     private static final Logger LOG = Logger.getLogger(CheckmarxResultsCommand.class);
 
-    private static CheckmarxScanConfig scanConfig;
-    private static String scanId;
+    private CheckmarxScanConfig scanConfig;
+    private String scanId;
 
 
     @Override

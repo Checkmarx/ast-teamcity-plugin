@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class CheckmarxAdminConfig {
@@ -41,12 +42,11 @@ public class CheckmarxAdminConfig {
         this.properties.put(CheckmarxParams.GLOBAL_AST_SECRET, "");
         this.properties.put(CheckmarxParams.GLOBAL_ADDITIONAL_PARAMETERS, "");
 
-        configFile.getParentFile().mkdirs();
         PropertiesUtil.storeProperties(this.properties, configFile, "");
     }
 
-    private void loadConfiguration(@NotNull final File configFile) throws IOException {
-        try (FileReader fileReader = new FileReader(configFile)) {
+    private void loadConfiguration(@NotNull File configFile) throws IOException {
+        try (FileReader fileReader = new FileReader(configFile, StandardCharsets.UTF_8)) {
             this.properties.load(fileReader);
             for (String conf : CheckmarxParams.GLOBAL_CONFIGS) {
                 if (this.properties.get(conf) == null) {

@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CheckmarxEditRunTypeControllerExtension implements EditRunTypeControllerExtension
@@ -34,7 +35,7 @@ public class CheckmarxEditRunTypeControllerExtension implements EditRunTypeContr
     @Override
     public void fillModel(@NotNull HttpServletRequest httpServletRequest, @NotNull BuildTypeForm buildTypeForm, @NotNull Map<String, Object> model) {
 
-        Map<String, String> properties = null;
+        Map<String, String> properties = new HashMap<>();
         final BuildRunnerBean buildRunnerBean = buildTypeForm.getBuildRunnerBean();
         try {
             Method propertiesBeanMethod = BuildRunnerBean.class.getDeclaredMethod("getPropertiesBean");
@@ -85,7 +86,7 @@ public class CheckmarxEditRunTypeControllerExtension implements EditRunTypeContr
     @NotNull
     @Override
     public ActionErrors validate(@NotNull HttpServletRequest httpServletRequest, @NotNull BuildTypeForm buildTypeForm) {
-        Map<String, String> properties = null;
+        Map<String, String> properties = new HashMap<>();
         final BuildRunnerBean buildRunnerBean = buildTypeForm.getBuildRunnerBean();
         try {
             Method propertiesBeanMethod = BuildRunnerBean.class.getDeclaredMethod("getPropertiesBean");

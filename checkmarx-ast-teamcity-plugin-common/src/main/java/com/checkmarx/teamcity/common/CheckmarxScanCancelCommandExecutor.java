@@ -6,6 +6,7 @@ import jetbrains.buildServer.agent.BuildProgressLogger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +27,8 @@ public class CheckmarxScanCancelCommandExecutor {
             cancelScanProcessBuilder.environment().putAll(envVars);
 
             Process process = cancelScanProcessBuilder.start();
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
 
             int exitValue = process.waitFor();
 
@@ -38,7 +39,8 @@ public class CheckmarxScanCancelCommandExecutor {
             while ((line = err.readLine()) != null) {
                 buildProgressLogger.message(line);
             }
-
+            in.close();
+            err.close();
             buildProgressLogger.message("Scan cancel finish with exit code: " + exitValue);
         } catch (IOException | InterruptedException e) {
             buildProgressLogger.message("Error canceling: " + e.getMessage());

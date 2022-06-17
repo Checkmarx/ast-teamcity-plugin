@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static java.lang.String.format;
 
@@ -18,7 +19,7 @@ public class CheckmarxScanParamRetriever {
         String scanID = null;
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader(filePath));
+            bufferedReader = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8));
             String logLine = bufferedReader.readLine();
             while(logLine != null) {
                 LOG.warn("Log Line: " + logLine);
