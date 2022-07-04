@@ -2,6 +2,8 @@ name: AST TeamCity plugin CI
 
 on: [pull_request]
 
+permissions: read-all|write-all
+
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
