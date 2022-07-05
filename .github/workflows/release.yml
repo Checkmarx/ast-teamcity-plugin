@@ -41,30 +41,43 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      # Create the release
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1.1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@master
         with:
+          release_name: Checkmarx Azure ${{ env.RELEASE_VERSION }}
           tag_name: ${{ env.RELEASE_VERSION }}
-          release_name: ${{ env.RELEASE_VERSION }}
-          draft: false
-          prerelease: false
+          files: ./build/target/checkmarx-ast-teamcity-plugin.zip
+          generate_release_notes: true
 
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/target/checkmarx-ast-teamcity-plugin.zip
-          asset_name: checkmarx-ast-teamcity-plugin.zip
-          asset_content_type: application/zip
-          overwrite: true
-
-      - name: Releaes to marketplace
+      - name: Release to marketplace
         run: |
           curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+
+      - name: Get latest release notes
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          body_release="$(gh api -H "Accept: application/vnd.github.v3+json" /repos/Checkmarx/ast-teamcity-plugin/releases/latest | jq -r '.body' )"
+          body_release="${body_release//$'\n'/'%0A'}"
+          echo "::set-output name=body_release::$body_release"
+      - name: Converts Markdown to HTML
+        id: convert
+        uses: lifepal/markdown-to-html@v1.2
+        with:
+          text: "${{ steps.release.outputs.body_release }}"
+
+      - name: Clean html
+        id: clean
+        run: |
+          clean="$(echo "${{ steps.convert.outputs.html }}" | awk '{gsub(/id=.[a-z]+/,"");print}' | tr -d '\n')"
+          echo "$clean"
+          echo "::set-output name=clean::$clean"
+          
+      - name: Send a Notification
+        id: notify
+        uses: thechetantalwar/teams-notify@v2
+        with:
+          teams_webhook_url: ${{ secrets.TEAMS_WEBHOOK_URI }}  
+          message: "<h1>Checkmarx TeamCity Pluign ${{ env.RELEASE_VERSION }}</h1>${{ steps.clean.outputs.clean }}"
