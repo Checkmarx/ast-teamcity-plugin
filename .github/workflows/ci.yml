@@ -31,6 +31,7 @@ jobs:
         run: mvn -B verify
 
       - name: Run SpotBugs Analysis
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: jwgmeligmeyling/spotbugs-github-action@master
         with:
           path: '**/spotbugsXml.xml'
