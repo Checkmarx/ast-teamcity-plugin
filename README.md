@@ -20,7 +20,7 @@
 <p align="center">
     The CxAST TeamCity plugin enables you to trigger SAST, SCA, and KICS scans directly from a TeamCity project.
     <br />
-    <a href="https://checkmarx.atlassian.net/wiki/spaces/AST/pages/6023875112/TeamCity+Plugin"><strong>Explore the docs »</strong></a>
+    <a href="https://checkmarx.com/resource/documents/en/34965-68696-checkmarx-one-teamcity-plugin.html"><strong>Explore the docs »</strong></a>
     <br />
     <a href="https://plugins.jetbrains.com/plugin/17610-checkmarx-ast"><strong>Marketplace »</strong></a>
     <br />
@@ -77,13 +77,13 @@ TFS and Perforce are partially supported. See TeamCity documentation here.)
 ### Setting Up
 
 
-All the procedures to set the teamcity plugin up can be found [here](https://checkmarx.atlassian.net/wiki/spaces/AST/pages/6022729247/Installing+the+TeamCity+CxAST+Plugin).
+All the procedures to set the teamcity plugin up can be found [here](https://checkmarx.com/resource/documents/en/34965-68698-configuring-global-integration-settings-for-checkmarx-one-teamcity-plugin.html).
 
 
 
 ## Usage
 
-To see how you can use our tool, please refer to the [Documentation](https://checkmarx.atlassian.net/wiki/spaces/AST/pages/6023875112/TeamCity+Plugin)
+To see how you can use our tool, please refer to the [Documentation](https://checkmarx.com/resource/documents/en/34965-68696-checkmarx-one-teamcity-plugin.htmln)
 
 ## Contribution
 
