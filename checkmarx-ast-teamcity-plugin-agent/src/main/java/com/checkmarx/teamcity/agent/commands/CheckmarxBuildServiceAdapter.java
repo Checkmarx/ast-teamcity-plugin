@@ -84,6 +84,7 @@ public abstract class CheckmarxBuildServiceAdapter extends BuildServiceAdapter {
             return BuildFinishedStatus.FINISHED_SUCCESS;
         }
         return getBuild().getFailBuildOnExitCode() ? BuildFinishedStatus.FINISHED_FAILED : BuildFinishedStatus.FINISHED_SUCCESS;
+    //    return BuildFinishedStatus.FINISHED_WITH_PROBLEMS;
     }
 
     protected CheckmarxScanConfig initExecutionCall() {

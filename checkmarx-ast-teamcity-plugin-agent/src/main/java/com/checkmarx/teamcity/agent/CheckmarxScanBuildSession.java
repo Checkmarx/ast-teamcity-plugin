@@ -44,11 +44,12 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
     @Nullable
     @Override
     public CommandExecution getNextCommand() {
-        if (buildSteps.hasNext() && (lastCommand == null || !lastCommand.getResult().isFailed())) {
-            lastCommand = buildSteps.next();
-            return lastCommand;
-        }
-        return null;
+//        if (buildSteps.hasNext() && (lastCommand == null)) {
+//            lastCommand = buildSteps.next();
+//            return lastCommand;
+//        }
+//        return null;
+        return buildSteps.hasNext() ? buildSteps.next() : null;
     }
 
     @Nullable
