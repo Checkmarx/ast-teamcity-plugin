@@ -31,6 +31,8 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
     private Iterator<CommandExecutionAdapter> buildSteps;
     private CommandExecutionAdapter lastCommand;
 
+    private List<BuildFinishedStatus> resultList  = new ArrayList<>();
+
     public CheckmarxScanBuildSession(@NotNull ArtifactsWatcher artifactsWatcher, @NotNull BuildRunnerContext buildRunnerContext) {
         this.artifactsWatcher = artifactsWatcher;
         this.buildRunnerContext = requireNonNull(buildRunnerContext);
@@ -44,7 +46,9 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
     @Nullable
     @Override
     public CommandExecution getNextCommand() {
-        if (buildSteps.hasNext() && (lastCommand == null || !lastCommand.getResult().isFailed())) {
+        if (buildSteps.hasNext()) {
+            BuildFinishedStatus lastCommandStatus = lastCommand != null ? lastCommand.getResult(): null;
+            resultList.add(lastCommandStatus);
             lastCommand = buildSteps.next();
             return lastCommand;
         }
@@ -60,7 +64,7 @@ public class CheckmarxScanBuildSession implements MultiCommandBuildSession {
         if (checkmarxScanReport.toFile().exists()) {
             artifactsWatcher.addNewArtifactsPath(checkmarxScanReport.toAbsolutePath().toString() + " => " + TEAMCITY_ARTIFACTS_DIR + separator + CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME);
         }
-        return lastCommand.getResult();
+        return resultList.contains(BuildFinishedStatus.FINISHED_FAILED) ? BuildFinishedStatus.FINISHED_FAILED : lastCommand.getResult();
     }
 
     private Iterator<CommandExecutionAdapter> getBuildSteps() {
