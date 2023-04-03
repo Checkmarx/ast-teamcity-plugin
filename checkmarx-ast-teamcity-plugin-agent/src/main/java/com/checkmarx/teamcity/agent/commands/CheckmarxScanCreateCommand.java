@@ -71,9 +71,7 @@ public class CheckmarxScanCreateCommand extends CheckmarxBuildServiceAdapter {
         arguments.add("-s");
         arguments.add(".");
 
-        if (nullIfEmpty(scanConfig.getAdditionalParameters()) != null) {
-            arguments.addAll(asList(scanConfig.getAdditionalParameters().split("\\s+")));
-        }
+        arguments.addAll(scanConfig.getAdditionalParameters());
 
         return arguments;
     }
