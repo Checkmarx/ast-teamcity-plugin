@@ -1,21 +1,52 @@
 name: Release Creation
 
 on:
-  push:
-    tags:
-      - "*"
-
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Next release tag'
+        required: true
+        type: string
+      rchannels:
+        description: 'Channels to publish development releases'
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Next release tag'
+        required: true
+        type: string
+      rchannels:
+        description: 'Channels to publish development releases'
+        required: false
+        type: string
 jobs:
+  deleteDevReleases:
+    uses: Checkmarx/ast-teamcity-plugin/.github/workflows/delete-dev-releases.yml@main
+    with:
+      tag: ${{ inputs.rchannels }}
+    secrets: inherit
+    if: inputs.rchannels
   release:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3.5.3
-
+      # Set the tag in an env var
       - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-
+        run: |
+          echo "RELEASE_VERSION=${{ inputs.tag }}" >> $GITHUB_ENV
+      - name: Create Release Name
+        run: |
+          echo "Creating release name"
+          if [ -z "${{ inputs.rchannels }}" ]; then
+            echo "GH_RELEASE_TAG_NAME=${{ env.RELEASE_VERSION }}" >> $GITHUB_ENV
+          else
+            echo "GH_RELEASE_TAG_NAME=${{ env.RELEASE_VERSION }}-${{ inputs.rchannels }}" >> $GITHUB_ENV
+          fi
+           echo "Release name - ${{ env.GH_RELEASE_TAG_NAME }}"
       - name: Cache local Maven repository
         uses: actions/cache@v3.3.1
         with:
@@ -52,8 +83,11 @@ jobs:
 
       - name: Release to marketplace
         run: |
-          curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
-
+          if [ -z "${{ inputs.rchannels }}" ]; then
+            curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+          else
+            curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F channel=${{ inputs.rchannels }} -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+          fi
       - name: Get latest release notes
         id: release
         env:
@@ -74,10 +108,10 @@ jobs:
           clean="$(echo "${{ steps.convert.outputs.html }}" | awk '{gsub(/id=.[a-z]+/,"");print}' | tr -d '\n')"
           echo "$clean"
           echo "::set-output name=clean::$clean"
-          
+
       - name: Send a Notification
         id: notify
         uses: thechetantalwar/teams-notify@v2
         with:
-          teams_webhook_url: ${{ secrets.TEAMS_WEBHOOK_URI }}  
-          message: "<h1>Checkmarx TeamCity Pluign ${{ env.RELEASE_VERSION }}</h1>${{ steps.clean.outputs.clean }}"
+          teams_webhook_url: ${{ secrets.TEAMS_WEBHOOK_URI }}
+          message: "<h1>Checkmarx TeamCity Plugin ${{ env.RELEASE_VERSION }}</h1>${{ steps.clean.outputs.clean }}"
