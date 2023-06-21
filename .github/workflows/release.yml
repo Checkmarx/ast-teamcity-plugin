@@ -73,13 +73,14 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       # Create the release
-      - name: Create Release
+      - name: Create Release or Pre-release
         uses: softprops/action-gh-release@master
         with:
           release_name: Checkmarx Azure ${{ env.RELEASE_VERSION }}
-          tag_name: ${{ env.RELEASE_VERSION }}
+          tag_name: ${{ env.GH_RELEASE_TAG_NAME }}
           files: ./build/target/checkmarx-ast-teamcity-plugin.zip
           generate_release_notes: true
+          prerelease: ${{ inputs.rchannels != '' && inputs.rchannels != null }}
 
       - name: Release to marketplace
         run: |
