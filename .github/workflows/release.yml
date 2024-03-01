@@ -48,7 +48,7 @@ jobs:
           fi
            echo "Release name - ${{ env.GH_RELEASE_TAG_NAME }}"
       - name: Cache local Maven repository
-        uses: actions/cache@v4.0.0
+        uses: actions/cache@v4.0.1
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
