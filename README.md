@@ -15,6 +15,7 @@
     <img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/logo.png" alt="Logo" width="80" height="80" />
   </a>
 
+
 <h3 align="center">AST TEAMCITY PLUGIN</h3>
 
 <p align="center">
