@@ -47,11 +47,11 @@ jobs:
       - name: Track large files with Git LFS
         if: steps.checkmarx-ast-cli.outputs.current_tag != steps.checkmarx-ast-cli.outputs.release_tag
         run: |
-          git lfs track "src/main/wrapper/resources/cx-linux"
-          git lfs track "src/main/wrapper/resources/cx.exe"
-          git lfs track "src/main/wrapper/resources/cx-mac"
+          git lfs track "checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-linux"
+          git lfs track "checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe"
+          git lfs track "checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac"
           git add .gitattributes
-          git add src/main/wrapper/resources/cx-linux src/main/wrapper/resources/cx.exe src/main/wrapper/resources/cx-mac
+          git add checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-linux checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
           git commit -m "Track Checkmarx CLI binaries with Git LFS"      
   
       - name: Create Pull Request
