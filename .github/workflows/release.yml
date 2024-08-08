@@ -34,10 +34,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
-      # Set the tag in an env var
+        with:
+          lfs: true  # Ensure LFS files are checked out
+   
+          # Set the tag in an env var
       - name: Set env
         run: |
           echo "RELEASE_VERSION=${{ inputs.tag }}" >> $GITHUB_ENV
+   
       - name: Create Release Name
         run: |
           echo "Creating release name"
@@ -47,6 +51,7 @@ jobs:
             echo "GH_RELEASE_TAG_NAME=${{ env.RELEASE_VERSION }}-${{ inputs.rchannels }}" >> $GITHUB_ENV
           fi
            echo "Release name - ${{ env.GH_RELEASE_TAG_NAME }}"
+      
       - name: Cache local Maven repository
         uses: actions/cache@v4.0.2
         with:
@@ -89,6 +94,7 @@ jobs:
           else
             curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F channel=${{ inputs.rchannels }} -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           fi
+      
       - name: Get latest release notes
         id: release
         env:
@@ -97,6 +103,7 @@ jobs:
           body_release="$(gh api -H "Accept: application/vnd.github.v3+json" /repos/Checkmarx/ast-teamcity-plugin/releases/latest | jq -r '.body' )"
           body_release="${body_release//$'\n'/'%0A'}"
           echo "::set-output name=body_release::$body_release"
+      
       - name: Converts Markdown to HTML
         id: convert
         uses: lifepal/markdown-to-html@253bbd85fbdeafe2d1f18c1b9289be24e5cf8f8f #v1.2
