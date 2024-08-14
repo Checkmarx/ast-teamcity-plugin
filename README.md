@@ -25,7 +25,7 @@
     <a href="https://plugins.jetbrains.com/plugin/17610-checkmarx-ast"><strong>Marketplace »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/checkmarx/ast-teamcity-plugin/issues/new">Report Bug</a>
+    <a href="https://github.com/checkmarx/ast-teamcity-plugin/issues/new">Report Bug:</a>
     ·
     <a href="https://github.com/checkmarx/ast-teamcity-plugin/issues/new">Request Feature</a>
   </p>
