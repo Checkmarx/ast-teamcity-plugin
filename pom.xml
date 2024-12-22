@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.checkmarx.teamcity</groupId>
-  <artifactId>checkmarx-ast-teamcity-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <properties>
-      <teamcity-version>2024.11-SNAPSHOT</teamcity-version>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.checkmarx.teamcity</groupId>
+    <artifactId>checkmarx-ast-teamcity-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <properties>
+        <teamcity-version>2024.11-SNAPSHOT</teamcity-version>
 
-      <maven.compiler.source>1.8</maven.compiler.source>
-      <maven.compiler.target>1.8</maven.compiler.target>
-      <project.sourceCompatibility>1.8</project.sourceCompatibility>
-      <project.targetCompatibility>1.8</project.targetCompatibility>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
-      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.sourceCompatibility>1.8</project.sourceCompatibility>
+        <project.targetCompatibility>1.8</project.targetCompatibility>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <springFramework.version>6.1.14</springFramework.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -24,9 +26,18 @@
                 <artifactId>tests-support</artifactId>
                 <version>${teamcity-version}</version>
                 <exclusions>
-                    <exclusion><groupId>org.springframework.ldap</groupId><artifactId>spring-ldap-core</artifactId></exclusion>
-                    <exclusion><groupId>org.springframework.security</groupId><artifactId>spring-security-config</artifactId></exclusion>
-                    <exclusion><groupId>org.springframework.security</groupId><artifactId>spring-security-crypto</artifactId></exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.ldap</groupId>
+                        <artifactId>spring-ldap-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-config</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-crypto</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -34,94 +45,100 @@
                 <artifactId>server-api</artifactId>
                 <version>${teamcity-version}</version>
                 <exclusions>
-                    <exclusion><groupId>org.springframework.security</groupId><artifactId>spring-security-config</artifactId></exclusion>
-                    <exclusion><groupId>org.springframework.security</groupId><artifactId>spring-security-crypto</artifactId></exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-config</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-crypto</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.1.14</version>
+                <version>${springFramework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
-                <version>6.1.14</version>
+                <version>${springFramework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>6.1.14</version>
+                <version>${springFramework.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-  <pluginRepositories>
-      <pluginRepository>
-          <id>JetBrains</id>
-          <url>https://download.jetbrains.com/teamcity-repository</url>
-      </pluginRepository>
-  </pluginRepositories>
-  <build>
-      <plugins>
-          <plugin>
-              <groupId>com.github.spotbugs</groupId>
-              <artifactId>spotbugs-maven-plugin</artifactId>
-              <version>4.8.6.2</version>
-              <configuration>
-                  <effort>Max</effort>
-                  <threshold>High</threshold>
-                  <xmlOutput>true</xmlOutput>
-                  <failOnError>false</failOnError>
-              </configuration>
-              <executions>
-                  <execution>
-                      <goals>
-                          <goal>check</goal>
-                      </goals>
-                  </execution>
-              </executions>
-          </plugin>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                  <compilerArgs>
-                      <arg>-Xlint:all,-options,-path</arg>
-                  </compilerArgs>
-                  <source>${project.sourceCompatibility}</source>
-                  <target>${project.targetCompatibility}</target>
-              </configuration>
-              <version>3.13.0</version>
-          </plugin>
-          <plugin>
-              <groupId>org.jetbrains.teamcity</groupId>
-              <artifactId>teamcity-sdk-maven-plugin</artifactId>
-              <version>0.4.3</version>
-              <configuration>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>JetBrains</id>
+            <url>https://download.jetbrains.com/teamcity-repository</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.8.6.2</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>High</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <failOnError>false</failOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-Xlint:all,-options,-path</arg>
+                    </compilerArgs>
+                    <source>${project.sourceCompatibility}</source>
+                    <target>${project.targetCompatibility}</target>
+                </configuration>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.teamcity</groupId>
+                <artifactId>teamcity-sdk-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
                     <!-- Path to local environment agent setup for debugging agent and server -->
-              </configuration>
-          </plugin>
-      </plugins>
-      <pluginManagement>
-          <plugins>
-              <plugin>
-                  <groupId>org.jetbrains.teamcity</groupId>
-                  <artifactId>teamcity-sdk-maven-plugin</artifactId>
-                  <version>0.4.3</version>
-                  <configuration>
-                    <!-- Path to local environment agent setup for debugging agent and server -->
-                  </configuration>
-              </plugin>
-          </plugins>
-      </pluginManagement>
-  </build>
-  <modules>
-    <module>checkmarx-ast-teamcity-plugin-server</module>
-    <module>checkmarx-ast-teamcity-plugin-agent</module>
-    <module>checkmarx-ast-teamcity-plugin-common</module>
-    <module>build</module>
-  </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jetbrains.teamcity</groupId>
+                    <artifactId>teamcity-sdk-maven-plugin</artifactId>
+                    <version>0.4.3</version>
+                    <configuration>
+                        <!-- Path to local environment agent setup for debugging agent and server -->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <modules>
+        <module>checkmarx-ast-teamcity-plugin-server</module>
+        <module>checkmarx-ast-teamcity-plugin-agent</module>
+        <module>checkmarx-ast-teamcity-plugin-common</module>
+        <module>build</module>
+    </modules>
 
     <repositories>
         <repository>
