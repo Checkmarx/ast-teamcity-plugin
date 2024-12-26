@@ -30,7 +30,6 @@
            <artifactId>checkmarx-ast-teamcity-plugin-server</artifactId>
            <version>1.0-SNAPSHOT</version>
       </dependency>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
