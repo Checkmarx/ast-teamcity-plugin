@@ -30,7 +30,6 @@
             <artifactId>tests-support</artifactId>
             <version>${teamcity-version}</version>
             <scope>test</scope>
-            </exclusions>
         </dependency>
 
 
