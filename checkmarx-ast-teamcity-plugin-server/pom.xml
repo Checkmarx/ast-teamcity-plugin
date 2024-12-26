@@ -22,6 +22,7 @@
       <artifactId>server-api</artifactId>
       <version>${teamcity-version}</version>
       <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.jetbrains.teamcity</groupId>
