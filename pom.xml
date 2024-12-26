@@ -56,7 +56,6 @@
                     <source>${project.sourceCompatibility}</source>
                     <target>${project.targetCompatibility}</target>
                 </configuration>
-                <version>3.13.0</version>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.teamcity</groupId>
