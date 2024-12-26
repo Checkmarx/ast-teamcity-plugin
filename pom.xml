@@ -19,59 +19,6 @@
         <springFramework.version>6.1.14</springFramework.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jetbrains.teamcity</groupId>
-                <artifactId>tests-support</artifactId>
-                <version>${teamcity-version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework.ldap</groupId>
-                        <artifactId>spring-ldap-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework.security</groupId>
-                        <artifactId>spring-security-config</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework.security</groupId>
-                        <artifactId>spring-security-crypto</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.teamcity</groupId>
-                <artifactId>server-api</artifactId>
-                <version>${teamcity-version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework.security</groupId>
-                        <artifactId>spring-security-config</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework.security</groupId>
-                        <artifactId>spring-security-crypto</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <pluginRepositories>
         <pluginRepository>
@@ -109,7 +56,6 @@
                     <source>${project.sourceCompatibility}</source>
                     <target>${project.targetCompatibility}</target>
                 </configuration>
-                <version>3.13.0</version>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.teamcity</groupId>
