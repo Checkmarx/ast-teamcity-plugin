@@ -22,6 +22,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.jetbrains.teamcity</groupId>
                 <artifactId>agent-api</artifactId>
                 <version>${teamcity-version}</version>
