@@ -44,6 +44,12 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
+      <dependency>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-api</artifactId>
+          <version>2024.12</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
 
