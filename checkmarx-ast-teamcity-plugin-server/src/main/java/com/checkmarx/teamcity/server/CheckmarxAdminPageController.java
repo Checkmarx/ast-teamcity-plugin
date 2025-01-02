@@ -82,4 +82,8 @@ public class CheckmarxAdminPageController extends BaseFormXmlController {
 
         return errors;
     }
+    @Override
+    protected ModelAndView handleRequestInternal(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws Exception {
+        return null;
+    }
 }
