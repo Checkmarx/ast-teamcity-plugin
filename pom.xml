@@ -61,10 +61,6 @@
                         <groupId>commons-httpclient</groupId>
                         <artifactId>commons-httpclient</artifactId>
                     </exclusion>
-<!--                    <exclusion>-->
-<!--                        <groupId>org.jdom</groupId>-->
-<!--                        <artifactId>jdom</artifactId>-->
-<!--                    </exclusion>-->
                 </exclusions>
             </dependency>
             <dependency>
