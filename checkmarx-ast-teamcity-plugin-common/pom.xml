@@ -13,14 +13,13 @@
     <dependency>
       <groupId>org.jetbrains.teamcity</groupId>
       <artifactId>agent-api</artifactId>
-      <version>${teamcity-version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.15.0</version>
+      <version>3.17.0</version>
     </dependency>
   </dependencies>
 
