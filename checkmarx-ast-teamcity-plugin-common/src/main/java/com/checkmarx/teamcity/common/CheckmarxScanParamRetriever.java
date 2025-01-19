@@ -4,8 +4,9 @@ import jetbrains.buildServer.TeamCityRuntimeException;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import static java.lang.String.format;
@@ -14,12 +15,12 @@ public class CheckmarxScanParamRetriever {
 
     private static final Logger LOG = Logger.getLogger(CheckmarxScanParamRetriever.class);
     private static final int MAX_SCAN_ID_LENGTH = 36;
-    
+
     public static String scanIDRetriever(String filePath, String scanIDSearchParam){
         String scanID = null;
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8));
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
             String logLine = bufferedReader.readLine();
             while(logLine != null) {
                 LOG.warn("Log Line: " + logLine);

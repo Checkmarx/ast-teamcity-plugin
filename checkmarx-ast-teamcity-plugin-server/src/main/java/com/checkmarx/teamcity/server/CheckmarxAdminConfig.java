@@ -6,10 +6,12 @@ import jetbrains.buildServer.util.PropertiesUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -46,7 +48,7 @@ public class CheckmarxAdminConfig {
     }
 
     private void loadConfiguration(@NotNull File configFile) throws IOException {
-        try (FileReader fileReader = new FileReader(configFile, StandardCharsets.UTF_8)) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8))) {
             this.properties.load(fileReader);
             for (String conf : CheckmarxParams.GLOBAL_CONFIGS) {
                 if (this.properties.get(conf) == null) {
