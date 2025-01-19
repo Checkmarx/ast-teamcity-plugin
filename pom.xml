@@ -270,7 +270,9 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>**/src/main/java/**</include>
+                                <include>**/checkmarx-ast-teamcity-plugin-agent/src/src/main/java/**</include>
+                                <include>**/checkmarx-ast-teamcity-plugin-common/src/src/main/java/**</include>
+                                <include>**/checkmarx-ast-teamcity-plugin-server/src/src/main/java/**</include>
                             </includes>
                         </configuration>
                     </execution>
