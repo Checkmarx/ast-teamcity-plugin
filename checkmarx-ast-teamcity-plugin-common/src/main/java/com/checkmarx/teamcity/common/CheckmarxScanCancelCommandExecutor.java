@@ -42,13 +42,17 @@ public class CheckmarxScanCancelCommandExecutor {
             in.close();
             err.close();
             buildProgressLogger.message("Scan cancel finish with exit code: " + exitValue);
+
+            if (exitValue != 0) {
+                throw new TeamCityRuntimeException("Scan cancellation failed with exit code: " + exitValue);
+            }
         } catch (IOException | InterruptedException e) {
             buildProgressLogger.message("Error canceling: " + e.getMessage());
             throw new TeamCityRuntimeException("Unable to cancel the scan for scanID: " + scanID + ":" + e.getMessage());
         }
     }
 
-    private List<String> populateScanCancelArguments(CheckmarxScanConfig scanConfig, String cliPath, String scanID) {
+    public List<String> populateScanCancelArguments(CheckmarxScanConfig scanConfig, String cliPath, String scanID) {
         List<String> arguments = new ArrayList<>();
         arguments.add(cliPath);
         arguments.add("scan");
