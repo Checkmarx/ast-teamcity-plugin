@@ -48,16 +48,16 @@ jobs:
       - name: Run tests with coverage
         run: mvn test jacoco:report
 
-      - name: Print total coverage percentage
-        run: |
-            COVERED_LINES=$(xmllint --xpath "string(//report/counter[@type='LINE']/@covered)" target/site/jacoco/jacoco.xml)
-            MISSED_LINES=$(xmllint --xpath "string(//report/counter[@type='LINE']/@missed)" target/site/jacoco/jacoco.xml)
-            TOTAL_LINES=$((COVERED_LINES + MISSED_LINES))
-            COVERAGE_PERCENTAGE=$(echo "scale=2; $COVERED_LINES / $TOTAL_LINES * 100" | bc)
-            echo "Total coverage percentage: $COVERAGE_PERCENTAGE%"
+#      - name: Print total coverage percentage
+#        run: |
+#            COVERED_LINES=$(xmllint --xpath "string(//report/counter[@type='LINE']/@covered)" target/site/jacoco/jacoco.xml)
+#            MISSED_LINES=$(xmllint --xpath "string(//report/counter[@type='LINE']/@missed)" target/site/jacoco/jacoco.xml)
+#            TOTAL_LINES=$((COVERED_LINES + MISSED_LINES))
+#            COVERAGE_PERCENTAGE=$(echo "scale=2; $COVERED_LINES / $TOTAL_LINES * 100" | bc)
+#            echo "Total coverage percentage: $COVERAGE_PERCENTAGE%"
 
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: target/site/jacoco
+#      - name: Upload coverage report
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: coverage-report
+#          path: target/site/jacoco
