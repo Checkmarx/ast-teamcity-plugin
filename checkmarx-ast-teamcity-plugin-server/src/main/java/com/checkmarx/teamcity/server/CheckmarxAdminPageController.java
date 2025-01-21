@@ -23,9 +23,9 @@ public class CheckmarxAdminPageController extends BaseFormXmlController {
 
     public static final String INVALID = "invalid_";
     private final static Logger LOG = Logger.getLogger(CheckmarxAdminPageController.class);
-    private final CheckmarxAdminConfig checkmarxAdminConfig;
+    private final CheckmarxAdminConfigBase checkmarxAdminConfig;
 
-    public CheckmarxAdminPageController(final CheckmarxAdminConfig checkmarxAdminConfig) {
+    public CheckmarxAdminPageController(@NotNull final CheckmarxAdminConfigBase checkmarxAdminConfig) {
         this.checkmarxAdminConfig = checkmarxAdminConfig;
     }
 

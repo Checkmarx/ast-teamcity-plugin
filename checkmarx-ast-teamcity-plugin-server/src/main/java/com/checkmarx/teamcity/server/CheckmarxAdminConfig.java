@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-public class CheckmarxAdminConfig {
+public class CheckmarxAdminConfig implements CheckmarxAdminConfigBase {
     private final ServerPaths serverPaths;
     private final Properties properties = new Properties();
     private static final Logger log = Logger.getLogger(CheckmarxAdminConfig.class);

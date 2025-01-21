@@ -7,10 +7,10 @@ import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import org.jetbrains.annotations.NotNull;
 
 public class CheckmarxBuildStartContextProcessor implements BuildStartContextProcessor {
-    private final CheckmarxAdminConfig cxAdminConfig;
+    private final CheckmarxAdminConfigBase cxAdminConfig;
     private final PluginDescriptor pluginDescriptor;
 
-    public CheckmarxBuildStartContextProcessor(@NotNull final CheckmarxAdminConfig cxAdminConfig,
+    public CheckmarxBuildStartContextProcessor(@NotNull final CheckmarxAdminConfigBase cxAdminConfig,
                                         final PluginDescriptor pluginDescriptor) {
         this.cxAdminConfig = cxAdminConfig;
         this.pluginDescriptor = pluginDescriptor;
