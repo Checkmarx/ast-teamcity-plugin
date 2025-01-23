@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.checkmarx.teamcity</groupId>
+        <artifactId>checkmarx-ast-teamcity-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>coverage-report</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.checkmarx.teamcity</groupId>
+            <artifactId>checkmarx-ast-teamcity-plugin-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.checkmarx.teamcity</groupId>
+            <artifactId>checkmarx-ast-teamcity-plugin-server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.checkmarx.teamcity</groupId>
+            <artifactId>checkmarx-ast-teamcity-plugin-agent</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.5.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>print-coverage</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>sh</executable>
+                            <arguments>
+                                <argument>-c</argument>
+                                <argument>echo "Coverage Summary:" &amp;&amp; echo "=================" &amp;&amp; awk -F, 'NR>1 {lines_covered+=$9; lines_total+=$8+$9; branches_covered+=$7; branches_total+=$6+$7; printf "%-50s: %6.2f%% (%d/%d lines)\n", substr($1,length("coverage-report/")+1) "/" substr($2,length("com.checkmarx.teamcity.")+1) "/" $3, ($9/($8+$9))*100, $9, ($8+$9);} END {printf "\nTotal Line Coverage: %.2f%% (%d/%d)\n", (lines_covered/lines_total)*100, lines_covered, lines_total; if (branches_total > 0) printf "Total Branch Coverage: %.2f%% (%d/%d)\n", (branches_covered/branches_total)*100, branches_covered, branches_total;}' ${project.reporting.outputDirectory}/jacoco-aggregate/jacoco.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

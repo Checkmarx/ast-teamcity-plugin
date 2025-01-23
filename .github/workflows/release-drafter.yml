@@ -1,9 +1,7 @@
 name: Create draft release
 
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
 
 jobs:
   release-draft:

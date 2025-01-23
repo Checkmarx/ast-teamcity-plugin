@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class CheckmarxAdminPage extends AdminPage {
-    private final CheckmarxAdminConfig checkmarxAdminConfig;
+    private final CheckmarxAdminConfigBase checkmarxAdminConfig;
 
-    protected CheckmarxAdminPage(@NotNull PagePlaces pagePlaces, @NotNull PluginDescriptor descriptor, @NotNull final WebControllerManager controllerManager, @NotNull final CheckmarxAdminConfig checkmarxAdminConfig) {
+    protected CheckmarxAdminPage(@NotNull PagePlaces pagePlaces, @NotNull PluginDescriptor descriptor, @NotNull final WebControllerManager controllerManager, @NotNull final CheckmarxAdminConfigBase checkmarxAdminConfig) {
         super(pagePlaces);
         this.checkmarxAdminConfig = checkmarxAdminConfig;
         setPluginName(CheckmarxScanRunnerConstants.RUNNER_TYPE);
