@@ -30,7 +30,8 @@ jobs:
     if: inputs.rchannels
   release:
     runs-on: ubuntu-latest
-
+    outputs:
+      CLI_VERSION: ${{ steps.extract_cli_version.outputs.CLI_VERSION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
@@ -51,7 +52,16 @@ jobs:
             echo "GH_RELEASE_TAG_NAME=${{ env.RELEASE_VERSION }}-${{ inputs.rchannels }}" >> $GITHUB_ENV
           fi
            echo "Release name - ${{ env.GH_RELEASE_TAG_NAME }}"
-      
+
+      - name: Extract CLI version
+        id: extract_cli_version
+        run: |
+          CLI_VERSION=$(./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx version | grep -Eo '^[0-9]+\.[0-9]+\.[0-9]+')
+          echo "CLI version being packed is $CLI_VERSION"
+          echo "CLI_VERSION=$CLI_VERSION" >> $GITHUB_ENV
+          echo "::set-output name=CLI_VERSION::$CLI_VERSION"
+
+
       - name: Cache local Maven repository
         uses: actions/cache@v4.0.2
         with:
@@ -94,33 +104,16 @@ jobs:
           else
             curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F channel=${{ inputs.rchannels }} -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           fi
-      
-      - name: Get latest release notes
-        id: release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          body_release="$(gh api -H "Accept: application/vnd.github.v3+json" /repos/Checkmarx/ast-teamcity-plugin/releases/latest | jq -r '.body' )"
-          body_release="${body_release//$'\n'/'%0A'}"
-          echo "::set-output name=body_release::$body_release"
-      
-      - name: Converts Markdown to HTML
-        id: convert
-        uses: lifepal/markdown-to-html@253bbd85fbdeafe2d1f18c1b9289be24e5cf8f8f #v1.2
-        with:
-          text: "${{ steps.release.outputs.body_release }}"
 
-      - name: Clean html
-        id: clean
-        run: |
-          clean="$(echo "${{ steps.convert.outputs.html }}" | awk '{gsub(/id=.[a-z]+/,"");print}' | tr -d '\n')"
-          echo "$clean"
-          echo "::set-output name=clean::$clean"
-
-      - name: Send a Notification
-        id: notify
-        uses: thechetantalwar/teams-notify@8a78811f5e8f58cdd204efebd79158006428c46b #v2
-        with:
-          teams_webhook_url: ${{ secrets.TEAMS_WEBHOOK_URI }}
-          message: "<h1>Checkmarx TeamCity Plugin ${{ env.RELEASE_VERSION }}</h1>${{ steps.clean.outputs.clean }}"
-        if: ${{ inputs.rchannels == '' || inputs.rchannels == null }}
+  notify:
+    needs: release
+    if: ${{ inputs.rchannels == 'daniel-test' || inputs.rchannels == '' || inputs.rchannels == null }}
+    uses: Checkmarx/plugins-release-workflow/.github/workflows/release-notify.yml@main
+    with:
+      product_name: AST Teamcity
+      release_version: ${{ inputs.tag }}
+      cli_release_version: ${{ needs.release.outputs.CLI_VERSION }}
+      release_author: "Phoenix Team"
+      release_url: https://github.com/Checkmarx/ast-teamcity-plugin/releases/tag/${{ inputs.tag }}
+      jira_product_name: AST_TEAMCITY
+    secrets: inherit
