@@ -107,7 +107,7 @@ jobs:
 
   notify:
     needs: release
-    if: ${{ inputs.rchannels == 'daniel-test' || inputs.rchannels == '' || inputs.rchannels == null }}
+    if: ${{ inputs.tag == '4.4.4' || inputs.rchannels == '' || inputs.rchannels == null }}
     uses: Checkmarx/plugins-release-workflow/.github/workflows/release-notify.yml@main
     with:
       product_name: AST Teamcity
