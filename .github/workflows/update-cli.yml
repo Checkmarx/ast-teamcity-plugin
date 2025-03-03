@@ -1,8 +1,8 @@
 name: Update checkmarx ast cli
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
+  repository_dispatch:
+    types: [cli-version-update]
 
 jobs:
   update-checkmarx-cli:
@@ -68,4 +68,4 @@ jobs:
 
             [1]: https://github.com/CheckmarxDev/checkmarx-ast-cli
           labels: cxone
-          branch: feature/update_cli
+          branch: feature/update_cli_${{ steps.checkmarx-ast-cli.outputs.release_tag }}
