@@ -34,9 +34,10 @@ jobs:
       CLI_VERSION: ${{ steps.extract_cli_version.outputs.CLI_VERSION }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4
         with:
           lfs: true  # Ensure LFS files are checked out
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
    
           # Set the tag in an env var
       - name: Set env
