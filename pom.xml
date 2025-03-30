@@ -59,7 +59,7 @@
             <dependency>
                 <groupId>org.jetbrains.teamcity</groupId>
                 <artifactId>server-api</artifactId>
-                <version>${teamcity-version}</version>
+                <version>2025.07-SNAPSHOT</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.bouncycastle</groupId>
