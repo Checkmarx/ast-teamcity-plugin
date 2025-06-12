@@ -12,7 +12,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Checkmarx/ast-teamcity-plugin">
-    <img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/xIcon.jpg" alt="Logo" width="80" height="80" />
+    <img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/cx-icon-logo.svg" alt="Logo" width="80" height="80" />
   </a>
 
 <h3 align="center">AST-TEAMCITY-PLUGIN</h3>
