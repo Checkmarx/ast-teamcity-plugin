@@ -12,7 +12,8 @@
 <br />
 <p align="center">
   <a href="https://github.com/Checkmarx/ast-teamcity-plugin">
-    <img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/cx-icon-logo.svg" alt="Logo" width="80" height="80" />
+    <img src="https://raw.githubusercontent.com/Checkmarx/ci-cd-integrations/main/.images/cx_logo.svg" 
+    alt="Logo" width="80" height="80" />
   </a>
 
 <h3 align="center">AST-TEAMCITY-PLUGIN</h3>
@@ -39,11 +40,10 @@
       <a href="#overview">Overview</a>
     </li>
     <li>
-      <a href="#main-features">Main Features</a>
+      <a href="#key-features">Key Features</a>
     </li>
     <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#initial-setup">Initial Setup</a></li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contribution">Contribution</a></li>
     <li><a href="#license">License</a></li>
         <li><a href="#feedback">Feedback</a></li>
@@ -61,7 +61,7 @@ The Checkmarx One (AST) TeamCity plugin enables you to integrate the full functi
 This plugin provides a wrapper around the [Checkmarx One CLI Tool](urn:resource:component:67829) which creates a zip archive from your source code repository and uploads it to Checkmarx One for scanning. This provides easy integration with TeamCity while enabling scan customization using the full functionality and flexibility of the CLI tool.
 The plugin code can be found [here](https://github.com/Checkmarx/ast-teamcity-plugin/releases).
 
-## Main Features
+## Key Features
 
 -   Configure TeamCity projects to automatically trigger scans running all Checkmarx One scanners: CxSAST, CxSCA, IaC Security, Container Security, API Security, Secret Detection and Repository Health (OSSF Scorecard).
 -   Supports use of CLI arguments to customize scan configuration,
@@ -86,13 +86,10 @@ The plugin code can be found [here](https://github.com/Checkmarx/ast-teamcity-pl
 
 <!-- INITIAL SETUP -->
 ## Initial Setup
--   Verify that all prerequisites are in place.
--   Install the **Checkmarx AST** plugin and configure the settings as
+1.   Verify that all prerequisites are in place.
+2.   Install the **Checkmarx AST** plugin and configure the settings as
     described [here](https://checkmarx.com/resource/documents/en/34965-68697-installing-the-teamcity-checkmarx-one-plugin.html).
 
-<!-- USAGE -->
-## Usage
-To see how you can use our tool, please refer to the [Documentation](https://checkmarx.com/resource/documents/en/34965-68696-checkmarx-one-teamcity-plugin.htmln)
 
 <!-- CONTRIBUTION -->
 ## Contribution
