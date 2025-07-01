@@ -58,7 +58,7 @@
 
 The Checkmarx One (AST) TeamCity plugin enables you to integrate the full functionality of the Checkmarx One platform into your TeamCity projects. You can use this plugin to trigger Checkmarx One scans as part of your CI/CD integration.
 > This plugin is used with the Checkmarx One platform. If you are using the CxSAST and/or CxSCA standalone products, then you need to install the [Checkmarx](https://plugins.jetbrains.com/plugin/10101-checkmarx) plugin.
-This plugin provides a wrapper around the [Checkmarx One CLI Tool](urn:resource:component:67829) which creates a zip archive from your source code repository and uploads it to Checkmarx One for scanning. This provides easy integration with TeamCity while enabling scan customization using the full functionality and flexibility of the CLI tool.
+This plugin provides a wrapper around the [Checkmarx One CLI Tool](https://checkmarx.com/resource/documents/en/34965-68620-checkmarx-one-cli-tool.html) which creates a zip archive from your source code repository and uploads it to Checkmarx One for scanning. This provides easy integration with TeamCity while enabling scan customization using the full functionality and flexibility of the CLI tool.
 The plugin code can be found [here](https://github.com/Checkmarx/ast-teamcity-plugin/releases).
 
 ## Key Features
