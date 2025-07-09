@@ -7,7 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
-        <teamcity-version>2024.12</teamcity-version>
+        <teamcity-version>2025.03</teamcity-version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -24,13 +24,13 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.7.1</version>
+            <version>7.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
+            <version>6.1.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -171,7 +171,7 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.79</version>
+                <version>1.81</version>
             </dependency>
             <dependency>
                 <groupId>xalan</groupId>
@@ -186,7 +186,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>33.4.0-android</version>
+                <version>33.4.8-jre</version>
             </dependency>
             <dependency>
                 <groupId>com.beust</groupId>
@@ -196,7 +196,7 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcpkix-jdk18on</artifactId>
-                <version>1.79</version>
+                <version>1.81</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>
@@ -206,17 +206,17 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
+                <version>6.5.1</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
+                <version>6.5.1</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>5.8.16</version>
+                <version>6.5.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
