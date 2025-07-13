@@ -17,7 +17,7 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Use Spring 6.x with proper servlet API configuration -->
-        <springFramework.version>6.1.20</springFramework.version>
+        <springFramework.version>6.1.21</springFramework.version>
         <springSecurity.version>6.3.5</springSecurity.version>
     </properties>
 
