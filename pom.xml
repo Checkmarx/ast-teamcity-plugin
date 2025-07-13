@@ -16,8 +16,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springFramework.version>5.3.39</springFramework.version>
-        <springSecurity.version>5.8.16</springSecurity.version>
+        <!-- Use Spring 6.x with proper servlet API configuration -->
+        <springFramework.version>6.1.14</springFramework.version>
+        <springSecurity.version>6.3.4</springSecurity.version>
     </properties>
 
 
@@ -28,11 +29,18 @@
             <version>7.7.1</version>
             <scope>test</scope>
         </dependency>
+        <!-- Add both servlet APIs for compatibility -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
