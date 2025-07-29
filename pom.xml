@@ -17,6 +17,7 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springFramework.version>6.1.21</springFramework.version>
+        <springSecurity.version>6.1.8</springSecurity.version>
     </properties>
 
 
@@ -135,6 +136,16 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
                 <version>${springFramework.version}</version>
             </dependency>
@@ -211,7 +222,12 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.3</version>
+                <version>1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${springFramework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.beust</groupId>
@@ -231,12 +247,12 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
+                <version>${springSecurity.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>5.8.16</version>
+                <version>${springSecurity.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -359,6 +375,11 @@
     </modules>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
         <repository>
             <id>jetbrains-all</id>
             <url>https://download.jetbrains.com/teamcity-repository</url>
