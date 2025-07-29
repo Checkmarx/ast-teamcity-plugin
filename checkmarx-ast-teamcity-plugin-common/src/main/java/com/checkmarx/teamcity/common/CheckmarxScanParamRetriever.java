@@ -17,6 +17,11 @@ public class CheckmarxScanParamRetriever {
     private static final int MAX_SCAN_ID_LENGTH = 36;
 
     public static String scanIDRetriever(String filePath, String scanIDSearchParam){
+        if (scanIDSearchParam == null || scanIDSearchParam.trim().isEmpty()) {
+            return null;
+        }
+        String sanitizedParam = scanIDSearchParam.replaceAll("[^a-zA-Z0-9_:-]", "");
+
         String scanID = null;
         BufferedReader bufferedReader = null;
         try {
@@ -24,7 +29,7 @@ public class CheckmarxScanParamRetriever {
             String logLine = bufferedReader.readLine();
             while(logLine != null) {
                 LOG.warn("Log Line: " + logLine);
-                int searchIndex = logLine.indexOf(scanIDSearchParam);
+                int searchIndex = logLine.indexOf(sanitizedParam);
                 if (searchIndex != -1) {
                     String uuidSubstring = logLine.substring(searchIndex, (searchIndex + 50));
                     LOG.warn("UUID STRING: " + uuidSubstring);
