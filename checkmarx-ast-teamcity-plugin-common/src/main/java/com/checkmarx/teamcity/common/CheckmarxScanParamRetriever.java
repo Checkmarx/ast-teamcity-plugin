@@ -20,7 +20,8 @@ public class CheckmarxScanParamRetriever {
         if (scanIDSearchParam == null || scanIDSearchParam.trim().isEmpty()) {
             return null;
         }
-        String sanitizedParam = scanIDSearchParam.replaceAll("[^a-zA-Z0-9_:-]", "");
+        // Allow spaces in the search parameter since log entries like "Scan ID:" contain spaces
+        String sanitizedParam = scanIDSearchParam.replaceAll("[^a-zA-Z0-9_: -]", "");
 
         String scanID = null;
         BufferedReader bufferedReader = null;
