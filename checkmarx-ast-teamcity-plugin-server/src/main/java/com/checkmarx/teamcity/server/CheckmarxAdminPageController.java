@@ -3,14 +3,14 @@ package com.checkmarx.teamcity.server;
 import com.checkmarx.teamcity.common.CheckmarxParams;
 import com.checkmarx.teamcity.common.PluginUtils;
 import jetbrains.buildServer.controllers.ActionErrors;
-import jetbrains.buildServer.controllers.BaseFormXmlController;
 import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.serverSide.crypt.RSACipher;
 import jetbrains.buildServer.util.StringUtil;
 import org.apache.log4j.Logger;
-import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
-public class CheckmarxAdminPageController extends BaseFormXmlController {
+@Controller
+public class CheckmarxAdminPageController {
 
     public static final String INVALID = "invalid_";
     private final static Logger LOG = Logger.getLogger(CheckmarxAdminPageController.class);
@@ -29,34 +29,37 @@ public class CheckmarxAdminPageController extends BaseFormXmlController {
         this.checkmarxAdminConfig = checkmarxAdminConfig;
     }
 
-    @Override
-    protected ModelAndView doGet(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse) {
-        return null;
+    @RequestMapping(value = "/admin/checkmarxAstSettings.html", method = RequestMethod.GET)
+    public void handleGet(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws IOException {
+        // Handle GET request - typically just return the form page
+        response.getWriter().write("OK");
     }
 
-    @Override
-    protected void doPost(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull Element xmlResponse) {
+    @RequestMapping(value = "/admin/checkmarxAstSettings.html", method = RequestMethod.POST)
+    public void handlePost(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws IOException {
 
-        final ActionErrors actionErrors = validateForm(httpServletRequest);
+        final ActionErrors actionErrors = validateForm(request);
         if (actionErrors.hasErrors()) {
-            actionErrors.serialize(xmlResponse);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Validation errors occurred");
             return;
         }
 
         for (String config : CheckmarxParams.GLOBAL_CONFIGS) {
-            checkmarxAdminConfig.setConfiguration(config, StringUtil.emptyIfNull(httpServletRequest.getParameter(config)));
+            checkmarxAdminConfig.setConfiguration(config, StringUtil.emptyIfNull(request.getParameter(config)));
         }
 
-        String encryptedSecret = ensurePasswordEncryption(httpServletRequest, "encryptedGlobalAstSecret");
+        String encryptedSecret = ensurePasswordEncryption(request, "encryptedGlobalAstSecret");
         checkmarxAdminConfig.setConfiguration(CheckmarxParams.GLOBAL_AST_SECRET, encryptedSecret);
 
         try {
             checkmarxAdminConfig.persistConfiguration();
+            response.getWriter().write("Settings saved successfully");
         } catch (IOException e) {
             Loggers.SERVER.error("Failed to persist global configurations", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error saving settings");
         }
-        getOrCreateMessages(httpServletRequest).addMessage("settingsSaved", "Global settings saved for Checkmarx AST Plugin.");
-
     }
 
     private String ensurePasswordEncryption(HttpServletRequest request, String requestParamName) {
