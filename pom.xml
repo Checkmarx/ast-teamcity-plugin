@@ -7,7 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
-        <teamcity-version>2024.12</teamcity-version>
+        <teamcity-version>2025.07</teamcity-version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -16,7 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springFramework.version>6.1.14</springFramework.version>
+        <springFramework.version>6.1.21</springFramework.version>
+        <springSecurity.version>6.3.5</springSecurity.version>
     </properties>
 
 
@@ -32,6 +33,12 @@
             <artifactId>jakarta.servlet-api</artifactId>
             <version>5.0.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -99,6 +106,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>${springFramework.version}</version>
             </dependency>
@@ -124,6 +136,16 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
                 <version>${springFramework.version}</version>
             </dependency>
@@ -144,22 +166,7 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-instrument</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-instrument</artifactId>
                 <version>${springFramework.version}</version>
             </dependency>
             <dependency>
@@ -198,6 +205,31 @@
                 <version>33.4.0-android</version>
             </dependency>
             <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.12.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.6.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bitbucket.b_c</groupId>
+                <artifactId>jose4j</artifactId>
+                <version>0.9.4</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.18.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.beust</groupId>
                 <artifactId>jcommander</artifactId>
                 <version>1.82</version>
@@ -215,17 +247,12 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
+                <version>${springSecurity.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>5.8.16</version>
+                <version>${springSecurity.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -348,6 +375,11 @@
     </modules>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
         <repository>
             <id>jetbrains-all</id>
             <url>https://download.jetbrains.com/teamcity-repository</url>

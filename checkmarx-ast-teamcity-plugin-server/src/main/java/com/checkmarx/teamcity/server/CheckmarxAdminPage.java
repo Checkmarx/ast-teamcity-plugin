@@ -23,7 +23,6 @@ public class CheckmarxAdminPage extends AdminPage {
         setIncludeUrl(descriptor.getPluginResourcesPath("adminPage.jsp"));
         setTabTitle(CheckmarxScanRunnerConstants.RUNNER_DISPLAY_NAME);
         register();
-        controllerManager.registerController("/admin/checkmarxAstSettings.html", new CheckmarxAdminPageController(checkmarxAdminConfig));
     }
 
     @Override
