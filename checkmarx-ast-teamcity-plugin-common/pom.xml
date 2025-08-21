@@ -15,6 +15,12 @@
             <groupId>org.jetbrains.teamcity</groupId>
             <artifactId>agent-api</artifactId>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
