@@ -15,6 +15,22 @@ import java.util.Map;
 public class CheckmarxScanCancelCommandExecutor {
 
     public void cancelExecution(String scanID, String cliPath, BuildProgressLogger buildProgressLogger, CheckmarxScanConfig scanConfig, Map<String, String> environmentVariables) {
+        if (scanID == null || scanID.trim().isEmpty()) {
+            throw new IllegalArgumentException("scanID cannot be null or empty");
+        }
+        if (cliPath == null || cliPath.trim().isEmpty()) {
+            throw new IllegalArgumentException("cliPath cannot be null or empty");
+        }
+        if (buildProgressLogger == null) {
+            throw new IllegalArgumentException("buildProgressLogger cannot be null");
+        }
+        if (scanConfig == null) {
+            throw new IllegalArgumentException("scanConfig cannot be null");
+        }
+        if (environmentVariables == null) {
+            throw new IllegalArgumentException("environmentVariables cannot be null");
+        }
+
         buildProgressLogger.message("Cancelling Checkmarx scan for scanID " + scanID);
 
         try {
