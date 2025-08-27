@@ -4,7 +4,6 @@ release=$1
 filename_windows=ast-cli_${release}_windows_x64.zip
 filename_linux=ast-cli_${release}_linux_x64.tar.gz
 filename_darwin=ast-cli_${release}_darwin_x64.tar.gz
-filename_darwin_extracted=ast-cli_${release}_darwin_x64
 
 #Windows
 echo "Updating windows binary"
@@ -28,7 +27,7 @@ echo "Updating mac binary"
 wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_darwin}
 mkdir ./tmp/
 tar -xvzf  ${filename_darwin} -C ./tmp/
-mv ./tmp/${filename_darwin_extracted}/cx ./tmp/${filename_darwin_extracted}/cx-mac
-mv ./tmp/${filename_darwin_extracted}/cx-mac ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
+mv ./tmp/cx ./tmp/cx-mac
+mv ./tmp/cx-mac ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
 rm -r tmp
 rm ${filename_darwin}
