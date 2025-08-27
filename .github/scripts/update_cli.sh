@@ -9,7 +9,7 @@ filename_darwin=ast-cli_${release}_darwin_x64.tar.gz
 echo "Updating windows binary"
 wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_windows}
 unzip ${filename_windows} -d tmp
-mv ./tmp/cx.exe ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe
+mv ./tmp/cx.exe ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe
 rm -r tmp
 rm ${filename_windows}
 
@@ -18,7 +18,7 @@ echo "Updating linux binary"
 wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_linux}
 mkdir ./tmp/
 tar -xvzf  ${filename_linux} -C ./tmp/
-mv ./tmp/cx ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx
+mv ./tmp/cx ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx
 rm -r tmp
 rm ${filename_linux}
 
@@ -35,7 +35,7 @@ else
   echo "Failed to rename file"
   exit 1
 fi
-if mv ./tmp/cx-mac ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac; then
+if mv ./tmp/cx-mac ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac; then
   echo "Succeed to move"
 else
   echo "Failed to move"
