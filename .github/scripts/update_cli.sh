@@ -29,6 +29,8 @@ mkdir ./tmp/
 tar -xvzf  ${filename_darwin} -C ./tmp/
 if mv ./tmp/cx ./tmp/cx-mac; then
   echo "Succeed to rename file"
+  echo "Contents of ./tmp after rename:"
+  ls -R ./tmp
 else
   echo "Failed to rename file"
   exit 1
