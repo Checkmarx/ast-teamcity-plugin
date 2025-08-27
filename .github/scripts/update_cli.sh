@@ -27,6 +27,7 @@ echo "Updating mac binary"
 wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_darwin}
 mkdir ./tmp/
 tar -xvzf  ${filename_darwin} -C ./tmp/
-mv ./tmp/cx-mac ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
+mv ./tmp/${filename_darwin}/cx ./tmp/${filename_darwin}/cx-mac
+mv ./tmp/${filename_darwin}/cx-mac ../../checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
 rm -r tmp
 rm ${filename_darwin}
