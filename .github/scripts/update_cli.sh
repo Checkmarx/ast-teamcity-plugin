@@ -10,23 +10,24 @@ echo "Updating windows binary"
 wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_windows}
 unzip ${filename_windows} -d tmp
 mv ./tmp/cx.exe ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe
+chmod +x ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe
 rm -r tmp
-rm ${filename_windows}
+rm  ${filename_windows}
 
 #linux
 echo "Updating linux binary"
-wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_linux}
+wget  https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_linux}
 mkdir ./tmp/
 tar -xvzf  ${filename_linux} -C ./tmp/
 mv ./tmp/cx ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx
 rm -r tmp
-rm ${filename_linux}
+rm  ${filename_linux}
 
 #darwin
 echo "Updating mac binary"
 wget https://github.com/CheckmarxDev/ast-cli/releases/download/${release}/${filename_darwin}
 mkdir ./tmp/
 tar -xvzf  ${filename_darwin} -C ./tmp/
-mv ./tmp/cx ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
+cp ./tmp/cx ./checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
 rm -r tmp
 rm ${filename_darwin}
