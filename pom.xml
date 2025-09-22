@@ -7,18 +7,26 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
-        <teamcity-version>2024.12</teamcity-version>
+        <teamcity-version>2025.07</teamcity-version>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.sourceCompatibility>1.8</project.sourceCompatibility>
-        <project.targetCompatibility>1.8</project.targetCompatibility>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.sourceCompatibility>17</project.sourceCompatibility>
+        <project.targetCompatibility>17</project.targetCompatibility>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springFramework.version>6.1.14</springFramework.version>
+        <springFramework.version>6.2.10</springFramework.version>
+        <springSecurity.version>6.3.5</springSecurity.version>
     </properties>
 
+    <modules>
+        <module>checkmarx-ast-teamcity-plugin-common</module>
+        <module>checkmarx-ast-teamcity-plugin-server</module>
+        <module>checkmarx-ast-teamcity-plugin-agent</module>
+        <module>build</module>
+        <module>coverage-report</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -30,8 +38,14 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
+            <version>6.0.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -55,6 +69,22 @@
                         <artifactId>spring-security-crypto</artifactId>
                     </exclusion>
                     <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-aspects</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-remoting</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-webmvc</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-web</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>commons-lang</groupId>
                         <artifactId>commons-lang</artifactId>
                     </exclusion>
@@ -75,6 +105,22 @@
                     </exclusion>
                     <exclusion>
                         <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-aspects</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-remoting</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-webmvc</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-web</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.security</groupId>
                         <artifactId>spring-security-crypto</artifactId>
                     </exclusion>
                     <exclusion>
@@ -85,7 +131,21 @@
                         <groupId>commons-collections</groupId>
                         <artifactId>commons-collections</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>commons-fileupload</groupId>
+                        <artifactId>commons-fileupload</artifactId>
+                    </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${springFramework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -144,27 +204,17 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-instrument</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <version>${springFramework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-instrument</artifactId>
-                <version>${springFramework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-jcl</artifactId>
+                <version>${springFramework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
                 <version>${springFramework.version}</version>
             </dependency>
             <dependency>
@@ -214,21 +264,63 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>5.8.16</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>5.8.16</version>
+                <version>${springSecurity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${springSecurity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-aspects</artifactId>
+                <version>${springSecurity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-remoting</artifactId>
+                <version>${springSecurity.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.1</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.6.0</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.bitbucket.b_c/jose4j -->
+            <dependency>
+                <groupId>org.bitbucket.b_c</groupId>
+                <artifactId>jose4j</artifactId>
+                <version>0.9.4</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.13</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.12.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>jetbrains-all</id>
+            <url>https://download.jetbrains.com/teamcity-repository</url>
+        </repository>
+    </repositories>
 
     <pluginRepositories>
         <pluginRepository>
@@ -236,6 +328,7 @@
             <url>https://download.jetbrains.com/teamcity-repository</url>
         </pluginRepository>
     </pluginRepositories>
+
     <build>
         <plugins>
             <plugin>
@@ -268,10 +361,9 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.11</version>
+                <version>0.8.13</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -283,74 +375,8 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>report-aggregate</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report-aggregate</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.0</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jetbrains.teamcity</groupId>
-                <artifactId>teamcity-sdk-maven-plugin</artifactId>
-                <version>0.4.3</version>
-                <configuration>
-                    <!-- Path to local environment agent setup for debugging agent and server -->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M8</version>
-            </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.jetbrains.teamcity</groupId>
-                    <artifactId>teamcity-sdk-maven-plugin</artifactId>
-                    <version>0.4.3</version>
-                    <configuration>
-                        <!-- Path to local environment agent setup for debugging agent and server -->
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
-    <modules>
-        <module>checkmarx-ast-teamcity-plugin-common</module>
-        <module>checkmarx-ast-teamcity-plugin-server</module>
-        <module>checkmarx-ast-teamcity-plugin-agent</module>
-        <module>build</module>
-        <module>coverage-report</module>
-    </modules>
-
-    <repositories>
-        <repository>
-            <id>jetbrains-all</id>
-            <url>https://download.jetbrains.com/teamcity-repository</url>
-        </repository>
-    </repositories>
 </project>
