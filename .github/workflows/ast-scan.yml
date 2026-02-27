@@ -6,7 +6,7 @@ on:
     branches:
       - scan-notification
   schedule:
-    - cron: '00 7 * * *' # Every day at 07:00
+    - cron: '0 */4 * * *' # Every 4 hours
 
 jobs:
   cx-scan:
