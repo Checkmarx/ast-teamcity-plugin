@@ -6,7 +6,7 @@ on:
     branches:
       - scan-notification
   schedule:
-    - cron: '0 */4 * * *' # Every 4 hours
+    - cron: '00 7 * * *' # Every day at 07:00
 
 jobs:
   cx-scan:
@@ -24,29 +24,29 @@ jobs:
           cx_client_secret: ${{ secrets.AST_RND_SCANS_CLIENT_SECRET }}
           additional_params: --tags phoenix --threshold "sca-critical=1;sca-high=1;sca-medium=1;sca-low=1;sast-critical=1;sast-high=1;sast-medium=1;sast-low=1;iac-security-critical=1;iac-security-high=1;iac-security-medium=1;iac-security-low=1"
 
-    notify-teams:
-      name: Notify Teams on failure
-      runs-on: ubuntu-latest
-      needs: cx-scan
-      if: needs.cx-scan.result == 'failure'
-      steps:
-        - name: Notify Microsoft Teams
-          run: |
-            curl -H 'Content-Type: application/json' -d '{
-              "@type":"MessageCard",
-              "@context":"http://schema.org/extensions",
-              "summary":"Checkmarx One Scan failed For TEAMCITY",
-              "themeColor":"FF0000",
-              "title":"Checkmarx One Scan failed",
-              "sections":[
-                {
-                  "activityTitle":"Scan failed",
-                  "facts":[
-                    {"name":"Repository","value":"${{ github.repository }}"},
-                    {"name":"Branch","value":"${{ github.ref_name }}"},
-                    {"name":"Run","value":"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}
-                  ],
-                  "text":"The Checkmarx One Scan job failed. Review the run for details."
-                }
-              ]
-            }' "${{ secrets.CXONE_SCAN_WEBHOOK_URL }}"
+  notify-teams:
+    name: Notify Teams on failure
+    runs-on: ubuntu-latest
+    needs: cx-scan
+    if: needs.cx-scan.result == 'failure'
+    steps:
+      - name: Notify Microsoft Teams
+        run: |
+          curl -H 'Content-Type: application/json' -d '{
+            "@type":"MessageCard",
+            "@context":"http://schema.org/extensions",
+            "summary":"Checkmarx One Scan failed For TEAMCITY",
+            "themeColor":"FF0000",
+            "title":"Checkmarx One Scan failed",
+            "sections":[
+              {
+                "activityTitle":"Scan failed",
+                "facts":[
+                  {"name":"Repository","value":"${{ github.repository }}"},
+                  {"name":"Branch","value":"${{ github.ref_name }}"},
+                  {"name":"Run","value":"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}
+                ],
+                "text":"The Checkmarx One Scan job failed. Review the run for details."
+              }
+            ]
+          }' "${{ secrets.CXONE_SCAN_WEBHOOK_URL }}"   
