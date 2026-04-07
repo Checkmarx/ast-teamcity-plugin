@@ -26,6 +26,12 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
         </exclusion>
+        <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 to prevent
+             its transitive pull of vulnerable spring-security-web < 6.5.9 -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -40,6 +46,13 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
         </exclusion>
+        <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 to prevent
+             its transitive pull of vulnerable spring-security-web < 6.5.9
+             via web-openapi -> common-spring-security -> spring-security-oauth2 -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -51,6 +64,11 @@
         <exclusion>
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
+        </exclusion>
+        <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
