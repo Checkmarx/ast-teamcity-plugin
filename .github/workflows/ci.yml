@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || github.token }}
           lfs: true  # Ensure LFS files are checked out
 
       - name: Set up JDK 17
