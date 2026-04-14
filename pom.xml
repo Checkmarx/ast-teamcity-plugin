@@ -17,7 +17,21 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springFramework.version>6.2.11</springFramework.version>
-        <springSecurity.version>6.3.5</springSecurity.version>
+        <!-- CVE-2026-22732: spring-security-web <= 6.5.8 silently drops HTTP
+             security headers for servlet apps. Fix version: 6.5.9. -->
+        <springSecurity.version>6.5.9</springSecurity.version>
+        <!-- jackson-core async-parser DoS: async parser bypasses maxNumberLength
+             allowing unbounded memory/CPU use. Affected < 2.19.1 / < 2.21.2.
+             2.21.2 is the latest stable release on Maven Central. -->
+        <jackson.version>2.21.2</jackson.version>
+        <!-- commons-lang3 uncontrolled recursion DoS: ClassUtils.getClass()
+             StackOverflowError on crafted input. Affected 3.0-3.17.0.
+             Upgraded to 3.20.0 to stay in sync with commons-text 1.15.0. -->
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <!-- commons-text 1.13.1 declared commons-lang3 @ 3.17.0 (vulnerable).
+             1.15.0 natively declares commons-lang3 @ 3.20.0, removing the
+             vulnerable path from the artifact's own POM metadata. -->
+        <commons-text.version>1.15.0</commons-text.version>
     </properties>
 
     <modules>
@@ -88,6 +102,16 @@
                         <groupId>commons-lang</groupId>
                         <artifactId>commons-lang</artifactId>
                     </exclusion>
+                    <!-- CVE-2026-22732: cut EOL spring-security-oauth2 transitive chain -->
+                    <exclusion>
+                        <groupId>org.springframework.security.oauth</groupId>
+                        <artifactId>spring-security-oauth2</artifactId>
+                    </exclusion>
+                    <!-- jackson-core async-parser DoS: remove common-jackson bundle -->
+                    <exclusion>
+                        <groupId>org.jetbrains.teamcity</groupId>
+                        <artifactId>common-jackson</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -134,6 +158,20 @@
                     <exclusion>
                         <groupId>commons-fileupload</groupId>
                         <artifactId>commons-fileupload</artifactId>
+                    </exclusion>
+                    <!-- CVE-2026-22732: cut EOL spring-security-oauth2 transitive chain
+                         server-api -> web-openapi -> common-spring-security -> oauth2
+                         -> spring-security-web @ 6.3.5 -->
+                    <exclusion>
+                        <groupId>org.springframework.security.oauth</groupId>
+                        <artifactId>spring-security-oauth2</artifactId>
+                    </exclusion>
+                    <!-- jackson-core async-parser DoS: cut the chain
+                         server-api -> web-openapi -> common-jackson
+                         -> jackson-datatype-jdk8 -> jackson-core @ 2.19.0 -->
+                    <exclusion>
+                        <groupId>org.jetbrains.teamcity</groupId>
+                        <artifactId>common-jackson</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -312,11 +350,66 @@
                 <artifactId>gson</artifactId>
                 <version>2.12.0</version>
             </dependency>
-             <dependency>
+            <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
                 <version>2.25.3</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- ===== commons-text + commons-lang3 CVE override =====
+                 commons-text 1.13.1 declared commons-lang3 @ 3.17.0 (vulnerable to
+                 ClassUtils.getClass() uncontrolled recursion / StackOverflowError DoS).
+                 Upgrade commons-text to 1.15.0 which natively declares commons-lang3
+                 @ 3.20.0, removing the vulnerable path from the artifact's own POM.
+                 commons-lang3 is pinned independently so no other path can pull in
+                 an older version. -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- ===== Jackson CVE override =====
+                 jackson-core async (non-blocking) parser bypasses maxNumberLength
+                 constraint → unbounded memory/CPU → DoS.
+                 Affected: < 2.19.1 / < 2.21.2. Pin the whole Jackson family to
+                 2.21.2 (latest stable on Maven Central) so that any path through
+                 common-jackson cannot resolve a vulnerable version. -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-parameter-names</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

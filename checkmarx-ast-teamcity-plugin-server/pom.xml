@@ -26,6 +26,20 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
         </exclusion>
+        <!-- CVE-2026-22732: cut EOL spring-security-oauth2 transitive chain
+             server-api -> web-openapi -> common-spring-security -> oauth2
+             -> spring-security-web @ 6.3.5 (vulnerable) -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
+        <!-- jackson-core async-parser DoS: cut the chain
+             server-api -> web-openapi -> common-jackson
+             -> jackson-datatype-jdk8 -> jackson-core @ 2.19.0 (vulnerable) -->
+        <exclusion>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-jackson</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -40,6 +54,16 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
         </exclusion>
+        <!-- CVE-2026-22732: server-web-api carries the same oauth2 chain -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
+        <!-- jackson-core async-parser DoS: server-web-api carries same jackson chain -->
+        <exclusion>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-jackson</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -51,6 +75,16 @@
         <exclusion>
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
+        </exclusion>
+        <!-- CVE-2026-22732: cut EOL spring-security-oauth2 chain -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
+        <!-- jackson-core async-parser DoS: keep test classpath clean -->
+        <exclusion>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-jackson</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
