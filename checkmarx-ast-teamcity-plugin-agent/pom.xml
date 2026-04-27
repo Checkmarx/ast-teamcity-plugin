@@ -27,6 +27,12 @@
                     <groupId>commons-httpclient</groupId>
                     <artifactId>commons-httpclient</artifactId>
                 </exclusion>
+                <!-- jackson-core async-parser DoS: exclude common-jackson so
+                     agent-api cannot pull in jackson-core @ 2.19.0 (vulnerable). -->
+                <exclusion>
+                    <groupId>org.jetbrains.teamcity</groupId>
+                    <artifactId>common-jackson</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -38,6 +44,12 @@
                 <exclusion>
                     <groupId>commons-httpclient</groupId>
                     <artifactId>commons-httpclient</artifactId>
+                </exclusion>
+                <!-- jackson-core async-parser DoS: exclude common-jackson to
+                     keep the test classpath free of jackson-core @ 2.19.0. -->
+                <exclusion>
+                    <groupId>org.jetbrains.teamcity</groupId>
+                    <artifactId>common-jackson</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

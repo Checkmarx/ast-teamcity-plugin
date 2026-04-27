@@ -17,7 +17,18 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springFramework.version>6.2.11</springFramework.version>
-        <springSecurity.version>6.3.5</springSecurity.version>
+        <springSecurity.version>6.5.9</springSecurity.version>
+        <!-- CVE commons-lang3 uncontrolled recursion: ClassUtils.getClass() can throw
+             StackOverflowError on crafted long inputs → DoS.
+             Affected : commons-lang3 3.0 – 3.17.0 (and commons-lang 2.0 – 2.6)
+             Fix      : 3.18.0+. Upgraded to 3.20.0 to stay in sync with
+             commons-text 1.15.0 which natively declares commons-lang3 @ 3.20.0,
+             eliminating the vulnerable declared-dependency path entirely. -->
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <!-- commons-text 1.13.1 declared commons-lang3 @ 3.17.0 (vulnerable).
+             Upgrading to 1.15.0 which natively declares commons-lang3 @ 3.20.0,
+             removing the vulnerable transitive path from the artifact's own POM. -->
+        <commons-text.version>1.15.0</commons-text.version>
     </properties>
 
     <modules>
@@ -88,6 +99,19 @@
                         <groupId>commons-lang</groupId>
                         <artifactId>commons-lang</artifactId>
                     </exclusion>
+                    <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 to prevent
+                         its transitive pull of vulnerable spring-security-web < 6.5.9 -->
+                    <exclusion>
+                        <groupId>org.springframework.security.oauth</groupId>
+                        <artifactId>spring-security-oauth2</artifactId>
+                    </exclusion>
+                    <!-- jackson-core async-parser DoS: exclude common-jackson bundle
+                         to prevent jackson-core @ 2.19.0 (vulnerable) from entering
+                         the test classpath transitively. -->
+                    <exclusion>
+                        <groupId>org.jetbrains.teamcity</groupId>
+                        <artifactId>common-jackson</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -135,6 +159,20 @@
                         <groupId>commons-fileupload</groupId>
                         <artifactId>commons-fileupload</artifactId>
                     </exclusion>
+                    <!-- CVE-2026-22732 mitigation: springSecurity.version is now 6.5.9.
+                         Keep excluding EOL spring-security-oauth2 to avoid its legacy
+                         transitive chain and prevent vulnerable spring-security-web pull-ins. -->
+                    <exclusion>
+                        <groupId>org.springframework.security.oauth</groupId>
+                        <artifactId>spring-security-oauth2</artifactId>
+                    </exclusion>
+                    <!-- jackson-core async-parser DoS: exclude the TeamCity-internal
+                         common-jackson bundle so that web-openapi cannot bring in
+                         jackson-datatype-jdk8 → jackson-core @ 2.19.0 (vulnerable). -->
+                    <exclusion>
+                        <groupId>org.jetbrains.teamcity</groupId>
+                        <artifactId>common-jackson</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -179,6 +217,12 @@
                     <exclusion>
                         <groupId>commons-httpclient</groupId>
                         <artifactId>commons-httpclient</artifactId>
+                    </exclusion>
+                    <!-- jackson-core async-parser DoS: exclude common-jackson so
+                         agent-api cannot pull in jackson-core @ 2.19.0 (vulnerable). -->
+                    <exclusion>
+                        <groupId>org.jetbrains.teamcity</groupId>
+                        <artifactId>common-jackson</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -312,12 +356,34 @@
                 <artifactId>gson</artifactId>
                 <version>2.12.0</version>
             </dependency>
-             <dependency>
+            <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
                 <version>2.25.3</version>
                 <scope>provided</scope>
             </dependency>
+
+            <!-- ===== commons-text + commons-lang3 version override =====
+                 CVE: ClassUtils.getClass() uncontrolled recursion → StackOverflowError → DoS.
+                 Root cause : commons-lang3 3.0 – 3.17.0.
+                 commons-text 1.13.1 (transitive via TeamCity server-api) declared
+                 commons-lang3 @ 3.17.0 in its own POM — scanners walking the declared
+                 graph flagged the path even after the resolved version was overridden.
+                 Fix        : upgrade commons-text to 1.15.0, which natively declares
+                 commons-lang3 @ 3.20.0, removing the vulnerable path from the
+                 artifact's own metadata. commons-lang3 is also pinned independently
+                 so no other path can re-introduce an older version. -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
