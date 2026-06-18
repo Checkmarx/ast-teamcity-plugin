@@ -11,6 +11,13 @@ on:
         description: 'Channels to publish development releases'
         required: false
         type: string
+    secrets:
+      JETBRAINS_PLUGIN_ID:
+        required: true
+      JETBRAINS_USER:
+        required: true
+      PERSONAL_ACCESS_TOKEN:
+        required: true
   workflow_dispatch:
     inputs:
       tag:
