@@ -26,6 +26,19 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
         </exclusion>
+        <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 to prevent
+             its transitive pull of vulnerable spring-security-web < 6.5.9 -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
+        <!-- jackson-core async-parser DoS: cut the
+             web-openapi -> common-jackson -> jackson-datatype-jdk8
+             -> jackson-core@2.19.0 transitive chain at source -->
+        <exclusion>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-jackson</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -40,6 +53,19 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
         </exclusion>
+        <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 to prevent
+             its transitive pull of vulnerable spring-security-web < 6.5.9
+             via web-openapi -> common-spring-security -> spring-security-oauth2 -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
+        <!-- jackson-core async-parser DoS: server-web-api also carries
+             the web-openapi -> common-jackson chain; cut it here too -->
+        <exclusion>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-jackson</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -51,6 +77,17 @@
         <exclusion>
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
+        </exclusion>
+        <!-- CVE-2026-22732: exclude EOL spring-security-oauth2 -->
+        <exclusion>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+        </exclusion>
+        <!-- jackson-core async-parser DoS: tests-support also carries
+             common-jackson transitively; exclude to keep test classpath clean -->
+        <exclusion>
+          <groupId>org.jetbrains.teamcity</groupId>
+          <artifactId>common-jackson</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
