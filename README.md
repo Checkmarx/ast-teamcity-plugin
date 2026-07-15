@@ -133,3 +133,4 @@ Find more integrations from our team [here](https://github.com/Checkmarx/ci-cd-i
 [issues-url]: https://github.com/checkmarx/ast-teamcity-plugin/issues
 [license-shield]: https://img.shields.io/github/license/checkmarx/ast-teamcity-plugin.svg
 [license-url]: https://github.com/checkmarx/ast-teamcity-plugin/blob/main/LICENSE
+
