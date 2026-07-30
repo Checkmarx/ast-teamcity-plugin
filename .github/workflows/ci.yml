@@ -2,8 +2,14 @@ name: AST TeamCity plugin CI
 
 on: [pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
 jobs:
-  integration-tests:
+  integration-tests: # zizmor: ignore[anonymous-definition]    
     runs-on: cx-public-ubuntu-x64
     steps:
       - name: Checkout
@@ -11,6 +17,7 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           lfs: true  # Ensure LFS files are checked out
+          persist-credentials: false
 
       - name: Set up JDK 17
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
