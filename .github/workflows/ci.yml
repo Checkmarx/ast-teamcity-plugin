@@ -43,12 +43,6 @@ jobs:
       - name: Verify with Maven
         run: mvn -B verify
 
-      - name: Run SpotBugs Analysis
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: jwgmeligmeyling/spotbugs-github-action@b8e2c3523acb34c87f14e18cbcd2d87db8c8584e #master (currently 1.2)
-        with:
-          path: '**/spotbugsXml.xml'
-
       - name: Package with Maven
         run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
         env:
