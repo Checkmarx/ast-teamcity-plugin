@@ -21,38 +21,54 @@ on:
         description: 'Channels to publish development releases'
         required: false
         type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
 jobs:
-  deleteDevReleases:
-    uses: Checkmarx/ast-teamcity-plugin/.github/workflows/delete-dev-releases.yml@main
+  deleteDevReleases: # zizmor: ignore[unpinned-uses]
+    name: Delete Dev Releases
+    uses: Checkmarx/ast-teamcity-plugin/.github/workflows/delete-dev-releases.yml@main # zizmor: ignore[unpinned-uses]
     with:
       tag: ${{ inputs.rchannels }}
-    secrets: inherit
+    secrets: inherit # zizmor: ignore[secrets-inherit]
     if: inputs.rchannels
   release:
+    name: Create Release
+    permissions:
+      contents: write  # for creating releases and tags
     runs-on: cx-public-ubuntu-x64
     outputs:
       CLI_VERSION: ${{ steps.extract_cli_version.outputs.CLI_VERSION }}
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           lfs: true  # Ensure LFS files are checked out
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-   
-          # Set the tag in an env var
+          persist-credentials: false
+
       - name: Set env
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
         run: |
-          echo "RELEASE_VERSION=${{ inputs.tag }}" >> $GITHUB_ENV
-   
+          echo "RELEASE_VERSION=${INPUT_TAG}" >> $GITHUB_ENV
+
       - name: Create Release Name
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          INPUT_RCHANNELS: ${{ inputs.rchannels }}
         run: |
           echo "Creating release name"
-          if [ -z "${{ inputs.rchannels }}" ]; then
-            echo "GH_RELEASE_TAG_NAME=${{ env.RELEASE_VERSION }}" >> $GITHUB_ENV
+          if [ -z "${INPUT_RCHANNELS}" ]; then
+            echo "GH_RELEASE_TAG_NAME=${RELEASE_VERSION}" >> $GITHUB_ENV
           else
-            echo "GH_RELEASE_TAG_NAME=${{ env.RELEASE_VERSION }}-${{ inputs.rchannels }}" >> $GITHUB_ENV
+            echo "GH_RELEASE_TAG_NAME=${RELEASE_VERSION}-${INPUT_RCHANNELS}" >> $GITHUB_ENV
           fi
-           echo "Release name - ${{ env.GH_RELEASE_TAG_NAME }}"
+          echo "Release name - ${GH_RELEASE_TAG_NAME}"
 
       - name: Extract CLI version
         id: extract_cli_version
@@ -64,7 +80,7 @@ jobs:
 
 
       - name: Cache local Maven repository
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -72,16 +88,17 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Set up JDK 17
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           java-version: 17
-          distribution: 'adopt'
+          distribution: temurin
           settings-path: ${{ github.workspace }}
 
       - name: Update the POM version.
-        run: mvn -B versions:set -DnewVersion='${{ env.RELEASE_VERSION }}' --file pom.xml -s $GITHUB_WORKSPACE/settings.xml -DskipTests
         env:
-          GITHUB_TOKEN: ${{ github.token}}
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+        run: mvn -B versions:set -DnewVersion="${RELEASE_VERSION}" --file pom.xml -s $GITHUB_WORKSPACE/settings.xml -DskipTests
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml -DskipTests
@@ -90,7 +107,10 @@ jobs:
 
       # Create the release
       - name: Create Release or Pre-release
-        uses: step-security/action-gh-release@277bfa82abcfdb73e5bbb19e213fd76532ee2be5 # v3.0.0
+        uses: step-security/action-gh-release@d2093dbdaf0c6507874908247e14bbc4dee6a72d # v3.0.1
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          GH_RELEASE_TAG_NAME: ${{ env.GH_RELEASE_TAG_NAME }}
         with:
           release_name: Checkmarx Azure ${{ env.RELEASE_VERSION }}
           tag_name: ${{ env.GH_RELEASE_TAG_NAME }}
@@ -99,17 +119,22 @@ jobs:
           prerelease: ${{ inputs.rchannels != '' && inputs.rchannels != null }}
 
       - name: Release to marketplace
+        env:
+          JETBRAINS_USER: ${{ secrets.JETBRAINS_USER }}
+          JETBRAINS_PLUGIN_ID: ${{ secrets.JETBRAINS_PLUGIN_ID }}
+          INPUT_RCHANNELS: ${{ inputs.rchannels }}
         run: |
-          if [ -z "${{ inputs.rchannels }}" ]; then
-            curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+          if [ -z "${INPUT_RCHANNELS}" ]; then
+            curl -i --header "Authorization: Bearer ${JETBRAINS_USER}" -F pluginId=${JETBRAINS_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           else
-            curl -i --header "Authorization: Bearer ${{ secrets.JETBRAINS_USER }}" -F channel=${{ inputs.rchannels }} -F pluginId=${{ secrets.JETBRAINS_PLUGIN_ID }} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+            curl -i --header "Authorization: Bearer ${JETBRAINS_USER}" -F channel=${INPUT_RCHANNELS} -F pluginId=${JETBRAINS_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           fi
 
-  notify:
+  notify: # zizmor: ignore[unpinned-uses]
+    name: Notify Release
     needs: release
     if: ${{ inputs.rchannels == '' || inputs.rchannels == null }}
-    uses: Checkmarx/plugins-release-workflow/.github/workflows/release-notify.yml@main
+    uses: Checkmarx/plugins-release-workflow/.github/workflows/release-notify.yml@main # zizmor: ignore[unpinned-uses]
     with:
       product_name: AST Teamcity
       release_version: ${{ inputs.tag }}
@@ -117,4 +142,4 @@ jobs:
       release_author: "Phoenix Team"
       release_url: https://github.com/Checkmarx/ast-teamcity-plugin/releases/tag/${{ inputs.tag }}
       jira_product_name: AST_TEAMCITY
-    secrets: inherit
+    secrets: inherit # zizmor: ignore[secrets-inherit]

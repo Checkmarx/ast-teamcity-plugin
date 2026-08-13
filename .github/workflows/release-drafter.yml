@@ -3,15 +3,26 @@ name: Create draft release
 on:
   workflow_call:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
 jobs:
   release-draft:
+    name: Create Release Draft
+    permissions:
+      contents: write  # for creating release draft
     runs-on: cx-public-ubuntu-x64
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Cache local Maven repository
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -19,22 +30,22 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Set up JDK 17
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           java-version: 17
-          distribution: 'adopt'
+          distribution: temurin
           settings-path: ${{ github.workspace }}
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
 
-      - uses: hugo19941994/delete-draft-releases@1bdca1ea7ffb25ae7f468a7bdb40056dae98175e #v1.0.1
+      - uses: hugo19941994/delete-draft-releases@3f19a25abf2ce87850c2268938f98f14e4d3d1f1 #v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e # v1.1.4
+        uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e # v1.1.4 # zizmor: ignore[archived-uses]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -45,13 +56,11 @@ jobs:
 
       - name: Upload Release Asset
         id: upload-release-asset
-        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5 # v1.0.2
+        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5 # v1.0.2 # zizmor: ignore[archived-uses]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/target/checkmarx-ast-teamcity-plugin.zip
           asset_name: checkmarx-ast-teamcity-plugin.zip
           asset_content_type: application/zip
-          overwrite: true

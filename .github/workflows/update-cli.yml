@@ -4,16 +4,21 @@ on:
   repository_dispatch:
     types: [cli-version-update]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+
 permissions:
   contents: read
 
 jobs:
   update-checkmarx-cli:
+    name: Update CLI Binary
     runs-on: cx-public-ubuntu-x64
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           lfs: true
+          persist-credentials: false
 
       - name: Install Git LFS
         run: |
@@ -25,28 +30,30 @@ jobs:
         run: |
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
-          
+
       - name: Get Latest Checkmarx API version
         id: checkmarx-ast-cli
         run: |
           echo ::set-output name=release_tag::$(curl -sL https://api.github.com/repos/CheckmarxDev/ast-cli/releases/latest | jq -r ".tag_name")
           echo ::set-output name=current_tag::$(<checkmarx-ast-cli.version)
-    
+
       - name: Update Checkmarx cli version
         if: steps.checkmarx-ast-cli.outputs.current_tag != steps.checkmarx-ast-cli.outputs.release_tag
         env:
           RELEASE_TAG: ${{ steps.checkmarx-ast-cli.outputs.release_tag }}
         run: |
           # Update current release
-          echo ${{ steps.checkmarx-ast-cli.outputs.release_tag }} > checkmarx-ast-cli.version
+          echo "${RELEASE_TAG}" > checkmarx-ast-cli.version
       
       - name: Download latest cli and update branch
         if: steps.checkmarx-ast-cli.outputs.current_tag != steps.checkmarx-ast-cli.outputs.release_tag
+        env:
+          RELEASE_TAG: ${{ steps.checkmarx-ast-cli.outputs.release_tag }}
         run: |
           # Update binaries
           chmod +x ./.github/scripts/update_cli.sh
-          ./.github/scripts/update_cli.sh ${{ steps.checkmarx-ast-cli.outputs.release_tag }}
-  
+          ./.github/scripts/update_cli.sh "${RELEASE_TAG}"
+
       - name: Track large files with Git LFS
         if: steps.checkmarx-ast-cli.outputs.current_tag != steps.checkmarx-ast-cli.outputs.release_tag
         run: |
@@ -55,8 +62,8 @@ jobs:
           git lfs track "checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac"
           git add .gitattributes
           git add checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx.exe checkmarx-ast-teamcity-plugin-agent/src/runner/bin/2.0.0/cx-mac
-          git commit -m "Track Checkmarx CLI binaries with Git LFS"      
-  
+          git commit -m "Track Checkmarx CLI binaries with Git LFS"
+
       - name: Create Pull Request
         id: cretae_pull_request
         if: steps.checkmarx-ast-cli.outputs.current_tag != steps.checkmarx-ast-cli.outputs.release_tag

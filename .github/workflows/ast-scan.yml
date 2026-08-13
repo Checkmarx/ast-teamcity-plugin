@@ -8,15 +8,23 @@ on:
   schedule:
     - cron: '00 7 * * *' # Every day at 07:00
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
 jobs:
   cx-scan:
     name: Checkmarx One Scan
     runs-on: cx-public-ubuntu-x64
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Checkmarx One CLI Action
-        uses: checkmarx/ast-github-action@ef93013c95adc60160bc22060875e90800d3ecfc # v2.3.19
+        uses: checkmarx/ast-github-action@b21af721f0f841c9c10f8f87767f4d8df2d13db0 # 2.3.40
         with:
           base_uri: ${{ secrets.AST_RND_SCANS_BASE_URI }}
           cx_tenant: ${{ secrets.AST_RND_SCANS_TENANT }}
