@@ -3,6 +3,7 @@ package com.checkmarx.teamcity.agent.commands;
 
 import com.checkmarx.teamcity.common.CheckmarxScanConfig;
 import com.checkmarx.teamcity.common.PluginUtils;
+import com.checkmarx.teamcity.common.PluginVersionProvider;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.agent.runner.SimpleProgramCommandLine;
@@ -60,7 +61,12 @@ public class CheckmarxScanCreateCommand extends CheckmarxBuildServiceAdapter {
         arguments.addAll(PluginUtils.getAuthenticationFlags(scanConfig));
 
         arguments.add("--agent");
-        arguments.add("TeamCity");
+        String agentName = "TeamCity";
+        String pluginVersion = PluginVersionProvider.getPluginVersion();
+        if (pluginVersion != null && !pluginVersion.isEmpty()) {
+            agentName = agentName + "_" + pluginVersion;
+        }
+        arguments.add(agentName);
 
         arguments.add("--project-name");
         arguments.add(scanConfig.getProjectName());
