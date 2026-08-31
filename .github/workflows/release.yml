@@ -43,7 +43,6 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           lfs: true  # Ensure LFS files are checked out
-          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
 
       - name: Set env
@@ -137,16 +136,16 @@ jobs:
             curl -i --header "Authorization: Bearer ${JETBRAINS_TOKEN}" -F channel=${INPUT_RCHANNELS} -F pluginId=${TEAM_CITY_JETBRAINS_CX1_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           fi
 
-  notify: # zizmor: ignore[unpinned-uses]
-    name: Notify Release
-    needs: release
-    if: ${{ inputs.rchannels == '' || inputs.rchannels == null }}
-    uses: Checkmarx/plugins-release-workflow/.github/workflows/release-notify.yml@main # zizmor: ignore[unpinned-uses]
-    with:
-      product_name: AST Teamcity
-      release_version: ${{ inputs.tag }}
-      cli_release_version: ${{ needs.release.outputs.CLI_VERSION }}
-      release_author: "Phoenix Team"
-      release_url: https://github.com/Checkmarx/ast-teamcity-plugin/releases/tag/${{ inputs.tag }}
-      jira_product_name: AST_TEAMCITY
-    secrets: inherit # zizmor: ignore[secrets-inherit]
+  # notify: # zizmor: ignore[unpinned-uses]
+  #   name: Notify Release
+  #   needs: release
+  #   if: ${{ inputs.rchannels == '' || inputs.rchannels == null }}
+  #   uses: Checkmarx/plugins-release-workflow/.github/workflows/release-notify.yml@main # zizmor: ignore[unpinned-uses]
+  #   with:
+  #     product_name: AST Teamcity
+  #     release_version: ${{ inputs.tag }}
+  #     cli_release_version: ${{ needs.release.outputs.CLI_VERSION }}
+  #     release_author: "Phoenix Team"
+  #     release_url: https://github.com/Checkmarx/ast-teamcity-plugin/releases/tag/${{ inputs.tag }}
+  #     jira_product_name: AST_TEAMCITY
+  #   secrets: inherit # zizmor: ignore[secrets-inherit]
