@@ -38,8 +38,10 @@ jobs:
     if: inputs.rchannels
   release:
     name: Create Release
+    environment: release
     permissions:
       contents: write  # for creating releases and tags
+      id-token: write  # for AWS OIDC federation to fetch secrets
     runs-on: cx-public-ubuntu-x64
     outputs:
       CLI_VERSION: ${{ steps.extract_cli_version.outputs.CLI_VERSION }}
@@ -48,7 +50,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           lfs: true  # Ensure LFS files are checked out
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
 
       - name: Set env
@@ -118,10 +120,22 @@ jobs:
           generate_release_notes: true
           prerelease: ${{ inputs.rchannels != '' && inputs.rchannels != null }}
 
+      - name: Configure AWS Credentials for Secrets Manager
+        uses: step-security/configure-aws-credentials@1448016543d4432bd608e0de7871c7bf9e9be925 # v6.2.1
+        with:
+          role-to-assume: ${{ secrets.SECRET_MANAGER_ROLE_ARN }}
+          aws-region: ${{ secrets.SECRET_MANAGER_AWS_REGION }}
+          role-session-name: release-secrets-fetch
+
+      - name: Fetch secrets from AWS Secrets Manager
+        uses: step-security/aws-secretsmanager-get-secrets@102b6b2a2528747bcc321bb99ef326d8be7ef58f # v3.0.1
+        with:
+          secret-ids: |
+            ,${{ secrets.SECRET_MANAGER_SECRET_NAME }}
+          parse-json-secrets: true
+
       - name: Release to marketplace
         env:
-          JETBRAINS_USER: ${{ secrets.JETBRAINS_USER }}
-          JETBRAINS_PLUGIN_ID: ${{ secrets.JETBRAINS_PLUGIN_ID }}
           INPUT_RCHANNELS: ${{ inputs.rchannels }}
         run: |
           if [ -z "${INPUT_RCHANNELS}" ]; then
