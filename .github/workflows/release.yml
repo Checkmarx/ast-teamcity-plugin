@@ -29,13 +29,6 @@ permissions:
   contents: read
 
 jobs:
-  deleteDevReleases: # zizmor: ignore[unpinned-uses]
-    name: Delete Dev Releases
-    uses: Checkmarx/ast-teamcity-plugin/.github/workflows/delete-dev-releases.yml@main # zizmor: ignore[unpinned-uses]
-    with:
-      tag: ${{ inputs.rchannels }}
-    secrets: inherit # zizmor: ignore[secrets-inherit]
-    if: inputs.rchannels
   release:
     name: Create Release
     environment: release
