@@ -131,9 +131,9 @@ jobs:
           INPUT_RCHANNELS: ${{ inputs.rchannels }}
         run: |
           if [ -z "${INPUT_RCHANNELS}" ]; then
-            curl -i --header "Authorization: Bearer ${JETBRAINS_TOKEN}" -F pluginId=${TEAM_CITY_JETBRAINS_CX1_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+            curl -i --fail-with-body --header "Authorization: Bearer ${JETBRAINS_TOKEN}" -F pluginId=${TEAM_CITY_JETBRAINS_CX1_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           else
-            curl -i --header "Authorization: Bearer ${JETBRAINS_TOKEN}" -F channel=${INPUT_RCHANNELS} -F pluginId=${TEAM_CITY_JETBRAINS_CX1_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
+            curl -i --fail-with-body --header "Authorization: Bearer ${JETBRAINS_TOKEN}" -F channel=${INPUT_RCHANNELS} -F pluginId=${TEAM_CITY_JETBRAINS_CX1_PLUGIN_ID} -F file=@./build/target/checkmarx-ast-teamcity-plugin.zip https://plugins.jetbrains.com/plugin/uploadPlugin
           fi
 
   # notify: # zizmor: ignore[unpinned-uses]
