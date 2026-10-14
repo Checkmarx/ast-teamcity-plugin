@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springFramework.version>6.2.19</springFramework.version>
+        <springFramework.version>7.0.9</springFramework.version>
         <springSecurity.version>6.5.11</springSecurity.version>
         <log4j.version>2.25.5</log4j.version>
     </properties>
