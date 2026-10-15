@@ -44,7 +44,7 @@ public class CheckmarxScanParamRetriever {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.warn("Unable to close scan parameter file reader.");
                 }
             }
         }
