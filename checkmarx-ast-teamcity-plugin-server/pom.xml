@@ -86,11 +86,13 @@
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-webmvc</artifactId>
+          <version>${springFramework.version}</version>
           <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-web</artifactId>
+          <version>${springFramework.version}</version>
           <scope>provided</scope>
       </dependency>
 
