@@ -2,6 +2,9 @@ name: Release Creation
 
 on:
   workflow_call:
+    secrets:
+      ECHO_LIBRARIES_ACCESS_KEY:
+        required: true
     inputs:
       tag:
         description: 'Next release tag'
@@ -88,15 +91,28 @@ jobs:
           distribution: temurin
           settings-path: ${{ github.workspace }}
 
+      - name: Configure echo mirror for dependency resolution
+        run: |
+          if [ -z "${ECHO_LIBRARIES_ACCESS_KEY:-}" ]; then
+            echo "::error::ECHO_LIBRARIES_ACCESS_KEY is required for Echo dependency resolution."
+            exit 1
+          fi
+          sed -i 's|</servers>|<server><id>echo-repo</id><username></username><password>${env.ECHO_LIBRARIES_ACCESS_KEY}</password></server></servers>|' "$GITHUB_WORKSPACE/settings.xml"
+          sed -i 's|</settings>|<mirrors><mirror><id>echo-repo</id><mirrorOf>*,!jetbrains-all,!JetBrains</mirrorOf><url>https://maven.echohq.com</url></mirror></mirrors></settings>|' "$GITHUB_WORKSPACE/settings.xml"
+        env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
+
       - name: Update the POM version.
         env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
-        run: mvn -B versions:set -DnewVersion="${RELEASE_VERSION}" --file pom.xml -s $GITHUB_WORKSPACE/settings.xml -DskipTests
+        run: mvn -B versions:set -DnewVersion="${RELEASE_VERSION}" --file pom.xml -s "$GITHUB_WORKSPACE/settings.xml" -DskipTests
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml -DskipTests
+        run: mvn -B package --file pom.xml -s "$GITHUB_WORKSPACE/settings.xml" -DskipTests
         env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
 
       # Create the release
