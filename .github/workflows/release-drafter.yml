@@ -2,6 +2,9 @@ name: Create draft release
 
 on:
   workflow_call:
+    secrets:
+      ECHO_LIBRARIES_ACCESS_KEY:
+        required: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
@@ -19,6 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          lfs: true
           persist-credentials: false
 
       - name: Cache local Maven repository
@@ -36,8 +40,21 @@ jobs:
           distribution: temurin
           settings-path: ${{ github.workspace }}
 
+      - name: Configure echo mirror for dependency resolution
+        run: |
+          if [ -z "${ECHO_LIBRARIES_ACCESS_KEY:-}" ]; then
+            echo "::error::ECHO_LIBRARIES_ACCESS_KEY is required for Echo dependency resolution."
+            exit 1
+          fi
+          sed -i 's|</servers>|<server><id>echo-repo</id><username></username><password>${env.ECHO_LIBRARIES_ACCESS_KEY}</password></server></servers>|' "$GITHUB_WORKSPACE/settings.xml"
+          sed -i 's|</settings>|<mirrors><mirror><id>echo-repo</id><mirrorOf>*,!jetbrains-all,!JetBrains</mirrorOf><url>https://maven.echohq.com</url></mirror></mirrors></settings>|' "$GITHUB_WORKSPACE/settings.xml"
+        env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
+
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn -B package --file pom.xml -s "$GITHUB_WORKSPACE/settings.xml"
+        env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
 
       - uses: hugo19941994/delete-draft-releases@3f19a25abf2ce87850c2268938f98f14e4d3d1f1 #v3.0.0
         env:
