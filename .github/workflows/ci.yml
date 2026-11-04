@@ -35,17 +35,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Configure echo mirror for dependency resolution
+        run: |
+          if [ -z "${ECHO_LIBRARIES_ACCESS_KEY:-}" ]; then
+            echo "::error::ECHO_LIBRARIES_ACCESS_KEY is required for Echo dependency resolution."
+            exit 1
+          fi
+          sed -i 's|</servers>|<server><id>echo-repo</id><username></username><password>${env.ECHO_LIBRARIES_ACCESS_KEY}</password></server></servers>|' "$GITHUB_WORKSPACE/settings.xml"
+          sed -i 's|</settings>|<mirrors><mirror><id>echo-repo</id><mirrorOf>*,!jetbrains-all,!JetBrains</mirrorOf><url>https://maven.echohq.com</url></mirror></mirrors></settings>|' "$GITHUB_WORKSPACE/settings.xml"
+        env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
+
       - name: Install xmllint
         run: |
           sudo apt-get update
           sudo apt-get install -y libxml2-utils
 
       - name: Verify with Maven
-        run: mvn -B verify
+        run: mvn -B verify -s "$GITHUB_WORKSPACE/settings.xml"
+        env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
 
       - name: Package with Maven
-        run: mvn -B package --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn -B package --file pom.xml -s "$GITHUB_WORKSPACE/settings.xml"
         env:
+          ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Upload coverage report
