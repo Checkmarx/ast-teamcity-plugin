@@ -56,7 +56,7 @@ jobs:
         env:
           ECHO_LIBRARIES_ACCESS_KEY: ${{ secrets.ECHO_LIBRARIES_ACCESS_KEY }}
 
-      - uses: hugo19941994/delete-draft-releases@3f19a25abf2ce87850c2268938f98f14e4d3d1f1 #v3.0.0
+      - uses: step-security/delete-draft-releases@82f8547d9b0ccdcd7e18b55ca13823f477717bf7 # v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
